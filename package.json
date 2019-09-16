@@ -1,0 +1,28 @@
+{
+  "name": "ubconnect",
+  "version": "1.0.0",
+  "description": "Cpen 321 Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TripleJS/Cpen321Project.git"
+  },
+  "author": "John M, Soroush A, Joshua P",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TripleJS/Cpen321Project/issues"
+  },
+  "homepage": "https://github.com/TripleJS/Cpen321Project#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1",
+    "passport": "^0.4.0",
+    "passport-google-plus-token": "^2.1.0"
+  }
+}
