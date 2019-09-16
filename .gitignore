@@ -1,3 +1,6 @@
 /node_modules
 
-!/rest-server
+!/rest-server/controller
+!/rest-server/routes
+!/rest-server/utils
+!/rest-server/middlware
