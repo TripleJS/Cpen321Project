@@ -9,7 +9,6 @@ router.use((req, res, next) =>
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 })
-
 const errorRoute = require('./error');
 const registerRoute = require('./register');
 const authRoute = require('./auth');
