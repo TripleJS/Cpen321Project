@@ -36,7 +36,25 @@ const postQuestion = async (req, res, next) => {
 
 
 const suggestedQuestions = async (req, res, next) => {
+    const date1 = new Date();
+    const date2 = new Date();
 
+    res.status(200).json({
+        questions : [
+            {
+                questionTitle: "FUCK",
+                question: "CPEN321",
+                date: date1,
+                owner: "John"
+            },
+            {
+                questionTitle: "FUCK",
+                question: "CPEN331",
+                date: date2,
+                owner: "DJFASKDFJSAF"
+            }
+        ]
+    });
 
 }
 
