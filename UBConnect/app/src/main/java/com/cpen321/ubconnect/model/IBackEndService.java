@@ -28,7 +28,7 @@ public interface IBackEndService {
     @POST("")
     Call<PublicUser> reteUser();
 
-    @GET("")
+    @GET("/api/questions/suggest")
     Call<List<Question>> getSuggestedQuestions();
 
     @GET("")

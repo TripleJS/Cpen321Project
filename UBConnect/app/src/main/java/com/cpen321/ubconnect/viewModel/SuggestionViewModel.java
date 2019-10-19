@@ -17,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SuggestionViewModel extends ViewModel {
 
-    private MutableLiveData<List<Question>> Questions = new MutableLiveData<>();
+    private MutableLiveData<List<Question>> questions;
+    private int pageNumber;
 
     private IBackEndService mBackEndService;
 
@@ -28,7 +29,7 @@ public class SuggestionViewModel extends ViewModel {
     }
 
     private void init() {
-
+        pageNumber = 0;
     }
 
     private void initService() {
@@ -60,6 +61,11 @@ public class SuggestionViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<Question>> getQuestions() {
-        return Questions;
+
+        if(pageNumber == 0){
+            getSuggestion();
+        }
+
+        return questions;
     }
 }

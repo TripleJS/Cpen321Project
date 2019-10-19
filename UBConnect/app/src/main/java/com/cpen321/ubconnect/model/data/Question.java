@@ -2,17 +2,20 @@ package com.cpen321.ubconnect.model.data;
 
 import androidx.annotation.Keep;
 
+import java.util.Date;
 import java.util.List;
 
 @Keep
 public class Question {
     private String question;
+    private String questionTitle;
     private List<String> keywords;
     private String q_id;
     private List<String> answer;
     private String course;
     private String topic;
     private String owner;
+    private Date date;
 
     public String getQuestion() {
         return question;
@@ -68,5 +71,21 @@ public class Question {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getQuestionTitle() {
+        return questionTitle;
+    }
+
+    public void setQuestionTitle(String questionTitle) {
+        this.questionTitle = questionTitle;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
