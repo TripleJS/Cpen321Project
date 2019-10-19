@@ -1,5 +1,4 @@
 const http = require('http');
-const app = require('./rest-server/createExpressApp');
 const mongoose = require('mongoose');
 const server = http.createServer(app);
 

@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
-    {
-        method : 
-        {
+const userSchema = new Schema({
+        method : {
             type : String,
             enum : ['local', 'google', 'facebook'],
             required : true
         },
-        local : 
-        {
-            type:
-            {
+        local : {
+            type: {
                 passwordHash: {
                     type: String,
                     required: true,
@@ -20,14 +16,13 @@ const userSchema = new Schema(
                 }, 
                 resetToken : String,
                 resetExpirationDate: Date,
-                email: 
-                {
+                email: {
                     type: String,
                     required: true
                 },
             },
             required: false
-        },
+        }, 
         google: {
             id : {
                 type: Number,
@@ -45,27 +40,44 @@ const userSchema = new Schema(
                 type: String,
                 lowercase: true
             }
-        },
-        userName : 
-        {
+        }, userName : {
             type: String,
             required: true
+        }, name: {
+            type: String
         },
-        friendsList :
-        {
-            type : [Schema.Types.ObjectId],
+        icon : String,
+        rating : {
+            type: Number,
             required: true,
-            default : [],
-            ref : 'User'
+            default: 0
         },
-        roomsList : 
-        {
-            type : [Schema.Types.ObjectId],
-            required: true,
+        banned : {
+            type: Boolean
+        }, 
+        courses: {
+            type : [String],
             default: [],
-            ref: 'Rooms'
+            required : true
         },
-        icon : String
+        answers : {
+            type: [mongoose.Schema.Types.ObjectId], 
+            ref: 'Answers',
+            default : [],
+            required: true
+        },
+        postedQuestions : {
+            type: [mongoose.Schema.Types.ObjectId], 
+            ref: 'Questions',
+            default : [],
+            required: true
+        },
+        groups : {
+            type : [mongoose.Schema.Types.ObjectId],
+            ref : 'Groups',
+            required : true,
+            default : []
+        }
     }
 );
 

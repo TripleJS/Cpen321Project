@@ -2,8 +2,9 @@
   "name": "ubconnect",
   "version": "1.0.0",
   "description": "Cpen 321 Project",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,9 +21,13 @@
     "nodemon": "^1.19.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
+    "express-validator": "^6.2.0",
+    "lodash": "^4.17.15",
     "mongoose": "^5.7.1",
     "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
     "passport-google-plus-token": "^2.1.0"
   }
 }
