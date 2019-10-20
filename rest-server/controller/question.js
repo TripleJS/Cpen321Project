@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Question = require('../schema/questions');
+const User = require('../schema/user');
 const errorHandler = require('../utils/errorHandler');
 
 const getQuestion = async (req, res, next) => {
@@ -20,7 +21,16 @@ const getQuestion = async (req, res, next) => {
 }
 
 const postQuestion = async (req, res, next) => {
+
+    const curDate = new Date();
+    const questionString = req.body.question;
+    const creator = req.body.id;
+
+
+
     try {
+
+        let 
         const question = new Question({
 
 

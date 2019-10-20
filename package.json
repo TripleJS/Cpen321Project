@@ -4,7 +4,7 @@
   "description": "Cpen 321 Project",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/TripleJS/Cpen321Project#readme",
   "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.1",
     "nodemon": "^1.19.2"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "mongoose": "^5.7.1",
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
-    "passport-google-plus-token": "^2.1.0"
+    "passport-google-plus-token": "^2.1.0",
+    "socket.io": "^2.3.0"
   }
 }

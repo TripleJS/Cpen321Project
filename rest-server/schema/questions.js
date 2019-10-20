@@ -22,6 +22,10 @@ const questionSchema = new Schema({
     },
     rate : {
         type : Number
+    },
+    date : {
+        type : Date,
+        required : true
     }
 }); 
 
