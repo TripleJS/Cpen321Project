@@ -49,8 +49,8 @@ const suggestedQuestions = async (req, res, next) => {
     const date1 = new Date();
     const date2 = new Date();
 
-    res.status(200).json({
-        questions : [
+    res.status(200).json(
+        [
             {
                 questionTitle: "FUCK",
                 question: "CPEN321",
@@ -64,7 +64,7 @@ const suggestedQuestions = async (req, res, next) => {
                 owner: "DJFASKDFJSAF"
             }
         ]
-    });
+    );
 
 }
 
