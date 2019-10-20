@@ -16,10 +16,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchViewModel extends ViewModel {
+<<<<<<< HEAD
+    private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
+
+    private IBackEndService mBackEndService;
+
+    private int pageNumber;
+
+=======
     private MutableLiveData<List<Question>> Questions = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
 
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
     public SearchViewModel() {
         super();
         init();
@@ -27,7 +36,11 @@ public class SearchViewModel extends ViewModel {
     }
 
     private void init() {
+<<<<<<< HEAD
+        pageNumber = 0;
+=======
 
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
     }
 
     private void initService() {
@@ -38,7 +51,11 @@ public class SearchViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
+<<<<<<< HEAD
+    public void getResults() {
+=======
     private void getResults() {
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
         mBackEndService.getSearchResult().enqueue(new Callback<List<Question>>() {
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
@@ -49,6 +66,10 @@ public class SearchViewModel extends ViewModel {
                 if (response.body() == null)
                     return;
 
+<<<<<<< HEAD
+                questions.postValue(response.body());
+=======
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
             }
 
             @Override
@@ -59,6 +80,14 @@ public class SearchViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<Question>> getQuestions() {
+<<<<<<< HEAD
+        if(pageNumber == 0){
+            getResults();
+        }
+
+        return questions;
+=======
         return Questions;
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
     }
 }

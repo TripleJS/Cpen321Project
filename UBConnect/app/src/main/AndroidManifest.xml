@@ -18,6 +18,12 @@
         </activity>
 
         <activity android:name=".ui.SearchActivity"></activity>
+<<<<<<< HEAD
+        <activity android:name=".ui.OtherAnswersActivity"></activity>
+        <activity android:name=".ui.HomeActivity"></activity>
+        <activity android:name=".ui.QuestionActivity"></activity>
+=======
+>>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

@@ -1,10 +1,7 @@
 package com.cpen321.ubconnect.viewModel;
 
-<<<<<<< HEAD
-import android.util.Log;
+import android.media.session.MediaSession;
 
-=======
->>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -20,25 +17,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SuggestionViewModel extends ViewModel {
-
-<<<<<<< HEAD
-    private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
-=======
-    private MutableLiveData<List<Question>> questions;
->>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
-    private int pageNumber;
+public class QuestionViewModel extends ViewModel {
+    private MutableLiveData<Question> question = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
 
-    public SuggestionViewModel() {
+    public QuestionViewModel() {
         super();
         init();
         initService();
     }
 
     private void init() {
-        pageNumber = 0;
+
     }
 
     private void initService() {
@@ -49,10 +40,10 @@ public class SuggestionViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getSuggestion() {
-        mBackEndService.getSuggestedQuestions().enqueue(new Callback<List<Question>>() {
+    private void getRequestedQuestion(String questionId) {
+        mBackEndService.getQuestionById(questionId).enqueue(new Callback<Question>() {
             @Override
-            public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
+            public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
 
                 }
@@ -60,25 +51,19 @@ public class SuggestionViewModel extends ViewModel {
                 if (response.body() == null)
                     return;
 
-<<<<<<< HEAD
-                questions.postValue(response.body());
-=======
->>>>>>> c51a57449b354fece7fd3cbaebe70b9716566b33
+                question.postValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Question>> call, Throwable t) {
+            public void onFailure(Call<Question> call, Throwable t) {
 
             }
         });
     }
 
-    public MutableLiveData<List<Question>> getQuestions() {
+    public MutableLiveData<Question> getQuestion(String questionId) {
+        getRequestedQuestion(questionId);
 
-        if(pageNumber == 0){
-            getSuggestion();
-        }
-
-        return questions;
+        return question;
     }
 }
