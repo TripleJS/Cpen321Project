@@ -21,7 +21,8 @@ const questionSchema = new Schema({
         required: true
     },
     rate : {
-        type : Number
+        type : Number,
+        default: 0
     },
     date : {
         type : Date,

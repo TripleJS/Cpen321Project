@@ -2,17 +2,24 @@ const mongoose = require('mongoose');
 const Question = require('../schema/questions');
 const User = require('../schema/user');
 const errorHandler = require('../utils/errorHandler');
+const {validationResult} = require('express-validator');
+const {isEmpty} = require('lodash');
 
 const getQuestion = async (req, res, next) => {
     const questionID = mongoose.Types.ObjectId(req.body.id);
-    
+
     try {
+        
         const question = Question.findById(questionID);
         
         if (question == null) {
             errorHandler.errorThrow({}, "Could not find Question", 403);
         }
 
+        res.status(200).json({
+            message : 'Question Found', 
+            question : question
+        });
 
     } catch (error) {
         errorHandler.errorCatch(error);
@@ -24,24 +31,30 @@ const postQuestion = async (req, res, next) => {
 
     const curDate = new Date();
     const questionString = req.body.question;
-    const creator = req.body.id;
-
-
+    const lowerCaseString = questionString.toLowerCase();
+    const creator = req.body.id; 
+    const errors = validationResult(req);
 
     try {
 
-        let 
+        if (!isEmpty(errors)) {
+            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
+        }
         const question = new Question({
-
-
-
+            question: questionString,
+            date : curDate,
+            userPosterID : creator
         });
 
+        let result = await question.save();
 
+        res.status(203).json({
+            message : 'Question Created',
+            question : result
+        })
     } catch (error) {
-        
+        errorHandler.errorCatch(err, next);
     }
-
 }
 
 

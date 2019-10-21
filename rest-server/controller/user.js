@@ -74,8 +74,7 @@ const oAuthLogin = async (req, res, next) => {
     console.log(user);
         
     res.status(200).json({
-        userId : user._id,
-        userName : user.userName
+        userId : user._id
     });
 }
 
