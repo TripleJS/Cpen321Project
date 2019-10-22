@@ -48,7 +48,7 @@ const postQuestion = async (req, res, next) => {
             title : title,
             question: questionString,
             date : curDate,
-            userPosterID : creator,
+            owner : creator,
             course : course
         });
 
