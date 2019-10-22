@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.viewModel.MainViewModel;
 import com.cpen321.ubconnect.viewModel.SearchViewModel;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        searchViewModel = new SearchViewModel();
+        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
         questions = new ArrayList<>();
         recyclerView = findViewById(R.id.suggestedRecyclerView);

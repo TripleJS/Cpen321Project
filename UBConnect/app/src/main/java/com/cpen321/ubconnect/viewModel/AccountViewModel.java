@@ -40,7 +40,7 @@ public class AccountViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getUser() {
+    private void getUserInfo() {
         mBackEndService.getUserAccount("dummy").enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -61,6 +61,36 @@ public class AccountViewModel extends ViewModel {
     }
 
     public MutableLiveData<User> getUserAccount() {
+
+        getUserInfo();
+
+        return userAccount;
+    }
+
+    private void setUserInfo() {
+        mBackEndService.postUserAccount("dummy").enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+
+                }
+
+                if (response.body() == null)
+                    return;
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public MutableLiveData<User> setUserAccount() {
+
+        setUserInfo();
+
         return userAccount;
     }
 

@@ -3,6 +3,7 @@
     package="com.cpen321.ubconnect">
 
     <application
+        android:name=".model.GlobalVariables"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +22,10 @@
         <activity android:name=".ui.OtherAnswersActivity"></activity>
         <activity android:name=".ui.HomeActivity"></activity>
         <activity android:name=".ui.QuestionActivity"></activity>
+        <activity android:name=".ui.AccountActivity"></activity>
+        <activity android:name=".ui.PublicUserActivity"></activity>
+        <activity android:name=".ui.PostQuestionActivity"></activity>
+
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

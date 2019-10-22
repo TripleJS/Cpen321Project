@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
+import com.cpen321.ubconnect.viewModel.MainViewModel;
 import com.cpen321.ubconnect.viewModel.QuestionViewModel;
 import com.facebook.AccessToken;
 
@@ -38,7 +40,7 @@ public class QuestionActivity extends AppCompatActivity {
         answer = findViewById(R.id.questionAAnswer);
         startAnswer = findViewById(R.id.answerButton);
 
-        questionViewModel = new QuestionViewModel();
+        questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
 
         questionId = getIntent().getExtras().getString("arg");
 

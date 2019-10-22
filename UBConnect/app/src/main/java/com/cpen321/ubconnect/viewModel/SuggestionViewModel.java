@@ -43,9 +43,12 @@ public class SuggestionViewModel extends ViewModel {
     }
 
     public void getSuggestion() {
+        Log.d("Suggest", "getSuggestion:1 ");
         mBackEndService.getSuggestedQuestions().enqueue(new Callback<List<Question>>() {
+
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
+                Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
 
                 }
@@ -58,6 +61,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
+                Log.d("Suggest", "getSuggestion:3 ");
 
             }
         });

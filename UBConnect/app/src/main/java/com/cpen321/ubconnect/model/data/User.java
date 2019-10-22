@@ -4,7 +4,15 @@ import androidx.annotation.Keep;
 
 @Keep
 public class User {
+    String userId;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
 //Name
 //Login Method

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.SuggestedQuestionAdapter;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.viewModel.MainViewModel;
 import com.cpen321.ubconnect.viewModel.SuggestionViewModel;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        suggestionViewModel = new SuggestionViewModel();
+        suggestionViewModel = ViewModelProviders.of(this).get(SuggestionViewModel.class);
         suggestionViewModel.getSuggestion();
 
         questions = new ArrayList<>();
@@ -48,12 +50,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         recyclerView.setLayoutManager(linearLayoutManager);
-//        observeViewModel();
+        observeViewModel();
 //        suggestionViewModel.getSuggestion();
-        updatejljl();
-
-        adapter = new SuggestedQuestionAdapter(questions, getApplicationContext());
-        recyclerView.setAdapter(adapter);
+//        updatejljl();
+//
+//        adapter = new SuggestedQuestionAdapter(questions, getApplicationContext());
+//        recyclerView.setAdapter(adapter);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -120,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onChangedSuggestions(List<Question> questions){
         this.questions.addAll(questions);
         Log.d(TAG, "onCreate: outdjfkdsahfdsjjsfs");
-        adapter = new SearchQuestionAdapter(questions, getApplicationContext());
+        adapter = new SuggestedQuestionAdapter(questions, getApplicationContext());
         recyclerView.setAdapter(adapter);
 
     }
