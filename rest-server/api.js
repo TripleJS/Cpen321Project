@@ -6,11 +6,12 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const apiRoute = require('./routes/createRouter');
 const error = require('./controller/error');
-
 const server = http.createServer(app);
+const printBody = require('./middleware/printBody');
 
 app.use(passport.initialize());
 app.use(bodyParser.json());
+app.use(printBody)
 app.use('/api', apiRoute);
 app.use(error.errorController);
 mongoose.set('useNewUrlParser', true);
