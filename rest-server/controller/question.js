@@ -54,10 +54,7 @@ const postQuestion = async (req, res, next) => {
 
         let result = await question.save();
 
-        res.status(203).json({
-            message : 'Question Created',
-            question : result
-        });
+        res.status(203).json(result);
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
