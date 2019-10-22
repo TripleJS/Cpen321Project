@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.SuggestedQuestionAdapter;
+import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.Swiped;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.viewModel.MainViewModel;
 import com.cpen321.ubconnect.viewModel.SuggestionViewModel;
 
@@ -29,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Question> questions;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         suggestionViewModel = ViewModelProviders.of(this).get(SuggestionViewModel.class);
-        suggestionViewModel.getSuggestion();
+        userId = ((GlobalVariables) this.getApplication()).getUserID();
 
         questions = new ArrayList<>();
         recyclerView = findViewById(R.id.suggestedRecyclerView);
@@ -50,7 +54,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         recyclerView.setLayoutManager(linearLayoutManager);
-        observeViewModel();
+
+
 //        suggestionViewModel.getSuggestion();
 //        updatejljl();
 //
@@ -67,14 +72,25 @@ public class HomeActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
                 Log.d(TAG, "onSwiped: " + pos );
+                Question questionTemp = questions.get(pos);
                 if(direction == ItemTouchHelper.LEFT ) {
                     questions.remove(pos);
-                    if(questions.size()==0){
-                        updatejljl();
+                    if(questions.size()==1){
+                        User user = new User();
+                        user.setUserId(userId);
+                        suggestionViewModel.getSuggestion(user);
                     }
                     adapter.notifyItemRemoved(pos);
+                    Swiped swiped = new Swiped();
+                    swiped.setDirection("left");
+                    swiped.setQuestionId(questionTemp.getQ_id());
+                    suggestionViewModel.sendSwipe(swiped);
                 }
                 else if (direction == ItemTouchHelper.RIGHT) {
+                    Swiped swiped = new Swiped();
+                    swiped.setDirection("left");
+                    swiped.setQuestionId(questionTemp.getQ_id());
+                    suggestionViewModel.sendSwipe(swiped);
                     Intent intent = new Intent(HomeActivity.this, QuestionActivity.class);
                     intent.putExtra("arg", questions.get(pos).getQ_id());
                     startActivity(intent);
@@ -84,36 +100,42 @@ public class HomeActivity extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
         // end
 
+        User user = new User();
+        user.setUserId(userId);
+        suggestionViewModel.getSuggestion(user);
+
+        observeViewModel();
+
         Log.d(TAG, "onCreate: out");
     }
 
-    public void updatejljl(){
-        // begin
-        Question q1 = new Question();
-        q1.setQuestionTitle("q1");
-        Date d1 = new Date();
-        q1.setDate(d1);
-        q1.setOwner("gg");
-        q1.setQuestion("joojpp");
-        q1.setQ_id("qqqqqqqqqqqqqqqq");
-        questions.add(q1);
-        Question q2 = new Question();
-        q2.setQuestionTitle("q2");
-        Date d2 = new Date();
-        q2.setDate(d2);
-        q2.setOwner("gg222222");
-        q2.setQuestion("joojpp22222222");
-        q2.setQ_id("wwwwwwwwwwwwwwwwwwww");
-        questions.add(q2);
-        Question q3 = new Question();
-        q3.setQuestionTitle("q3");
-        Date d3 = new Date();
-        q3.setDate(d3);
-        q3.setOwner("gg3333333");
-        q3.setQuestion("joojpp33333333");
-        q3.setQ_id("eeeeeeeeeeeeeeeee");
-        questions.add(q3);
-    }
+//    public void updatejljl(){
+//        // begin
+//        Question q1 = new Question();
+//        q1.setQuestionTitle("q1");
+//        Date d1 = new Date();
+//        q1.setDate(d1);
+//        q1.setOwner("gg");
+//        q1.setQuestion("joojpp");
+//        q1.setQ_id("qqqqqqqqqqqqqqqq");
+//        questions.add(q1);
+//        Question q2 = new Question();
+//        q2.setQuestionTitle("q2");
+//        Date d2 = new Date();
+//        q2.setDate(d2);
+//        q2.setOwner("gg222222");
+//        q2.setQuestion("joojpp22222222");
+//        q2.setQ_id("wwwwwwwwwwwwwwwwwwww");
+//        questions.add(q2);
+//        Question q3 = new Question();
+//        q3.setQuestionTitle("q3");
+//        Date d3 = new Date();
+//        q3.setDate(d3);
+//        q3.setOwner("gg3333333");
+//        q3.setQuestion("joojpp33333333");
+//        q3.setQ_id("eeeeeeeeeeeeeeeee");
+//        questions.add(q3);
+//    }
 
     protected void observeViewModel() {
         suggestionViewModel.getQuestions().observe(this, this::onChangedSuggestions);

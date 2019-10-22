@@ -1,5 +1,6 @@
 package com.cpen321.ubconnect.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +28,11 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -129,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Oh no. You have no network or some other problem");
             }
         });
+
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
 
         observeViewModelGetByFB();
     }

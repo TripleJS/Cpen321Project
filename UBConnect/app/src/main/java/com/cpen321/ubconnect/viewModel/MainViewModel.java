@@ -11,6 +11,7 @@ import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.AccessTokenFB;
+import com.cpen321.ubconnect.model.data.FCMToken;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.facebook.AccessToken;
@@ -142,4 +143,27 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
 
         return currentUser;
     }
+
+
+    public void sendRegistrationToServer(FCMToken tokenFCM) {
+        mBackEndService.postFCMToken(tokenFCM).enqueue(new Callback<FCMToken>() {
+            @Override
+            public void onResponse(Call<FCMToken> call, Response<FCMToken> response) {
+                if (!response.isSuccessful()) {
+
+                }
+
+                if (response.body() == null)
+                    return;
+
+
+            }
+
+            @Override
+            public void onFailure(Call<FCMToken> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

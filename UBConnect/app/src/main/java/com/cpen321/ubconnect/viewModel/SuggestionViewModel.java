@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.Swiped;
+import com.cpen321.ubconnect.model.data.User;
 
 import java.util.List;
 
@@ -42,9 +44,9 @@ public class SuggestionViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getSuggestion() {
+    public void getSuggestion(User user) {
         Log.d("Suggest", "getSuggestion:1 ");
-        mBackEndService.getSuggestedQuestions().enqueue(new Callback<List<Question>>() {
+        mBackEndService.getSuggestedQuestions(user).enqueue(new Callback<List<Question>>() {
 
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
@@ -69,10 +71,30 @@ public class SuggestionViewModel extends ViewModel {
 
     public MutableLiveData<List<Question>> getQuestions() {
 
-        if(pageNumber == 0){
-            getSuggestion();
-        }
-
         return questions;
+    }
+
+    public void sendSwipe(Swiped swiped) {
+        Log.d("Suggest", "getSuggestion:1 ");
+        mBackEndService.postQuestionSwipe(swiped).enqueue(new Callback<Swiped>() {
+
+            @Override
+            public void onResponse(Call<Swiped> call, Response<Swiped> response) {
+                Log.d("Suggest", "getSuggestion:2 ");
+                if (!response.isSuccessful()) {
+
+                }
+
+                if (response.body() == null)
+                    return;
+
+            }
+
+            @Override
+            public void onFailure(Call<Swiped> call, Throwable t) {
+                Log.d("Suggest", "getSuggestion:3 ");
+
+            }
+        });
     }
 }

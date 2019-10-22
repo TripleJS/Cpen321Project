@@ -1,8 +1,10 @@
 package com.cpen321.ubconnect.model;
 
 import com.cpen321.ubconnect.model.data.AccessTokenFB;
+import com.cpen321.ubconnect.model.data.FCMToken;
 import com.cpen321.ubconnect.model.data.PublicUser;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.Swiped;
 import com.cpen321.ubconnect.model.data.User;
 import com.facebook.AccessToken;
 
@@ -41,15 +43,21 @@ public interface IBackEndService {
     Call<User> reteUser(@Path("userId")String userId);
 
     @GET("/api/questions/suggest")
-    Call<List<Question>> getSuggestedQuestions();
+    Call<List<Question>> getSuggestedQuestions(@Body User user);
 
     @GET("")
     Call<List<Question>> getSearchResult();
 
-    @POST("/api/question/post-question")
+    @POST("/api/questions/post-question")
     Call<Question> postQuestion(@Body Question question);
 
     @GET("")
     Call<Question> getQuestionById(@Path("questionId")String questionId);
+
+    @POST("")
+    Call<FCMToken> postFCMToken(@Body FCMToken fcmToken);
+
+    @POST("")
+    Call<Swiped> postQuestionSwipe(@Body Swiped swiped);
 
 }
