@@ -30,9 +30,13 @@ const getQuestion = async (req, res, next) => {
 const postQuestion = async (req, res, next) => {
 
     const curDate = new Date();
+    const title = req.body.title;
     const questionString = req.body.question;
     const lowerCaseString = questionString.toLowerCase();
-    const creator = req.body.id; 
+
+    console.log(lowerCaseString);
+    const creator = req.body.owner; 
+    const course = req.body.course;
     const errors = validationResult(req);
 
     try {
@@ -41,9 +45,11 @@ const postQuestion = async (req, res, next) => {
             errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
         }
         const question = new Question({
+            title : title,
             question: questionString,
             date : curDate,
-            userPosterID : creator
+            userPosterID : creator,
+            course : course
         });
 
         let result = await question.save();

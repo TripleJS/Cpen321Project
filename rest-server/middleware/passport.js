@@ -16,6 +16,7 @@ const oAuthLogin = (method) => {
             else if (method == 'google')
                 user = await User.findOne({"google.id" : profile.id});
             
+            console.log(profile);
             if (!user) {
                 const id = profile.id;
                 const email = profile.emails[0].value;

@@ -6,6 +6,14 @@ const questionSchema = new Schema({
         type : String,
         required : true
     }, 
+    title : {
+        type : String,
+        required : true
+    },
+    course : {
+        type : String,
+        required : true
+    }, 
     keywords : {
         type : [String],
         required : true,
@@ -16,7 +24,7 @@ const questionSchema = new Schema({
         required : true,
         default: []
     }, 
-    userPosterID : {
+    owner : {
         type : mongoose.Schema.Types.ObjectId,
         required: true
     },
