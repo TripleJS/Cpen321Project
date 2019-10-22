@@ -1,4 +1,4 @@
-const {checkBody} = require('express-validator');
+const {body} = require('express-validator');
 const User = require('../schema/user');
 
 const userValidator = body('owner')
