@@ -37,6 +37,7 @@ const postQuestion = async (req, res, next) => {
     console.log(lowerCaseString);
     const creator = req.body.owner; 
     const course = req.body.course;
+
     const errors = validationResult(req);
 
     try {
@@ -56,9 +57,9 @@ const postQuestion = async (req, res, next) => {
         res.status(203).json({
             message : 'Question Created',
             question : result
-        })
+        });
     } catch (error) {
-        errorHandler.errorCatch(err, next);
+        errorHandler.errorCatch(error, next);
     }
 }
 
