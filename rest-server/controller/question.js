@@ -4,6 +4,7 @@ const User = require('../schema/user');
 const errorHandler = require('../utils/errorHandler');
 const {validationResult} = require('express-validator');
 const {isEmpty} = require('lodash');
+const getKeywords = require('../utils/suggestions/keywordExtractor');
 
 const getQuestion = async (req, res, next) => {
     const questionID = mongoose.Types.ObjectId(req.body.id);
@@ -51,10 +52,15 @@ const postQuestion = async (req, res, next) => {
             owner : creator,
             course : course
         });
+        
+        res.status(203).json(question);
 
-        let result = await question.save();
+        let keywords = await getKeywords(questionString);
 
-        res.status(203).json(result);
+        question.set('keywords', keywords);
+
+        question.save();
+
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }

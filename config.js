@@ -5,7 +5,9 @@ const cfg = {
     googleClientID: "320304356326-hlt15rn227dke0mu21vr5ivqn54sv094.apps.googleusercontent.com",
     googleClientSecret: "Y9DhIMBGh5q7Pxjqj0rkekwd",
     facebookClientID: "2223673594426780", 
-    facebookClientSecret: "635dc1e26dfcd9ef46e93e3db98651e7"
+    facebookClientSecret: "635dc1e26dfcd9ef46e93e3db98651e7",
+    subscription_key : 'e8c61d3477e8403c8ce983fa217e0d1d',
+    endpoint : 'https://ubconnectanay.cognitiveservices.azure.com/'
 }
 
 module.exports = cfg;
