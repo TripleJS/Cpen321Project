@@ -4,8 +4,8 @@ const cfg = {
     mongodburl: "mongodb+srv://john:cpen321@cpen321-2t1cu.azure.mongodb.net/test?retryWrites=true&w=majority", // TODO: Replace with new cloud databse
     googleClientID: "320304356326-hlt15rn227dke0mu21vr5ivqn54sv094.apps.googleusercontent.com",
     googleClientSecret: "Y9DhIMBGh5q7Pxjqj0rkekwd",
-    facebookClientID: "1287267788120269", 
-    facebookClientSecret: "8d600ee838c79a4469277a44afddcbdc"
+    facebookClientID: "2223673594426780", 
+    facebookClientSecret: "635dc1e26dfcd9ef46e93e3db98651e7"
 }
 
 module.exports = cfg;
