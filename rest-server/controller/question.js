@@ -40,7 +40,6 @@ const postQuestion = async (req, res, next) => {
     const errors = validationResult(req);
 
     try {
-
         if (!isEmpty(errors)) {
             errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
         }
