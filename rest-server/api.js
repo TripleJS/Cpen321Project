@@ -11,7 +11,7 @@ const printBody = require('./middleware/printBody');
 
 app.use(passport.initialize());
 app.use(bodyParser.json());
-app.use(printBody)
+app.use(printBody);
 app.use('/api', apiRoute);
 app.use(error.errorController);
 mongoose.set('useNewUrlParser', true);
