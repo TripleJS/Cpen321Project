@@ -7,7 +7,7 @@ const {isEmpty} = require('lodash');
 const getKeywords = require('../utils/suggestions/keywordExtractor');
 
 const getQuestion = async (req, res, next) => {
-    const questionID = mongoose.Types.ObjectId(req.body.id);
+    const questionID = mongoose.Types.ObjectId(req.params.id);
 
     try {
         
@@ -17,10 +17,7 @@ const getQuestion = async (req, res, next) => {
             errorHandler.errorThrow({}, "Could not find Question", 403);
         }
 
-        res.status(200).json({
-            message : 'Question Found', 
-            question : question
-        });
+        res.status(200).json(question);
 
     } catch (error) {
         errorHandler.errorCatch(error);
@@ -71,10 +68,9 @@ const postQuestion = async (req, res, next) => {
 
 
 const suggestedQuestions = async (req, res, next) => {
-    const date1 = new Date();
-    const date2 = new Date();
 
     console.log(req.params.userId);
+
     try {
         let result = await Question.find({}).limit(5);
         console.log(result);
@@ -84,11 +80,7 @@ const suggestedQuestions = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error);
     }
-
 }
-
-
-
 
 const searchQuestion = async (req, res, next) => {
 
@@ -122,7 +114,7 @@ const swipedQuestion = (req, res, next) => {
     console.log(userId);
     console.log(direction);
 
-    res.send(200).json({
+    res.status(200).json({
         user: userId,
         direction : direction
     });
