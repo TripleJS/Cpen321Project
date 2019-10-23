@@ -1,8 +1,5 @@
 const socketio = require('socket.io');
  
-
-const io = socketio()
-
 class SocketServer {
     
     constructor(server) {

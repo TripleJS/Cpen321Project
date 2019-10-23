@@ -7,5 +7,3 @@ startServer(mongodburl, serverPort);
 
 const socketServer = new SocketServer(server);
 socketServer.startServer(); 
-
-// initSocket(server);
