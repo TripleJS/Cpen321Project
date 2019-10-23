@@ -51,7 +51,7 @@ class SocketServer {
                         message : 'Some user is answering your question'
                     },
                     token: fcmAccessToken
-                  };
+                };
                   
                   // Send a message to the device corresponding to the provided
                   // registration token.
@@ -78,9 +78,6 @@ class SocketServer {
             });
 
         });
-
-
-
     }
 }
 

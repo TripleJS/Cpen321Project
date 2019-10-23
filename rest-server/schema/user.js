@@ -41,8 +41,7 @@ const userSchema = new Schema({
                 lowercase: true
             }
         }, userName : {
-            type: String,
-            required: true
+            type: String
         }, name: {
             type: String
         },
