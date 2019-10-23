@@ -47,10 +47,10 @@ class SocketServer {
                 }
 
                 const message = {
-                    "notification": {
-                        "title": "hello",
-                        "body": "yo",
-                        "click_action": "OPEN_ACTIVITY_1"
+                    notification: {
+                        title: "hello",
+                        body: "yo",
+                        click_action: "OPEN_ACTIVITY_1"
                     },
                     data : {
                         message : 'Some user is answering your question'
