@@ -22,10 +22,9 @@ const oAuthLogin = (method) => {
                 const email = profile.emails[0].value;
                 
                 console.log(email);
-                let newUser;
 
                 if (method == 'facebook') {
-                    newUser = new User({
+                    user = new User({
                         method: method,
                         facebook: {
                             id: id,
@@ -35,7 +34,7 @@ const oAuthLogin = (method) => {
                     }
                  );
                 } else if (method == 'google') {
-                    newUser = new User({
+                    user = new User({
                         method: method,
                         google: {
                             id: id,
@@ -46,8 +45,6 @@ const oAuthLogin = (method) => {
                     );
                 }
             
-                let result = await newUser.save();
-                return done(null, result)
             }
                 
             done(null, user);

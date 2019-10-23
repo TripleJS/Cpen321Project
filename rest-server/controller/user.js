@@ -71,11 +71,22 @@ const getUser = async (req, res, next) => {
 const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});
     const user = select(req.user);
-    console.log(user);
-        
-    res.status(200).json({
-        userId : user._id
-    });
+
+    const fcmAccessToken = req.body.fcmAccessToken;
+
+    user.set({fcmAccessToken : fcmAccessToken});
+
+    try {
+        let result = await user.save();
+        console.log(result);
+
+        res.status(200).json({
+            userId : user._id
+        });
+    } catch (error) {
+        errorHandler.errorCatch(error, next);
+    }
+    
 }
 
 module.exports = {

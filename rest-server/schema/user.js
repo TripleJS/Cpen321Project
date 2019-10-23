@@ -77,6 +77,9 @@ const userSchema = new Schema({
             ref : 'Groups',
             required : true,
             default : []
+        },
+        fcmAccessToken : {
+            type : String
         }
     }
 );
