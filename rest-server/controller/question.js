@@ -116,14 +116,13 @@ const searchQuestion = async (req, res, next) => {
 const swipedQuestion = (req, res, next) => {
     const questionId = req.body.questionId;
     const userId = req.body.userId;
-    const direction = req.direction; 
+    const direction = req.body.direction; 
 
     console.log(questionId);
     console.log(userId);
     console.log(direction);
 
     res.send(200).json({
-        question: questionId,
         user: userId,
         direction : direction
     });
