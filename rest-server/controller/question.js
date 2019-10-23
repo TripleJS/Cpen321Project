@@ -7,7 +7,7 @@ const {isEmpty} = require('lodash');
 const getKeywords = require('../utils/suggestions/keywordExtractor');
 
 const getQuestion = async (req, res, next) => {
-    const questionID = req.params.id; 
+    const questionID = req.params.questionId; 
 
     console.log('current question id' + questionID);
     try {
