@@ -75,23 +75,15 @@ const suggestedQuestions = async (req, res, next) => {
     const date2 = new Date();
 
     console.log(req.params.userId);
-
-    res.status(200).json(
-        [
-            {
-                questionTitle: "FUCK",
-                question: "CPEN321",
-                date: date1,
-                owner: "John"
-            },
-            {
-                questionTitle: "FUCK",
-                question: "CPEN331",
-                date: date2,
-                owner: "DJFASKDFJSAF"
-            }
-        ]
-    );
+    try {
+        let result = await Question.find({}).limit(5);
+        console.log(result);
+        res.status(200).json(
+            result
+        );
+    } catch (error) {
+        errorHandler.errorCatch(error);
+    }
 
 }
 
