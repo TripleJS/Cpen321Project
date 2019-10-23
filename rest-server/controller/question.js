@@ -5,6 +5,7 @@ const errorHandler = require('../utils/errorHandler');
 const {validationResult} = require('express-validator');
 const {isEmpty} = require('lodash');
 const getKeywords = require('../utils/suggestions/keywordExtractor');
+const getBagOfQuestions = require('../utils/suggestions/cosineSimilarity');
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
@@ -73,10 +74,21 @@ const suggestedQuestions = async (req, res, next) => {
     console.log(req.params.userId);
 
     try {
-        let result = await Question.find({}).limit(5);
+        let randomQuestion = await Question.findOne();
+
+        let questionList = await Question.find({}).limit(5);
+        let questionKeywords = [];
+        for (i of questionList) {
+            questionKeywords.push(questionList[i]);
+        }
+
+        let returnedQuestions = getBagOfQuestions(questionKeywords, questionList, randomQuestion.keywords);
+
         res.status(200).json(
-            result
+            returnedQuestions
         );
+
+        
     } catch (error) {
         errorHandler.errorCatch(error);
     }

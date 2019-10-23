@@ -23,19 +23,18 @@ const getCosineSimilarity = (v1, v2) => {
     return sumxy/Math.sqrt(sumxx*sumyy)
     
 }
-const getBagOfQuestions = (questionList, question) => {
+
+const getBagOfQuestions = (questionKeywords, questionList, question) => {
     const bagOfQuestions = [];
     
+    for (i = 0; i < questionList.size; i++) {
     
-    for (i = 0; i < QuestionList.size; i++) {
-    
-        
-        const cosineSimilarity = getCosineSimilarity (question, questionList(i));
+        const cosineSimilarity = getCosineSimilarity(question, questionKeywords[i]);
         if (cosineSimilarity > 0.4) {
-            bagOfQuestions.add(questionList(i))
+            bagOfQuestions.push(questionList[i]);
         }
         if (bagOfQuestions > 4) {
-            return bagOfQuestions
+            return bagOfQuestions;
         }
         
     }
@@ -43,4 +42,4 @@ const getBagOfQuestions = (questionList, question) => {
     
 }
 
-
+module.exports = getBagOfQuestions;
