@@ -12,7 +12,7 @@ const getQuestion = async (req, res, next) => {
     console.log(questionID);
     try {
         
-        const question = Question.findById(questionID);
+        const question = await Question.findById(questionID);
         
         if (question == null) {
             errorHandler.errorThrow({}, "Could not find Question", 403);
@@ -21,7 +21,7 @@ const getQuestion = async (req, res, next) => {
         res.status(200).json(question);
 
     } catch (error) {
-        errorHandler.errorCatch(error);
+        errorHandler.errorCatch(error, next);
     }
     
 }
