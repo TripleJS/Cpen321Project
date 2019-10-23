@@ -9,10 +9,10 @@ const getKeywords = require('../utils/suggestions/keywordExtractor');
 const getQuestion = async (req, res, next) => {
     const questionID = mongoose.Types.ObjectId(req.params.id);
 
-    console.log(questionID);
+    console.log('current question id' + questionID);
     try {
         
-        const question = await Question.findById(questionID);
+        let question = await Question.findById(questionID);
         
         if (question == null) {
             errorHandler.errorThrow({}, "Could not find Question", 403);
