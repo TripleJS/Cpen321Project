@@ -121,7 +121,7 @@ const searchQuestion = async (req, res, next) => {
 const swipedQuestion = (req, res, next) => {
     const questionId = req.body.questionId;
     const userId = req.body.userId;
-    const direction = req.diretion; 
+    const direction = req.direction; 
 
     console.log(questionId);
     console.log(userId);
