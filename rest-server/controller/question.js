@@ -7,7 +7,7 @@ const {isEmpty} = require('lodash');
 const getKeywords = require('../utils/suggestions/keywordExtractor');
 
 const getQuestion = async (req, res, next) => {
-    const questionID = mongoose.Types.ObjectId(req.params.id);
+    const questionID = req.params.id; 
 
     console.log('current question id' + questionID);
     try {
