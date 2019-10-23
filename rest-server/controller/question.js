@@ -70,7 +70,6 @@ const postQuestion = async (req, res, next) => {
 }
 
 
-
 const suggestedQuestions = async (req, res, next) => {
     const date1 = new Date();
     const date2 = new Date();
@@ -117,12 +116,28 @@ const searchQuestion = async (req, res, next) => {
     });
 }
 
+const swipedQuestion = (req, res, next) => {
+    const questionId = req.body.questionId;
+    const userId = req.body.userId;
+    const direction = req.diretion; 
+
+    console.log(questionId);
+    console.log(userId);
+    console.log(direction);
+
+    res.send(200).json({
+        question: questionId,
+        user: userId,
+        direction : direction
+    });
+}
 
 module.exports = {
     getQuestion,
     postQuestion,
     suggestedQuestions,
-    searchQuestion
+    searchQuestion,
+    swipedQuestion
 }
 
 

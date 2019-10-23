@@ -7,5 +7,8 @@ router.get('/questions/get-question', questionController.getQuestion);
 router.post('/questions/post-question', userValidator, questionController.postQuestion);
 router.get('/questions/suggest', questionController.suggestedQuestions);
 router.get('/questions/search', questionController.searchQuestion);
+router.post('/questions/swipe', questionController.swipedQuestion);
+
+
 
 module.exports = router;
