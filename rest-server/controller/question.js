@@ -74,7 +74,6 @@ const suggestedQuestions = async (req, res, next) => {
 
     try {
         let result = await Question.find({}).limit(5);
-        console.log(result);
         res.status(200).json(
             result
         );

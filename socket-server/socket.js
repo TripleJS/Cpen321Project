@@ -22,9 +22,10 @@ class SocketServer {
                 console.log(userId + ": joined chat and current question id is " + questionId);
                 
                 let fcmAccessToken; 
+                let questionData;
 
                 try {
-                    let questionData = await Question.findById(questionId);
+                    questionData = await Question.findById(questionId);
                     console.log('Question Data: ' + questionData);
 
                     const questionOwner = questionData.owner;
@@ -48,9 +49,8 @@ class SocketServer {
 
                 const message = {
                     notification: {
-                        title: "hello",
-                        body: "yo",
-                        click_action: "OPEN_ACTIVITY_1"
+                        title: "Someone is answering your question!",
+                        body: "Your question " + questionData.title + " is being answered"
                     },
                     data : {
                         message : 'Some user is answering your question'
