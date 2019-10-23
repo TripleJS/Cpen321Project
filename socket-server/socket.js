@@ -50,7 +50,7 @@ class SocketServer {
                     data : {
                         message : 'Some user is answering your question'
                     },
-                    token: fcmAccessToken
+                    topic: questionId
                 };
                   
                   // Send a message to the device corresponding to the provided
