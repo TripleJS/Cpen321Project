@@ -22,9 +22,10 @@ class SocketServer {
                 console.log(userId + ": joined chat and current question id is " + questionId);
                 
                 let fcmAccessToken; 
+                let questionData;
 
                 try {
-                    let questionData = await Question.findById(questionId);
+                    questionData = await Question.findById(questionId);
                     console.log('Question Data: ' + questionData);
 
                     const questionOwner = questionData.owner;
