@@ -9,6 +9,7 @@ const getKeywords = require('../utils/suggestions/keywordExtractor');
 const getQuestion = async (req, res, next) => {
     const questionID = mongoose.Types.ObjectId(req.params.id);
 
+    console.log(questionID);
     try {
         
         const question = Question.findById(questionID);
