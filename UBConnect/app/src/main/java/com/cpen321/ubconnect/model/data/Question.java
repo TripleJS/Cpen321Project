@@ -10,7 +10,7 @@ public class Question {
     private String question;
     private String questionTitle;
     private List<String> keywords;
-    private String q_id;
+    private String _id;
     private List<String> answer;
     private String course;
     private String topic;
@@ -42,12 +42,12 @@ public class Question {
         this.keywords = keywords;
     }
 
-    public String getQ_id() {
-        return q_id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setQ_id(String q_id) {
-        this.q_id = q_id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public List<String> getAnswer() {

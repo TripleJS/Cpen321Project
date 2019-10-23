@@ -1,13 +1,11 @@
 package com.cpen321.ubconnect.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,18 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
-import com.cpen321.ubconnect.SuggestedQuestionAdapter;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.viewModel.AccountViewModel;
-import com.cpen321.ubconnect.viewModel.MainViewModel;
 import com.cpen321.ubconnect.viewModel.SearchViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -140,7 +134,7 @@ public class AccountActivity extends AppCompatActivity {
         q1.setDate(d1);
         q1.setOwner("gg");
         q1.setQuestion("joojpp");
-        q1.setQ_id("qqqqqqqqqqqqqqqq");
+        q1.set_id("qqqqqqqqqqqqqqqq");
         questions.add(q1);
         Question q2 = new Question();
         q2.setQuestionTitle("q2");
@@ -148,7 +142,7 @@ public class AccountActivity extends AppCompatActivity {
         q2.setDate(d2);
         q2.setOwner("gg222222");
         q2.setQuestion("joojpp22222222");
-        q2.setQ_id("wwwwwwwwwwwwwwwwwwww");
+        q2.set_id("wwwwwwwwwwwwwwwwwwww");
         questions.add(q2);
         Question q3 = new Question();
         q3.setQuestionTitle("q3");
@@ -156,7 +150,7 @@ public class AccountActivity extends AppCompatActivity {
         q3.setDate(d3);
         q3.setOwner("gg3333333");
         q3.setQuestion("joojpp33333333");
-        q3.setQ_id("eeeeeeeeeeeeeeeee");
+        q3.set_id("eeeeeeeeeeeeeeeee");
         questions.add(q3);
     }
 

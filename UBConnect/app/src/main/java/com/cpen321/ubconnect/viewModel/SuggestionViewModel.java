@@ -44,7 +44,7 @@ public class SuggestionViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getSuggestion(User user) {
+    public void getSuggestion(String user) {
         Log.d("Suggest", "getSuggestion:1 ");
         mBackEndService.getSuggestedQuestions(user).enqueue(new Callback<List<Question>>() {
 

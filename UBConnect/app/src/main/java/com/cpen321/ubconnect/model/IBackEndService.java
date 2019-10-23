@@ -1,12 +1,11 @@
 package com.cpen321.ubconnect.model;
 
-import com.cpen321.ubconnect.model.data.AccessTokenFB;
+import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.FCMToken;
 import com.cpen321.ubconnect.model.data.PublicUser;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
 import com.cpen321.ubconnect.model.data.User;
-import com.facebook.AccessToken;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public interface IBackEndService {
     Call<User> getUser();
 
     @POST("/api/user/oauth/facebook")
-    Call<User> postUserByFB(@Body AccessTokenFB accessToken);
+    Call<User> postUserByFB(@Body AccessTokens accessToken);
 
     @POST("/user/public/{userId}")
     Call<User> postUser(@Body User user);
@@ -42,8 +41,8 @@ public interface IBackEndService {
     @POST("")
     Call<User> reteUser(@Path("userId")String userId);
 
-    @GET("/api/questions/suggest")
-    Call<List<Question>> getSuggestedQuestions(@Body User user);
+    @GET("/api/questions/suggest/{userId}")
+    Call<List<Question>> getSuggestedQuestions(@Path("userId")String userId);
 
     @GET("")
     Call<List<Question>> getSearchResult();
@@ -57,7 +56,7 @@ public interface IBackEndService {
     @POST("")
     Call<FCMToken> postFCMToken(@Body FCMToken fcmToken);
 
-    @POST("")
+    @POST("/api/questions/swipe")
     Call<Swiped> postQuestionSwipe(@Body Swiped swiped);
 
 }

@@ -2,8 +2,6 @@ package com.cpen321.ubconnect.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -15,14 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.model.GlobalVariables;
-import com.cpen321.ubconnect.model.data.AccessTokenFB;
-import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.viewModel.MainViewModel;
-import com.cpen321.ubconnect.viewModel.PostQuestionVewModel;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -32,9 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
 
-    private boolean isDone = false;
+    private String fcmtoken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +106,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "User has successfully logged in");
-                AccessTokenFB accessTokenFB = new AccessTokenFB();
+                AccessTokens accessTokenFB = new AccessTokens();
                 accessTokenFB.setAccess_token(loginResult.getAccessToken().getToken());
+                accessTokenFB.setFcmAccessToken(fcmtoken);
 
                 mainViewModel.getAppUserByFB(accessTokenFB);
 //                mainViewModel.getAppUserByFB(accessTokenFB);
@@ -136,7 +129,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        fcmtoken = task.getResult().getToken();
+
+                    }
+                });
 
         observeViewModelGetByFB();
     }
@@ -175,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Fuck", "onChangedUserIdByFB:  " + user.getUserId());
         ((GlobalVariables) this.getApplication()).setUserID(user.getUserId());
         Log.d("Fuck", "onChangedUserIdByFB9999999999999:  " + ((GlobalVariables) this.getApplication()).getUserID());
-        Intent intent = new Intent(MainActivity.this, PostQuestionActivity.class);
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(intent);
         MainActivity.this.finish();
     }

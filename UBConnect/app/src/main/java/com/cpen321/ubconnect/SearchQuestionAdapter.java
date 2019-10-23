@@ -48,7 +48,7 @@ public class SearchQuestionAdapter extends RecyclerView.Adapter<SearchQuestionAd
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, QuestionActivity.class);
-                intent.putExtra("arg", searchQuestionItems.get(i).getQ_id());
+                intent.putExtra("arg", searchQuestionItems.get(i).get_id());
                 context.startActivity(intent);
             }
         });

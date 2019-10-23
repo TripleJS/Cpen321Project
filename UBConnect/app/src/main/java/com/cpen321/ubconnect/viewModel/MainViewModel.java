@@ -8,15 +8,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.Constants;
-import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.IBackEndService;
-import com.cpen321.ubconnect.model.data.AccessTokenFB;
+import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.FCMToken;
-import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
-import com.facebook.AccessToken;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +43,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getAppUserByFB(AccessTokenFB accessToken) {
+    public void getAppUserByFB(AccessTokens accessToken) {
         mBackEndService.postUserByFB(accessToken).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
