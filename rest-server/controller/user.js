@@ -72,12 +72,14 @@ const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});
     const user = select(req.user);
 
+    console.log(req.user);
+
     const fcmAccessToken = req.body.fcmAccessToken;
 
-    user.set({fcmAccessToken : fcmAccessToken});
+    req.user.set({fcmAccessToken : fcmAccessToken});
 
     try {
-        let result = await user.save();
+        let result = await req.user.save();
         console.log(result);
 
         res.status(200).json({
