@@ -17,10 +17,11 @@ class SocketServer {
 
             socket.on('messagedetection', (senderNickname, messageContent) => {
 
-                console.log(senderNickname);
+                console.log(senderNickname + " sent " + messageContent);
 
                 let message = {'message' : messageContent, 'senderNickname' : senderNickname};
 
+                console.log(message);
                 this.io.emit('message', message);
             });
 
