@@ -52,10 +52,13 @@ const postQuestion = async (req, res, next) => {
             owner : creator,
             course : course
         });
-        
-        res.status(203).json(question);
 
-        let keywords = await getKeywords(questionString);
+        res.status(203).json(question);
+        const document = {documents:[
+            {language:"en", id:"1", text: questionString}
+        ]};
+
+        let keywords = await getKeywords(document);
 
         question.set('keywords', keywords);
 
