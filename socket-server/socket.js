@@ -48,8 +48,8 @@ class SocketServer {
 
                 const message = {
                     notification: {
-                        title: "hello",
-                        body: "yo"
+                        title: "Someone is answering your question!",
+                        body: "Your question " + questionData.title + " is being answered"
                     },
                     data : {
                         message : 'Some user is answering your question'
