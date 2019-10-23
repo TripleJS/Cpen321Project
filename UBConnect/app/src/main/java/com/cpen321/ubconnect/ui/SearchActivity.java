@@ -2,8 +2,16 @@ package com.cpen321.ubconnect.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +32,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Question> questions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,4 +123,11 @@ public class SearchActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume: out");
     }
+
+//    @Override
+//    public void setContentView(@LayoutRes int layoutResID)
+//    {
+//        super.setContentView(layoutResID);
+//        onCreateDrawer() ;
+//    }
 }
