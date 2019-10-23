@@ -80,7 +80,7 @@ const oAuthLogin = async (req, res, next) => {
 
     try {
         let result = await req.user.save();
-        console.log(result);
+        console.log('new user data: ' + result);
 
         res.status(200).json({
             userId : user._id
