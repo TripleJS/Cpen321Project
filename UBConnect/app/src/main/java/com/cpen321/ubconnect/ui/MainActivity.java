@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Intent intent = new Intent(MainActivity.this, PostQuestionActivity.class);
-//        startActivity(intent);
-//        MainActivity.this.finish();
+        Intent intent = new Intent(MainActivity.this, SocketStarterActivity.class);
+        startActivity(intent);
+        MainActivity.this.finish();
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         getLifecycle().addObserver(mainViewModel);
