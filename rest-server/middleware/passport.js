@@ -5,6 +5,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecret} = require('../../config');
 const User = require('../schema/user');
+const {errorThrow} = require('../utils/errorHandler');
 
 const oAuthLogin = (method) => {
     return async(accessToken, refreshToken, profile, done) => {
@@ -56,16 +57,6 @@ const oAuthLogin = (method) => {
     }
 };
 
-passport.use('Google-Login', new GooglePlusTokenStrategy({
-    clientID: googleClientID,
-    clientSecret: googleClientSecret
-}, oAuthLogin('google')));
-
-passport.use('Facebook-Login', new FacebookTokenStrategy({
-    clientID: facebookClientID, 
-    clientSecret: facebookClientSecret
-}, oAuthLogin('facebook')));
-
 // JWT strategy 
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),
@@ -79,13 +70,25 @@ passport.use(new JwtStrategy({
         const user = await User.findById(payload.user);
 
         if (!user)
-            errorThrowNoValidator('User Does not Exist', 403);
+            errorThrow({}, 'User Does not Exist', 403);
 
         done(null, user);
     } catch (error) {
         done(error, false);
     }
-}))
+}));
+
+passport.use('Google-Login', new GooglePlusTokenStrategy({
+    clientID: googleClientID,
+    clientSecret: googleClientSecret
+}, oAuthLogin('google')));
+
+passport.use('Facebook-Login', new FacebookTokenStrategy({
+    clientID: facebookClientID, 
+    clientSecret: facebookClientSecret
+}, oAuthLogin('facebook')));
+
+
 
 // const oAuthLoginFB = async(accessToken, refreshToken, profile, done) => {
 //     try {
