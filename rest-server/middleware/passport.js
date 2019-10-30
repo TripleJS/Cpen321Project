@@ -6,6 +6,7 @@ const { ExtractJwt } = require('passport-jwt');
 const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecret} = require('../../config');
 const User = require('../schema/user');
 const {errorThrow} = require('../utils/errorHandler');
+const {secret_key} = require('../../config');
 
 const oAuthLogin = (method) => {
     return async(accessToken, refreshToken, profile, done) => {
