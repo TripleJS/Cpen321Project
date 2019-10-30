@@ -81,7 +81,7 @@ const oAuthLogin = async (req, res, next) => {
     const token = jwt.sign({
             user: user._id 
         },
-            cfg.secret_key, 
+            secret_key, 
             { expiresIn: '24h' },
     );
 
@@ -93,6 +93,7 @@ const oAuthLogin = async (req, res, next) => {
             userId : user._id,
             jwt : token
         });
+
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
