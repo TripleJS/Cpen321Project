@@ -94,6 +94,28 @@ const suggestedQuestions = async (req, res, next) => {
     }
 }
 
+const suggestedQuestionsV2 = (req, res, next) => {
+    try {
+        let randomQuestion = await Question.findOne();
+
+        let questionList = await Question.find({}).limit(5);
+        let resultingQuestions = [randomQuestion];
+
+        for (i of questionList) {
+            if (randomQuestion.course == questionList[i].course) {
+                resultingQuestions.push(questionList[i]);
+            }
+        }
+
+        res.status(203).json(
+            resultingQuestions
+        )
+    } catch (error) {
+        errorHandler.errorCatch(error, next);
+    }
+
+}
+
 const searchQuestion = async (req, res, next) => {
 
     const date1 = new Date();

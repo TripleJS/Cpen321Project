@@ -1,6 +1,8 @@
 const passport = require('passport');
 const GooglePlusTokenStrategy = require('passport-google-plus-token');
 const FacebookTokenStrategy = require('passport-facebook-token');
+const JwtStrategy = require('passport-jwt').Strategy;
+const { ExtractJwt } = require('passport-jwt');
 const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecret} = require('../../config');
 const User = require('../schema/user');
 
@@ -64,7 +66,26 @@ passport.use('Facebook-Login', new FacebookTokenStrategy({
     clientSecret: facebookClientSecret
 }, oAuthLogin('facebook')));
 
+// JWT strategy 
+passport.use(new JwtStrategy({
+    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+    secretOrKey: secret_key
+}, async(payload, done) => {
+    console.log(payload);
+    console.log('------------------------------------------');
+    console.log('Passed JWT Authentication');
+    try {
+        // Find user specified in token
+        const user = await User.findById(payload.user);
 
+        if (!user)
+            errorThrowNoValidator('User Does not Exist', 403);
+
+        done(null, user);
+    } catch (error) {
+        done(error, false);
+    }
+}))
 
 // const oAuthLoginFB = async(accessToken, refreshToken, profile, done) => {
 //     try {

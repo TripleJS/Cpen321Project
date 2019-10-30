@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const errorHandler = require('../utils/errorHandler');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
+const {secret_key} = require('../../config');
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -46,10 +47,9 @@ const addUser = async (req, res, next) => {
 }
 
 const getUser = async (req, res, next) => {
-
     try {
 
-        const id = mongoose.Types.ObjectId(req.body.id);
+        const id = mongoose.Types.ObjectId(req.params.userId);
 
         let user = await User.findById(id);
 
@@ -78,12 +78,20 @@ const oAuthLogin = async (req, res, next) => {
 
     req.user.set({fcmAccessToken : fcmAccessToken});
 
+    const token = jwt.sign({
+            user: user._id 
+        },
+            cfg.secret_key, 
+            { expiresIn: '24h' },
+    );
+
     try {
         let result = await req.user.save();
         console.log('new user data: ' + result);
 
         res.status(200).json({
-            userId : user._id
+            userId : user._id,
+            jwt : token
         });
     } catch (error) {
         errorHandler.errorCatch(error, next);
@@ -91,8 +99,19 @@ const oAuthLogin = async (req, res, next) => {
     
 }
 
+const signJWT = (req, res, next) => {
+    const token = jwt.sign(
+        {
+            user: user
+        },
+            cfg.secret_key, 
+            { expiresIn: '24h' },
+        );
+}
+
 module.exports = {
     addUser,
     oAuthLogin,
-    getUser
+    getUser,
+    signJWT
 }
