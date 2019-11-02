@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Intent intent = new Intent(MainActivity.this, PostQuestionActivity.class);
-//        startActivity(intent);
-//        MainActivity.this.finish();
+        Intent intent = new Intent(MainActivity.this, PostQuestionActivity.class);
+        startActivity(intent);
+        MainActivity.this.finish();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Fuck", "onCreate: PPPPPPPPPPPPPPPPPP" );
             Log.d("Fuck", "onCreate: "+ bundle.get("message"));
             //here can get notification message
-            Intent intent = new Intent(MainActivity.this, ViewOnlyOtherAnswerActivity.class);
-            startActivity(intent);
-            MainActivity.this.finish();
+//            Intent intent = new Intent(MainActivity.this, ViewOnlyOtherAnswerActivity.class);
+//            startActivity(intent);
+//            MainActivity.this.finish();
 
         }
 
