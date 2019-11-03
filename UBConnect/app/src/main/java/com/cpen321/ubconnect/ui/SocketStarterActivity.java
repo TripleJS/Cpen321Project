@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 
 public class SocketStarterActivity extends AppCompatActivity {
 

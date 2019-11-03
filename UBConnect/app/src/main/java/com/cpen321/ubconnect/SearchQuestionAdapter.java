@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.QuestionActivity;
+import com.cpen321.ubconnect.ui.question.QuestionActivity;
 
 import java.util.List;
 

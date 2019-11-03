@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cpen321.ubconnect.ui.Message;
+import com.cpen321.ubconnect.model.data.Message;
 
 import java.util.List;
 

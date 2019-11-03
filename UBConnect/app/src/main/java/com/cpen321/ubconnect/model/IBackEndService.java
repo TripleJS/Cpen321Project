@@ -26,7 +26,10 @@ public interface IBackEndService {
     @POST("/user/public/{userId}")
     Call<User> postUser(@Body User user);
 
-    @GET("")
+    @POST("/user/public/{userId}")
+    Call<User> loginUser(@Body User user);
+
+    @GET("/api/user/getuser/{userId}")
     Call<User> getUserAccount(@Path("userId")String userId);
 
     @POST("")
