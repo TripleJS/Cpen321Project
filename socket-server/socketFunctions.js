@@ -62,4 +62,4 @@ const onJoin = async (userId, questionId) => {
 
 module.exports = {
     onJoin
-}
+};

@@ -1,4 +1,4 @@
-const {isEmpty} = require('lodash');
+const {isEmpty} = require("lodash");
 
 /**
  * Used in Catch block to move to error handling middleware.
@@ -7,8 +7,9 @@ const {isEmpty} = require('lodash');
  */
 const errorCatch = (err, next) =>
 {
-    if(!err.statusCode)
+    if(!err.statusCode) {
         err.statusCode = 500;
+    }
 
     next(err);
 }
@@ -50,4 +51,4 @@ module.exports = {
     errorThrow,
     errorCatch,
     errorThrowValidator
-}
+};

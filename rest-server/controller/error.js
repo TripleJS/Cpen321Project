@@ -16,4 +16,4 @@ const errorController = (err, req, res, next) => {
 
 module.exports = {
     errorController : errorController
-}
+};

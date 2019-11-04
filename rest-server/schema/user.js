@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
         method : {
             type : String,
-            enum : ['local', 'google', 'facebook'],
+            enum : ["local", "google", "facebook"],
             required : true
         },
         local : {
@@ -61,19 +61,19 @@ const userSchema = new Schema({
         },
         answers : {
             type: [mongoose.Schema.Types.ObjectId], 
-            ref: 'Answers',
+            ref: "Answers",
             default : [],
             required: true
         },
         postedQuestions : {
             type: [mongoose.Schema.Types.ObjectId], 
-            ref: 'Questions',
+            ref: "Questions",
             default : [],
             required: true
         },
         groups : {
             type : [mongoose.Schema.Types.ObjectId],
-            ref : 'Groups',
+            ref : "Groups",
             required : true,
             default : []
         },
@@ -84,4 +84,4 @@ const userSchema = new Schema({
 );
 
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

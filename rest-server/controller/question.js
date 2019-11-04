@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const Question = require('../schema/questions');
-const User = require('../schema/user');
-const errorHandler = require('../utils/errorHandler');
-const {validationResult} = require('express-validator');
-const {isEmpty} = require('lodash');
-const getKeywords = require('../utils/suggestions/keywordExtractor');
-const getBagOfQuestions = require('../utils/suggestions/cosineSimilarity');
+const mongoose = require("mongoose");
+const Question = require("../schema/questions");
+const User = require("../schema/user");
+const errorHandler = require("../utils/errorHandler");
+const {validationResult} = require("express-validator");
+const {isEmpty} = require("lodash");
+const getKeywords = require("../utils/suggestions/keywordExtractor");
+const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
 
-    console.log('current question id' + questionID);
+    console.log("current question id" + questionID);
     try {
         
         let question = await Question.findById(questionID);
@@ -59,7 +59,7 @@ const postQuestion = async (req, res, next) => {
 
         let keywords = await getKeywords(document);
 
-        question.set('keywords', keywords);
+        question.set("keywords", keywords);
 
         question.save();
 
@@ -78,6 +78,7 @@ const suggestedQuestions = async (req, res, next) => {
 
         let questionList = await Question.find({}).limit(5);
         let questionKeywords = [];
+        
         for (i of questionList) {
             questionKeywords.push(questionList[i]);
         }

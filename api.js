@@ -10,9 +10,9 @@ async function startServer(url, port) {
     catch (err) {
         console.error(err);
     }
-}
+};
 
 module.exports = {
     server,
     startServer
-}
+};

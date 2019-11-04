@@ -1,9 +1,9 @@
-const User = require('../schema/user');
-const bcrypt = require('bcryptjs');
-const errorHandler = require('../utils/errorHandler');
-const { validationResult } = require('express-validator');
-const mongoose = require('mongoose');
-const {secret_key} = require('../../config');
+const User = require("../schema/user");
+const bcrypt = require("bcryptjs");
+const errorHandler = require("../utils/errorHandler");
+const { validationResult } = require("express-validator");
+const mongoose = require("mongoose");
+const {secretKey} = require("../../config");
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -17,11 +17,11 @@ const addUser = async (req, res, next) => {
     const errors = validationResult(req);
 
     try {
-        errorHandler.errorThrow(errors, 'Validation Failed', 403);
+        errorHandler.errorThrow(errors, "Validation Failed", 403);
         let hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = new User({
-            method: 'local',
+            method: "local",
             local: 
             {
                 name: name, 
@@ -35,10 +35,10 @@ const addUser = async (req, res, next) => {
 
         res.status(201).json(
             {
-                message: 'Added User',
-                user : result // note: password hash is returned in this json object
+                message: "Added User",
+                user : result 
             }
-        )   
+        );   
     }
     catch (err)
     {
@@ -49,7 +49,7 @@ const addUser = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     try {
 
-        const id = mongoose.Types.ObjectId(req.params.userId);
+        const id = req.params.userId;
 
         let user = await User.findById(id);
 
@@ -81,13 +81,13 @@ const oAuthLogin = async (req, res, next) => {
     const token = jwt.sign({
             user: user._id 
         },
-            secret_key, 
-            { expiresIn: '24h' },
+            secretKey, 
+            { expiresIn: "24h" },
     );
 
     try {
         let result = await req.user.save();
-        console.log('new user data: ' + result);
+        console.log("new user data: " + result);
 
         res.status(200).json({
             userId : user._id,
@@ -105,8 +105,8 @@ const signJWT = (req, res, next) => {
         {
             user: user
         },
-            cfg.secret_key, 
-            { expiresIn: '24h' },
+            cfg.secretKey, 
+            { expiresIn: "24h" },
         );
 }
 
@@ -115,4 +115,4 @@ module.exports = {
     oAuthLogin,
     getUser,
     signJWT
-}
+};
