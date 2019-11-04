@@ -40,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
 
-    MainViewModel mainViewModel;
+    private MainViewModel mainViewModel;
 
     private CallbackManager callbackManager;
-
-    private Button appLoginButton;
 
     private EditText email;
     private EditText password;
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
-        appLoginButton = findViewById(R.id.loginButton);
+        Button appLoginButton = findViewById(R.id.loginButton);
         Button signupButton = findViewById(R.id.signUpButton);
         email = findViewById(R.id.emailText);
         password = findViewById(R.id.passwordText);
@@ -134,10 +132,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+                // to do
+            }
 
             @Override
-            public void onError(FacebookException exception) {}
+            public void onError(FacebookException exception) {
+                // to do
+            }
         });
 
         FirebaseInstanceId.getInstance().getInstanceId()

@@ -22,12 +22,7 @@ public class PostQuestionVewModel extends ViewModel {
 
     public PostQuestionVewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {

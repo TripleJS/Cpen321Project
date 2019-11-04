@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,16 +15,8 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.data.User;
 
 public class PublicUserFragment extends Fragment {
-    private TextView username;
-    private TextView info;
-    private ImageView userImage;
-    private Button rate;
-    private Button report;
-    private RatingBar stars;
 
     private PublicUserViewModel publicUserViewModel;
-
-
 
     @Nullable
     @Override
@@ -35,12 +24,9 @@ public class PublicUserFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.activity_publicuser, container, false);
 
-        username = root.findViewById(R.id.publicUserName);
-        info = root.findViewById(R.id.publicUserInfo);
-        userImage = root.findViewById(R.id.publicUserImage);
-        rate = root.findViewById(R.id.publicRate);
-        report = root.findViewById(R.id.publicReport);
-        stars = root.findViewById(R.id.publicStar);
+
+        Button rate = root.findViewById(R.id.publicRate);
+        Button report = root.findViewById(R.id.publicReport);
 
         publicUserViewModel = ViewModelProviders.of(this).get(PublicUserViewModel.class);
 
@@ -70,7 +56,7 @@ public class PublicUserFragment extends Fragment {
     }
 
     public void onChangedRate(User user){
-
+        // to do
     }
 
     protected void observeViewModelReport(String userId) {
@@ -78,6 +64,6 @@ public class PublicUserFragment extends Fragment {
     }
 
     public void onChangedReport(User user){
-
+        // to do
     }
 }

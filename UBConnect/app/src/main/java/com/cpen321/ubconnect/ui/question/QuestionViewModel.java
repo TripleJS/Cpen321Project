@@ -20,12 +20,7 @@ public class QuestionViewModel extends ViewModel {
 
     public QuestionViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {
@@ -41,7 +36,7 @@ public class QuestionViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -52,7 +47,7 @@ public class QuestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-
+                // to do
             }
         });
     }

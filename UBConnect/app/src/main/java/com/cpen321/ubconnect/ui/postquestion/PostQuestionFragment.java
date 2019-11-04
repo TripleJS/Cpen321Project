@@ -26,7 +26,6 @@ public class PostQuestionFragment extends Fragment {
     private EditText question;
     private EditText course;
     private EditText topic;
-    private Button submit;
     private String userId;
 
     private PostQuestionVewModel postQuestionVewModel;
@@ -41,7 +40,7 @@ public class PostQuestionFragment extends Fragment {
         question = root.findViewById(R.id.contentPQ);
         course = root.findViewById(R.id.coursePQ2);
         topic = root.findViewById(R.id.topicPQ2);
-        submit = root.findViewById(R.id.submitButton);
+        Button submit = root.findViewById(R.id.submitButton);
 
         title.setText("");
         question.setText("");
@@ -81,10 +80,7 @@ public class PostQuestionFragment extends Fragment {
     }
 
     private boolean isValid() {
-        if ((question.getText().toString().length() == 0) || (course.getText().toString().length() == 0) || (topic.getText().toString().length() == 0) || (title.getText().toString().length() == 0)) {
-            return false;
-        }
-        return true;
+        return (question.getText().toString().length() == 0) || (course.getText().toString().length() == 0) || (topic.getText().toString().length() == 0) || (title.getText().toString().length() == 0);
     }
 
     protected void observeViewModel() {

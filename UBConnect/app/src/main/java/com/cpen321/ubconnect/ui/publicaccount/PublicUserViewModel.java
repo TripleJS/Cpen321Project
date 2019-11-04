@@ -20,13 +20,9 @@ public class PublicUserViewModel extends ViewModel {
 
     public PublicUserViewModel() {
         super();
-        init();
         initService();
     }
 
-    private void init() {
-
-    }
 
     private void initService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
@@ -41,7 +37,7 @@ public class PublicUserViewModel extends ViewModel {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -52,7 +48,7 @@ public class PublicUserViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                // to do
             }
         });
     }
