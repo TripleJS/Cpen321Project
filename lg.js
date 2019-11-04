@@ -13,26 +13,26 @@
 
 
 // var re1 = new RegExp(" \s\s+","gi");
-// var re2 = new RegExp("\\b" + "the" + "\\b","gi");
-// var re3 = new RegExp("\\b" + "a" + "\\b","gi");
-// var re4 = new RegExp("\\b" + "an" + "\\b","gi");
-// var re5 = new RegExp("\\b" + "to" + "\\b","gi");
-// var re6 = new RegExp("\\b" + "by" + "\\b","gi");
-// var re7 = new RegExp("\\b" + "for" + "\\b","gi");
-// var re8 = new RegExp("\\b" + "in" + "\\b","gi");
-// var re9 = new RegExp("\\b" + "and" + "\\b","gi");
-// var re10 = new RegExp("\\b" + "when" + "\\b","gi");
-// var re11 = new RegExp("\\b" + "where" + "\\b","gi");
-// var re12 = new RegExp("\\b" + "what" + "\\b","gi");
-// var re13 = new RegExp("\\b" + "how" + "\\b","gi");
-// var re14 = new RegExp("\\b" + "why" + "\\b","gi");
-// var re15 = new RegExp("\\b" + "is" + "\\b","gi");
-// var re16 = new RegExp("\\b" + "are" + "\\b","gi");
+// var re2 = new RegExp("\\bthe\\b","gi");
+// var re3 = new RegExp("\\ba\\b","gi");
+// var re4 = new RegExp("\\ban\\b","gi");
+// var re5 = new RegExp("\\bto\\b","gi");
+// var re6 = new RegExp("\\bby\\b","gi");
+// var re7 = new RegExp("\\bfor\\b","gi");
+// var re8 = new RegExp("\\bin\\b","gi");
+// var re9 = new RegExp("\\band\\b","gi");
+// var re10 = new RegExp("\\bwhen\\b","gi");
+// var re11 = new RegExp("\\bwhere\\b","gi");
+// var re12 = new RegExp("\\bwhat\\b","gi");
+// var re13 = new RegExp("\\bhow\\b","gi");
+// var re14 = new RegExp("\\bwhy\\b","gi");
+// var re15 = new RegExp("\\bis\\b","gi");
+// var re16 = new RegExp("\\bare\\b","gi");
 // var re17 = new RegExp("[, ]+","gi");
 // var re18 = new RegExp("[0-9]","gi");
 // var re19 = new RegExp("[=+*\/-]","gi");
-// var re20 = new RegExp("\\b" + "or" + "\\b","gi");
-// var re21 = new RegExp("\\b" + "of" + "\\b","gi");
+// var re20 = new RegExp("\\bor\\b","gi");
+// var re21 = new RegExp("\\bof\\b","gi");
 
 
 // data[0] = data[0].replace(re1,"");
@@ -71,37 +71,40 @@
 const keywords = (string) => {
     var regexes = [
         new RegExp(" \s\s+","gi"),
-        new RegExp("\\b" + "the" + "\\b","gi"),
-        new RegExp("\\b" + "a" + "\\b","gi"),
-        new RegExp("\\b" + "an" + "\\b","gi"),
-        new RegExp("\\b" + "to" + "\\b","gi"),
-        new RegExp("\\b" + "by" + "\\b","gi"),
-        new RegExp("\\b" + "for" + "\\b","gi"),
-        new RegExp("\\b" + "in" + "\\b","gi"),
-        new RegExp("\\b" + "and" + "\\b","gi"),
-        new RegExp("\\b" + "when" + "\\b","gi"),
-        new RegExp("\\b" + "where" + "\\b","gi"),
-        new RegExp("\\b" + "what" + "\\b","gi"),
-        new RegExp("\\b" + "how" + "\\b","gi"),
-        new RegExp("\\b" + "why" + "\\b","gi"),
-        new RegExp("\\b" + "is" + "\\b","gi"),
-        new RegExp("\\b" + "are" + "\\b","gi"),
+        new RegExp("\\bthe\\b","gi"),
+        new RegExp("\\ba\\b","gi"),
+        new RegExp("\\ban\\b","gi"),
+        new RegExp("\\bto\\b","gi"),
+        new RegExp("\\bby\\b","gi"),
+        new RegExp("\\bfor\\b","gi"),
+        new RegExp("\\bin\\b","gi"),
+        new RegExp("\\band\\b","gi"),
+        new RegExp("\\bwhen\\b","gi"),
+        new RegExp("\\bwhere\\b","gi"),
+        new RegExp("\\bwhat\\b","gi"),
+        new RegExp("\\bhow\\b","gi"),
+        new RegExp("\\bwhy\\b","gi"),
+        new RegExp("\\bis\\b","gi"),
+        new RegExp("\\bare\\b","gi"),
         new RegExp(" \s\s+","gi"),
         new RegExp("[=+*\/-]","gi"),
-        new RegExp("\\b" + "or" + "\\b","gi"),
-        new RegExp("\\b" + "of" + "\\b","gi"),
+        new RegExp("\\bor\\b","gi"),
+        new RegExp("\\bof\\b","gi"),
         new RegExp("[0-9]","gi"),
         new RegExp("[, ]+","gi")
     ];
 
-    for(i in regexes){
-        if(i>16 || i<20){
+    let index; 
+
+    for(index in regexes){
+        if (index >16 || index <20){
             string = string.replace(regexes[i]," ");
         }
-        else if(i>=20){
-            string = string.replace(regexes[i],",")
+        else if (index >=20){
+            string = string.replace(regexes[i],",");
         }
-        string = string.replace(regexes[i]," ")
+
+        string = string.replace(regexes[i]," ");
     }
 
     string = string.replace(new RegExp(" ","gi"),",");
