@@ -11,20 +11,20 @@ admin.initializeApp({
 
 // admin.initializeApp({
 //   credential: admin.credential.refreshToken(refreshToken),
-//   databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
+//   databaseURL: "https://<DATABASE_NAME>.firebaseio.com"
 // });
 
 // Initialize the default app
-// var admin = require('firebase-admin');
+// var admin = require("firebase-admin");
 // var app = admin.initializeApp();
 
 // This registration token comes from the client FCM SDKs.
-// var registrationToken = 'YOUR_REGISTRATION_TOKEN';
+// var registrationToken = "YOUR_REGISTRATION_TOKEN";
 
 // var message = {
 //   data: {
-//     score: '850',
-//     time: '2:45'
+//     score: "850",
+//     time: "2:45"
 //   },
 //   token: registrationToken
 // };
@@ -34,22 +34,22 @@ admin.initializeApp({
 // admin.messaging().send(message)
 //   .then((response) => {
     // Response is a message ID string.
-//     console.log('Successfully sent message:', response);
+//     console.log("Successfully sent message:", response);
 //   })
 //   .catch((error) => {
-//     console.log('Error sending message:', error);
+//     console.log("Error sending message:", error);
 //   });
 
 
   // These registration tokens come from the client FCM SDKs.
 // const registrationTokens = [
-//     'YOUR_REGISTRATION_TOKEN_1',
+//     "YOUR_REGISTRATION_TOKEN_1",
 //     // …
-//     'YOUR_REGISTRATION_TOKEN_N',
+//     "YOUR_REGISTRATION_TOKEN_N",
 //   ];
   
 //   const message = {
-//     data: {score: '850', time: '2:45'},
+//     data: {score: "850", time: "2:45"},
 //     tokens: registrationTokens,
 //   }
   
@@ -62,6 +62,6 @@ admin.initializeApp({
 //             failedTokens.push(registrationTokens[idx]);
 //           }
 //         });
-//         console.log('List of tokens that caused failures: ' + failedTokens);
+//         console.log("List of tokens that caused failures: " + failedTokens);
 //       }
 //     });

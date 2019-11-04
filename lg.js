@@ -13,26 +13,26 @@
 
 
 // var re1 = new RegExp(" \s\s+","gi");
-// var re2 = new RegExp('\\b' + "the" + '\\b',"gi");
-// var re3 = new RegExp('\\b' + "a" + '\\b',"gi");
-// var re4 = new RegExp('\\b' + "an" + '\\b',"gi");
-// var re5 = new RegExp('\\b' + "to" + '\\b',"gi");
-// var re6 = new RegExp('\\b' + "by" + '\\b',"gi");
-// var re7 = new RegExp('\\b' + "for" + '\\b',"gi");
-// var re8 = new RegExp('\\b' + "in" + '\\b',"gi");
-// var re9 = new RegExp('\\b' + "and" + '\\b',"gi");
-// var re10 = new RegExp('\\b' + "when" + '\\b',"gi");
-// var re11 = new RegExp('\\b' + "where" + '\\b',"gi");
-// var re12 = new RegExp('\\b' + "what" + '\\b',"gi");
-// var re13 = new RegExp('\\b' + "how" + '\\b',"gi");
-// var re14 = new RegExp('\\b' + "why" + '\\b',"gi");
-// var re15 = new RegExp('\\b' + "is" + '\\b',"gi");
-// var re16 = new RegExp('\\b' + "are" + '\\b',"gi");
+// var re2 = new RegExp("\\b" + "the" + "\\b","gi");
+// var re3 = new RegExp("\\b" + "a" + "\\b","gi");
+// var re4 = new RegExp("\\b" + "an" + "\\b","gi");
+// var re5 = new RegExp("\\b" + "to" + "\\b","gi");
+// var re6 = new RegExp("\\b" + "by" + "\\b","gi");
+// var re7 = new RegExp("\\b" + "for" + "\\b","gi");
+// var re8 = new RegExp("\\b" + "in" + "\\b","gi");
+// var re9 = new RegExp("\\b" + "and" + "\\b","gi");
+// var re10 = new RegExp("\\b" + "when" + "\\b","gi");
+// var re11 = new RegExp("\\b" + "where" + "\\b","gi");
+// var re12 = new RegExp("\\b" + "what" + "\\b","gi");
+// var re13 = new RegExp("\\b" + "how" + "\\b","gi");
+// var re14 = new RegExp("\\b" + "why" + "\\b","gi");
+// var re15 = new RegExp("\\b" + "is" + "\\b","gi");
+// var re16 = new RegExp("\\b" + "are" + "\\b","gi");
 // var re17 = new RegExp("[, ]+","gi");
 // var re18 = new RegExp("[0-9]","gi");
 // var re19 = new RegExp("[=+*\/-]","gi");
-// var re20 = new RegExp('\\b' + "or" + '\\b',"gi");
-// var re21 = new RegExp('\\b' + "of" + '\\b',"gi");
+// var re20 = new RegExp("\\b" + "or" + "\\b","gi");
+// var re21 = new RegExp("\\b" + "of" + "\\b","gi");
 
 
 // data[0] = data[0].replace(re1,"");
@@ -58,9 +58,9 @@
 // data[0] = data[0].replace(re18,",");
 // data[0] = data[0].replace(re17,",");
 // data[0] = data[0].replace(" ",",");
-// data[0] = data[0].split(',').filter(function(item,i,allItems){
+// data[0] = data[0].split(",").filter(function(item,i,allItems){
 //     return i==allItems.indexOf(item);
-// }).join(',');
+// }).join(",");
 
 
 
@@ -71,25 +71,25 @@
 const keywords = (string) => {
     var regexes = [
         new RegExp(" \s\s+","gi"),
-        new RegExp('\\b' + "the" + '\\b',"gi"),
-        new RegExp('\\b' + "a" + '\\b',"gi"),
-        new RegExp('\\b' + "an" + '\\b',"gi"),
-        new RegExp('\\b' + "to" + '\\b',"gi"),
-        new RegExp('\\b' + "by" + '\\b',"gi"),
-        new RegExp('\\b' + "for" + '\\b',"gi"),
-        new RegExp('\\b' + "in" + '\\b',"gi"),
-        new RegExp('\\b' + "and" + '\\b',"gi"),
-        new RegExp('\\b' + "when" + '\\b',"gi"),
-        new RegExp('\\b' + "where" + '\\b',"gi"),
-        new RegExp('\\b' + "what" + '\\b',"gi"),
-        new RegExp('\\b' + "how" + '\\b',"gi"),
-        new RegExp('\\b' + "why" + '\\b',"gi"),
-        new RegExp('\\b' + "is" + '\\b',"gi"),
-        new RegExp('\\b' + "are" + '\\b',"gi"),
+        new RegExp("\\b" + "the" + "\\b","gi"),
+        new RegExp("\\b" + "a" + "\\b","gi"),
+        new RegExp("\\b" + "an" + "\\b","gi"),
+        new RegExp("\\b" + "to" + "\\b","gi"),
+        new RegExp("\\b" + "by" + "\\b","gi"),
+        new RegExp("\\b" + "for" + "\\b","gi"),
+        new RegExp("\\b" + "in" + "\\b","gi"),
+        new RegExp("\\b" + "and" + "\\b","gi"),
+        new RegExp("\\b" + "when" + "\\b","gi"),
+        new RegExp("\\b" + "where" + "\\b","gi"),
+        new RegExp("\\b" + "what" + "\\b","gi"),
+        new RegExp("\\b" + "how" + "\\b","gi"),
+        new RegExp("\\b" + "why" + "\\b","gi"),
+        new RegExp("\\b" + "is" + "\\b","gi"),
+        new RegExp("\\b" + "are" + "\\b","gi"),
         new RegExp(" \s\s+","gi"),
         new RegExp("[=+*\/-]","gi"),
-        new RegExp('\\b' + "or" + '\\b',"gi"),
-        new RegExp('\\b' + "of" + '\\b',"gi"),
+        new RegExp("\\b" + "or" + "\\b","gi"),
+        new RegExp("\\b" + "of" + "\\b","gi"),
         new RegExp("[0-9]","gi"),
         new RegExp("[, ]+","gi")
     ];
@@ -106,8 +106,8 @@ const keywords = (string) => {
 
     string = string.replace(new RegExp(" ","gi"),",");
 
-    string = string.split(',').filter(function(item,j,allItems){
+    string = string.split(",").filter(function(item,j,allItems){
         return j==allItems.indexOf(item);
-    }).join(',');
+    }).join(",");
 }
 

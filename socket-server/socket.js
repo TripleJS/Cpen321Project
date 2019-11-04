@@ -1,5 +1,5 @@
-const socketio = require('socket.io');
-const {onJoin} = require('./socketFunctions');
+const socketio = require("socket.io");
+const {onJoin} = require("./socketFunctions");
 
 class SocketServer {
     
@@ -8,24 +8,24 @@ class SocketServer {
     }
 
     startServer() {
-        this.io.on('connection', (socket) => {
+        this.io.on("connection", (socket) => {
 
-            socket.on('join', onJoin
+            socket.on("join", onJoin
                 .then(() => {
-                    socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
+                    socket.broadcast.emit("userjoinedthechat", userId + " has joined the chat");
             })
             .catch((err) => {
                 console.error(err);
             }));
 
-            socket.on('messagedetection', (senderNickname, messageContent, ) => {
+            socket.on("messagedetection", (senderNickname, messageContent, ) => {
 
                 console.log(senderNickname + " sent " + messageContent);
 
-                let message = {'message' : messageContent, 'senderNickname' : senderNickname};
+                let message = {"message" : messageContent, "senderNickname" : senderNickname};
 
                 console.log(message);
-                this.io.emit('message', message);
+                this.io.emit("message", message);
             });
 
         });
