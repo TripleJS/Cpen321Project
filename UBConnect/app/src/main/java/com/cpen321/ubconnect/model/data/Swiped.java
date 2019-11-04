@@ -1,9 +1,9 @@
 package com.cpen321.ubconnect.model.data;
 
 public class Swiped {
-    String userId;
-    String questionId;
-    String direction;
+    private String userId;
+    private String questionId;
+    private String direction;
 
     public String getQuestionId() {
         return questionId;

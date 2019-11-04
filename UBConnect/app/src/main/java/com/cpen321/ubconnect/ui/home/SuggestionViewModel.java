@@ -9,7 +9,6 @@ import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
-import com.cpen321.ubconnect.model.data.User;
 
 import java.util.List;
 

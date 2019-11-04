@@ -1,7 +1,6 @@
 package com.cpen321.ubconnect;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.question.QuestionActivity;
+import com.cpen321.ubconnect.ui.question.QuestionFragment;
 
 import java.util.List;
 
@@ -47,8 +46,8 @@ public class SearchQuestionAdapter extends RecyclerView.Adapter<SearchQuestionAd
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent intent = new Intent(context, QuestionActivity.class);
-                intent.putExtra("arg", searchQuestionItems.get(i).get_id());
+                Intent intent = new Intent(context, QuestionFragment.class);
+                intent.putExtra("arg", searchQuestionItems.get(i).getId());
                 context.startActivity(intent);
             }
         });

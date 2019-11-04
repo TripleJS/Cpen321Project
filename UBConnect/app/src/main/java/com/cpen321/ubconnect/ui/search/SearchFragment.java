@@ -1,7 +1,6 @@
 package com.cpen321.ubconnect.ui.search;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,9 @@ import java.util.List;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SearchFragment extends Fragment {
-    SearchViewModel searchViewModel;
+    private SearchViewModel searchViewModel;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
     private List<Question> questions;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,7 +48,7 @@ public class SearchFragment extends Fragment {
 
     public void onChangedResult(List<Question> questions){
         this.questions.addAll(questions);
-        adapter = new SearchQuestionAdapter(questions, getApplicationContext());
+        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions, getApplicationContext());
         recyclerView.setAdapter(adapter);
 
     }

@@ -4,10 +4,10 @@ import androidx.annotation.Keep;
 
 @Keep
 public class User {
-    String userId;
-    String jwt;
-    String email;
-    String encryptedPassword;
+    private String userId;
+    private String jwt;
+    private String email;
+    private String encryptedPassword;
 
     public String getUserId() {
         return userId;

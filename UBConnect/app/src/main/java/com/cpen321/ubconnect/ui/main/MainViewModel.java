@@ -1,20 +1,15 @@
 package com.cpen321.ubconnect.ui.main;
 
-import android.util.Log;
-
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.AccessTokens;
-import com.cpen321.ubconnect.model.data.FCMToken;
 import com.cpen321.ubconnect.model.data.User;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,7 +67,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -93,7 +88,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)

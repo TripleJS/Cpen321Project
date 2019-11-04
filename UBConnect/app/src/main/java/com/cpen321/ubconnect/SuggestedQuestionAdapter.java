@@ -17,17 +17,10 @@ import java.util.List;
 public class SuggestedQuestionAdapter extends RecyclerView.Adapter<SuggestedQuestionAdapter.ViewHolder> {
 
     private List<Question> suggestedQuestionItems;
-    private Context context;
 
-//    // begin
-//    public void removebyindex(int i){
-//        suggestedQuestionItems.remove(i);
-//    }
-//    // end
 
-    public SuggestedQuestionAdapter(List<Question> suggestedQuestionItems, Context context) {
+    public SuggestedQuestionAdapter(List<Question> suggestedQuestionItems) {
         this.suggestedQuestionItems = suggestedQuestionItems;
-        this.context = context;
     }
 
     @NonNull

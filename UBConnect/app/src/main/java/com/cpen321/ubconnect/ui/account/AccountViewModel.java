@@ -8,8 +8,6 @@ import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.User;
 
-import java.util.List;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,12 +24,7 @@ public class AccountViewModel extends ViewModel {
 
     public AccountViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {

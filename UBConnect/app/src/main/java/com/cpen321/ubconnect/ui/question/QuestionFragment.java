@@ -1,8 +1,6 @@
 package com.cpen321.ubconnect.ui.question;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.account.AccountFragment;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersFragment;
 
 public class QuestionFragment extends Fragment {
