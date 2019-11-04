@@ -8,32 +8,6 @@ const User = require("../schema/user");
 const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
 
-const oAuthLogin = (method) => {
-    return async(accessToken, refreshToken, profile, done) => {
-        try {
-            console.log("Printing Access Token: " + accessToken);
-
-            let user; 
-
-            if (method === "facebook") {
-                user = await User.findOne({ "facebook.id": profile.id });
-            }
-            else if (method === "google") {
-                user = await User.findOne({"google.id" : profile.id});
-            }
-                
-            console.log(profile);
-            if (!user) {
-                user = createNewUser(profile, method);
-            }
-                
-            done(null, user);
-        } catch (error) {
-            done(error, false);
-        }
-    };
-};
-
 const createNewUser = (profile, method) => {
     const id = profile.id;
     const email = profile.emails[0].value;
@@ -63,6 +37,32 @@ const createNewUser = (profile, method) => {
 
     return user; 
 }
+
+const oAuthLogin = (method) => {
+    return async(accessToken, refreshToken, profile, done) => {
+        try {
+            console.log("Printing Access Token: " + accessToken);
+
+            let user; 
+
+            if (method === "facebook") {
+                user = await User.findOne({ "facebook.id": profile.id });
+            }
+            else if (method === "google") {
+                user = await User.findOne({"google.id" : profile.id});
+            }
+                
+            console.log(profile);
+            if (!user) {
+                user = createNewUser(profile, method);
+            }
+                
+            done(null, user);
+        } catch (error) {
+            done(error, false);
+        }
+    };
+};
 
 // JWT strategy 
 passport.use(new JwtStrategy({
