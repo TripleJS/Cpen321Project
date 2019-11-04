@@ -1,35 +1,26 @@
 package com.cpen321.ubconnect.ui.home;
 
-import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cpen321.ubconnect.Main2Activity;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SuggestedQuestionAdapter;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
 import com.cpen321.ubconnect.model.data.User;
-import com.cpen321.ubconnect.ui.account.AccountFragment;
 import com.cpen321.ubconnect.ui.question.QuestionFragment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -70,7 +61,7 @@ public class HomeFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
                 Question questionTemp = questions.get(pos);
-                String qid = questionTemp.get_id();
+                String qid = questionTemp.getId();
                 if(direction == ItemTouchHelper.LEFT ) {
                     questions.remove(pos);
                     adapter.notifyItemRemoved(pos);
@@ -92,7 +83,7 @@ public class HomeFragment extends Fragment {
                     suggestionViewModel.sendSwipe(swiped);
 
                     Bundle bundle=new Bundle();
-                    bundle.putString("arg", questions.get(pos).get_id());
+                    bundle.putString("arg", questions.get(pos).getId());
                     QuestionFragment questionFragment = new QuestionFragment();
                     questionFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction()
@@ -119,7 +110,7 @@ public class HomeFragment extends Fragment {
 
     public void onChangedSuggestions(List<Question> questions){
         this.questions.addAll(questions);
-        adapter = new SuggestedQuestionAdapter(this.questions, getActivity());
+        adapter = new SuggestedQuestionAdapter(this.questions);
         recyclerView.setAdapter(adapter);
 
     }

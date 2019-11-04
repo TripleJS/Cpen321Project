@@ -1,7 +1,6 @@
 package com.cpen321.ubconnect.ui.postquestion;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -29,7 +26,6 @@ public class PostQuestionFragment extends Fragment {
     private EditText question;
     private EditText course;
     private EditText topic;
-    private Button submit;
     private String userId;
 
     private PostQuestionVewModel postQuestionVewModel;
@@ -44,7 +40,7 @@ public class PostQuestionFragment extends Fragment {
         question = root.findViewById(R.id.contentPQ);
         course = root.findViewById(R.id.coursePQ2);
         topic = root.findViewById(R.id.topicPQ2);
-        submit = root.findViewById(R.id.submitButton);
+        Button submit = root.findViewById(R.id.submitButton);
 
         title.setText("");
         question.setText("");
@@ -72,7 +68,7 @@ public class PostQuestionFragment extends Fragment {
                 questionToSubmit.setTitle(title.getText().toString());
                 postQuestionVewModel.submitQuestion(questionToSubmit);
 
-                FirebaseMessaging.getInstance().subscribeToTopic(questionToSubmit.get_id());
+                FirebaseMessaging.getInstance().subscribeToTopic(questionToSubmit.getId());
             }
         };
 
@@ -84,10 +80,7 @@ public class PostQuestionFragment extends Fragment {
     }
 
     private boolean isValid() {
-        if ((question.getText().toString().length() == 0) || (course.getText().toString().length() == 0) || (topic.getText().toString().length() == 0) || (title.getText().toString().length() == 0)) {
-            return false;
-        }
-        return true;
+        return (question.getText().toString().length() == 0) || (course.getText().toString().length() == 0) || (topic.getText().toString().length() == 0) || (title.getText().toString().length() == 0);
     }
 
     protected void observeViewModel() {

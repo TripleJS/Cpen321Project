@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.Constants;
-import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,12 +22,7 @@ public class PostQuestionVewModel extends ViewModel {
 
     public PostQuestionVewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {

@@ -1,15 +1,11 @@
 package com.cpen321.ubconnect.ui.question;
 
-import android.media.session.MediaSession;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.Constants;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,12 +20,7 @@ public class QuestionViewModel extends ViewModel {
 
     public QuestionViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {
@@ -45,7 +36,7 @@ public class QuestionViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -56,7 +47,7 @@ public class QuestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-
+                // to do
             }
         });
     }

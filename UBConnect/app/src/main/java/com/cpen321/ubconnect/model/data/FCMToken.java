@@ -1,7 +1,7 @@
 package com.cpen321.ubconnect.model.data;
 
 public class FCMToken {
-    String token;
+    private String token;
 
     public String getToken() {
         return token;

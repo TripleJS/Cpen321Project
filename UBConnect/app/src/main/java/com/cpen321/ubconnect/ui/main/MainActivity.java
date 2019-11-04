@@ -1,13 +1,7 @@
 package com.cpen321.ubconnect.ui.main;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.Main2Activity;
 import com.cpen321.ubconnect.R;
@@ -42,14 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
 
-    MainViewModel mainViewModel;
+    private MainViewModel mainViewModel;
 
     private CallbackManager callbackManager;
 
-    private LoginButton loginButton;
-
-    private Button appLoginButton;
-    private Button signupButton;
     private EditText email;
     private EditText password;
 
@@ -74,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
-        appLoginButton = findViewById(R.id.loginButton);
-        signupButton = findViewById(R.id.signUpButton);
+        Button appLoginButton = findViewById(R.id.loginButton);
+        Button signupButton = findViewById(R.id.signUpButton);
         email = findViewById(R.id.emailText);
         password = findViewById(R.id.passwordText);
 
@@ -131,17 +125,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 AccessTokens accessTokenFB = new AccessTokens();
-                accessTokenFB.setAccess_token(loginResult.getAccessToken().getToken());
+                accessTokenFB.setAccessToken(loginResult.getAccessToken().getToken());
                 accessTokenFB.setFcmAccessToken(fcmtoken);
 
                 mainViewModel.getAppUserByFB(accessTokenFB);
             }
 
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+                // to do
+            }
 
             @Override
-            public void onError(FacebookException exception) {}
+            public void onError(FacebookException exception) {
+                // to do
+            }
         });
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -173,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         AccessToken token = AccessToken.getCurrentAccessToken();
         if (token != null) {
             AccessTokens accessTokenFB = new AccessTokens();
-            accessTokenFB.setAccess_token(token.getToken());
+            accessTokenFB.setAccessToken(token.getToken());
             accessTokenFB.setFcmAccessToken(fcmtoken);
             mainViewModel.getAppUserByFB(accessTokenFB);
         }

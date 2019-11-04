@@ -1,14 +1,14 @@
 package com.cpen321.ubconnect.model.data;
 
 public class AccessTokens {
-    String access_token;
-    String fcmAccessToken;
+    private String access_token;
+    private String fcmAccessToken;
 
-    public String getAccess_token() {
+    public String getAccessToken() {
         return access_token;
     }
 
-    public void setAccess_token(String access_token) {
+    public void setAccessToken(String access_token) {
         this.access_token = access_token;
     }
 

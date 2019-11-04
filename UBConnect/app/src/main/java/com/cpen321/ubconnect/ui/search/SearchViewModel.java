@@ -45,7 +45,7 @@ public class SearchViewModel extends ViewModel {
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -56,7 +56,7 @@ public class SearchViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
-
+                // to do
             }
         });
     }

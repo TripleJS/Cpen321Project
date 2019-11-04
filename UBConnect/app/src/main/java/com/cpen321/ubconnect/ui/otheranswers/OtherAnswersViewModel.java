@@ -22,12 +22,7 @@ public class OtherAnswersViewModel extends ViewModel {
 
     public OtherAnswersViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-
     }
 
     private void initService() {

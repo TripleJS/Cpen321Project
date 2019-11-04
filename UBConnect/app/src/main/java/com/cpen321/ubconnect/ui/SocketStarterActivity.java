@@ -9,7 +9,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersFragment;
 
 public class SocketStarterActivity extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class SocketStarterActivity extends AppCompatActivity {
 
                 if(!nickname.getText().toString().isEmpty()){
 
-                    Intent i  = new Intent(SocketStarterActivity.this, OtherAnswersActivity.class);
+                    Intent i  = new Intent(SocketStarterActivity.this, OtherAnswersFragment.class);
 
                     //retreive nickname from EditText and add it to intent extra
                     i.putExtra(NICKNAME,nickname.getText().toString());

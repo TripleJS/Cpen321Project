@@ -1,19 +1,15 @@
 package com.cpen321.ubconnect.ui.account;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,29 +21,15 @@ import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.search.SearchViewModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AccountFragment extends Fragment {
 
 
-    private ImageView userImage;
-
-    private TextView userNameTV;
-    private EditText userNameET;
-    private Button editUser;
-
-    private TextView emailNameTV;
     private EditText emailNameET;
     private Button editEmail;
 
-    private TextView coursesNameTV;
     private EditText coursesNameET;
-    private Button editCourses;
-
-    private Button apply;
-
-
 
     private AccountViewModel accountViewModel;
     private SearchViewModel searchViewModel;
@@ -62,21 +44,18 @@ public class AccountFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.activity_account, container, false);
 
-        userImage = root.findViewById(R.id.userImage);
+        EditText userNameET = root.findViewById(R.id.usernameET);
 
-        userNameET = root.findViewById(R.id.usernameET);
-        userNameTV = root.findViewById(R.id.usernameTV);
-        editUser = root.findViewById(R.id.edit_username);
+        Button editUser = root.findViewById(R.id.edit_username);
 
         emailNameET = root.findViewById(R.id.emailET);
-        emailNameTV = root.findViewById(R.id.emailTV);
+
         editEmail = root.findViewById(R.id.edit_email);
 
         coursesNameET = root.findViewById(R.id.coursesET);
-        coursesNameTV = root.findViewById(R.id.coursesTV);
-        editCourses = root.findViewById(R.id.edit_courses);
+        Button editCourses = root.findViewById(R.id.edit_courses);
 
-        apply = root.findViewById(R.id.saveAC);
+        Button apply = root.findViewById(R.id.saveAC);
 
         userNameET.setFocusable(false);
         emailNameET.setFocusable(false);

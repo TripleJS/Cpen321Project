@@ -19,15 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpen321.ubconnect.OtherAnswersAdapter;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
-import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Message;
-import com.cpen321.ubconnect.ui.question.QuestionFragment;
+import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerFragment;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +37,6 @@ import java.util.List;
 public class OtherAnswersFragment extends Fragment {
 
     private Socket socket;
-    private String Nickname ;
     private String questionId;
     private String userId;
 
@@ -73,14 +70,11 @@ public class OtherAnswersFragment extends Fragment {
                         .add(((ViewGroup)getView().getParent()).getId(), viewOnlyOthersAnswerFragment).commit();
             }
         });
-        //Nickname = (String)getIntent().getExtras().getString(SocketStarterActivity.NICKNAME);
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
-//        myRecyclerView = findViewById(R.id.separator);
 
 //connect you socket client to the server
-        //questionId = getIntent().getExtras().getString("arg");
         question = root.findViewById(R.id.QuestioToAnswer);
         userId = ((GlobalVariables) getActivity().getApplication()).getUserID();
 
@@ -108,9 +102,11 @@ public class OtherAnswersFragment extends Fragment {
         messagetxt.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
+                // to do
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // to do
             }
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
@@ -144,7 +140,6 @@ public class OtherAnswersFragment extends Fragment {
                             String nickname = data.getString("senderNickname");
                             String message = data.getString("message");
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -176,13 +171,11 @@ public class OtherAnswersFragment extends Fragment {
     }
 
 
-
-
-    void observeViewModel(){
+    private void observeViewModel(){
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
     }
 
-    void onChangedQuestion(Question question){
+    private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
     }
 
