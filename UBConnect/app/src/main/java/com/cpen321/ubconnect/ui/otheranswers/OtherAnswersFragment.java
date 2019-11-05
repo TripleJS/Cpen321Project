@@ -114,7 +114,7 @@ public class OtherAnswersFragment extends Fragment {
         }
     };
 
-    TextWatcher textWatcher = new TextWatcher() {
+    private TextWatcher textWatcher = new TextWatcher() {
 
         public void afterTextChanged(Editable s) {
             // to do
@@ -130,7 +130,7 @@ public class OtherAnswersFragment extends Fragment {
         }
     };
 
-    Emitter.Listener onTyping = new Emitter.Listener() {
+    private Emitter.Listener onTyping = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             getActivity().runOnUiThread(new Runnable() {
@@ -142,7 +142,7 @@ public class OtherAnswersFragment extends Fragment {
         }
     };
 
-    Emitter.Listener onMessage = new Emitter.Listener() {
+    private Emitter.Listener onMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             getActivity().runOnUiThread(new Runnable() {
@@ -155,7 +155,7 @@ public class OtherAnswersFragment extends Fragment {
         }
     };
 
-     Emitter.Listener onUserDisconnect = new Emitter.Listener() {
+     private Emitter.Listener onUserDisconnect = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             getActivity().runOnUiThread(new Runnable() {

@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    View.OnClickListener loginOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (! checkEmailFormat(email.getText().toString())) {
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener signupOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener signupOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (! checkEmailFormat(email.getText().toString())) {
