@@ -15,7 +15,7 @@ const answerSchema = new Schema({
         required: true
     },
     rate : {
-        type : Integer
+        type : Number
     }
 });
 

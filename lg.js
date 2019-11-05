@@ -98,13 +98,13 @@ const keywords = (string) => {
 
     for(index in regexes){
         if (index >16 || index <20){
-            string = string.replace(regexes[i]," ");
+            string = string.replace(regexes[index]," ");
         }
         else if (index >=20){
-            string = string.replace(regexes[i],",");
+            string = string.replace(regexes[index],",");
         }
 
-        string = string.replace(regexes[i]," ");
+        string = string.replace(regexes[index]," ");
     }
 
     string = string.replace(new RegExp(" ","gi"),",");

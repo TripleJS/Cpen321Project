@@ -17,4 +17,4 @@ const groupSchema = new Schema({
     }
 });
 
-modules.export = questionSchema;
+modules.export = groupSchema;

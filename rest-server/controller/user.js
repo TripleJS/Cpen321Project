@@ -2,16 +2,16 @@ const User = require("../schema/user");
 const bcrypt = require("bcryptjs");
 const errorHandler = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
-const mongoose = require("mongoose");
 const {secretKey} = require("../../config");
+const jwt = require('jsonwebtoken');
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
     const userName = newUserData.userName;
-    const name = newUserData.name;
-    const email = newUserData.email;
+    const newUserName = newUserData.name;
+    const userEmail = newUserData.email;
     const password = newUserData.password;    
     
     const errors = validationResult(req);
@@ -24,8 +24,8 @@ const addUser = async (req, res, next) => {
             method: "local",
             local: 
             {
-                name: name, 
-                email: email, 
+                name: newUserName, 
+                email: userEmail, 
                 passwordHash: hashedPassword
             },
             userName: userName,
@@ -74,9 +74,9 @@ const oAuthLogin = async (req, res, next) => {
 
     console.log(req.user);
 
-    const fcmAccessToken = req.body.fcmAccessToken;
+    const userFcmAccessToken = req.body.fcmAccessToken;
 
-    req.user.set({fcmAccessToken : fcmAccessToken});
+    req.user.set({fcmAccessToken : userFcmAccessToken});
 
     const token = jwt.sign({
             user: user._id 
@@ -103,11 +103,13 @@ const oAuthLogin = async (req, res, next) => {
 const signJWT = (req, res, next) => {
     const token = jwt.sign(
         {
-            user: user
+            user: req.user
         },
             cfg.secretKey, 
             { expiresIn: "24h" },
         );
+    
+    return token;
 }
 
 module.exports = {

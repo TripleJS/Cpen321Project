@@ -8,30 +8,30 @@ const User = require("../schema/user");
 const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
 
-const createNewUser = (profile, method) => {
+const createNewUser = (profile, loginMethod) => {
     const id = profile.id;
-    const email = profile.emails[0].value;
+    const userEmail = profile.emails[0].value;
                 
-    console.log(email);
+    console.log(userEmail);
     let user; 
 
     if (method === "facebook") {
     user = new User({
-        method: method,
+        method: loginMethod,
             facebook: {
             id: id,
-            email: email
+            email: userEmail
             },
-            userName: email
+            userName: userEmail
         });
     } else if (method === "google") {
         user = new User({
-            method: method,
+            method: loginMethod,
             google: {
             id: id,
-            email: email
+            email: userEmail
         },
-            userName: email
+            userName: userEmail
         });
     }
 
@@ -46,13 +46,14 @@ const oAuthLogin = (method) => {
             let user; 
 
             if (method === "facebook") {
-                user = await User.findOne({ "facebook.id": profile.id });
+                user = await User.findOne({"facebook.id": profile.id });
             }
             else if (method === "google") {
                 user = await User.findOne({"google.id" : profile.id});
             }
                 
             console.log(profile);
+            
             if (!user) {
                 user = createNewUser(profile, method);
             }

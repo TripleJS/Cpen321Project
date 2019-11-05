@@ -11,27 +11,24 @@ class SocketServer {
         this.io.on("connection", (socket) => {
 
             socket.on("join", onJoin
-                .then(() => {
+                .then((userId) => {
                     socket.broadcast.emit("userjoinedthechat", userId + " has joined the chat");
             })
             .catch((err) => {
                 console.error(err);
             }));
 
-            socket.on("messagedetection", (senderNickname, messageContent, ) => {
+            socket.on("messagedetection", (nickname, messageContent, ) => {
 
                 console.log(senderNickname + " sent " + messageContent);
 
-                let message = {"message" : messageContent, "senderNickname" : senderNickname};
+                let message = {"message" : messageContent, "senderNickname" : nickname};
 
                 console.log(message);
                 this.io.emit("message", message);
             });
-
         });
     }
 }
-
-
 
 module.exports = SocketServer;
