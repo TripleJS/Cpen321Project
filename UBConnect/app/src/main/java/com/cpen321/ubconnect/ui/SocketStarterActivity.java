@@ -13,7 +13,7 @@ import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersFragment;
 
 public class SocketStarterActivity extends AppCompatActivity {
 
-    private Button btn;
+
     private EditText nickname;
     public static final String NICKNAME = "usernickname";
     @Override
@@ -22,7 +22,7 @@ public class SocketStarterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_socket_starter2);
 
         //call UI components  by id
-        btn = (Button)findViewById(R.id.enterchat) ;
+        Button btn = (Button)findViewById(R.id.enterchat) ;
         nickname = (EditText) findViewById(R.id.nickname);
 
         btn.setOnClickListener(new View.OnClickListener() {

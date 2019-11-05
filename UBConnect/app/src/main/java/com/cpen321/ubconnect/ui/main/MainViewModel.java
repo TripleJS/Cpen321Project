@@ -99,7 +99,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                // to do
             }
         });
     }

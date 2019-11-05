@@ -21,18 +21,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SuggestionViewModel extends ViewModel {
 
     private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
-    private int pageNumber;
 
     private IBackEndService mBackEndService;
 
     public SuggestionViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-        pageNumber = 0;
     }
 
     private void initService() {
@@ -51,7 +45,7 @@ public class SuggestionViewModel extends ViewModel {
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -62,8 +56,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
-                Log.d("Suggest", "getSuggestion:3 ");
-
+                // to do
             }
         });
     }
@@ -81,7 +74,7 @@ public class SuggestionViewModel extends ViewModel {
             public void onResponse(Call<Swiped> call, Response<Swiped> response) {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -91,7 +84,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Swiped> call, Throwable t) {
-                Log.d("Suggest", "getSuggestion:3 ");
+                // to do
 
             }
         });

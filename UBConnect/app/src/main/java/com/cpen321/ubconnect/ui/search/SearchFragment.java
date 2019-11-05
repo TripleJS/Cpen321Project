@@ -18,8 +18,6 @@ import com.cpen321.ubconnect.model.data.Question;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 public class SearchFragment extends Fragment {
     private SearchViewModel searchViewModel;
 

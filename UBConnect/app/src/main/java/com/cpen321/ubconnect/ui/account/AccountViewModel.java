@@ -78,7 +78,7 @@ public class AccountViewModel extends ViewModel {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -88,7 +88,7 @@ public class AccountViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                // to do
             }
         });
     }
