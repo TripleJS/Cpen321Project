@@ -21,9 +21,8 @@ const getQuestion = async (req, res, next) => {
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
-    }
-    
-}
+    }  
+};
 
 const postQuestion = async (req, res, next) => {
 
