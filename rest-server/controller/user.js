@@ -66,7 +66,7 @@ const getUser = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-}
+};
 
 const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});

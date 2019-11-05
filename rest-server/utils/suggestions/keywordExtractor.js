@@ -17,7 +17,7 @@ const getKeywords = (inputDocuments) => {
     .catch((err) => {
         throw err;
     });
-}
+};
 
 module.exports = getKeywords;
 

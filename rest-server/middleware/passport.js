@@ -36,7 +36,7 @@ const createNewUser = (profile, loginMethod) => {
     }
 
     return user; 
-}
+};
 
 const oAuthLogin = (method) => {
     return async(accessToken, refreshToken, profile, done) => {

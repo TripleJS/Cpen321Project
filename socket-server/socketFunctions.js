@@ -58,7 +58,7 @@ const onJoin = async (userId, questionId) => {
         .catch((error) => {
           console.log("Error sending message:", error);
         });
-}
+};
 
 module.exports = {
     onJoin
