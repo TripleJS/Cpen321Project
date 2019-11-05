@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.ConstantsUtils;
-import com.cpen321.ubconnect.model.ErrorHandling;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 
@@ -38,7 +38,7 @@ public class OtherAnswersViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
-                    ErrorHandling.errorHandling("dummy");
+                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null) {
