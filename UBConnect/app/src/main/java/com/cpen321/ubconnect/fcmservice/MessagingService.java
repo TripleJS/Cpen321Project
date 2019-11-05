@@ -1,4 +1,4 @@
-package com.cpen321.ubconnect.FCMService;
+package com.cpen321.ubconnect.fcmservice;
 
 import android.content.Intent;
 import android.util.Log;

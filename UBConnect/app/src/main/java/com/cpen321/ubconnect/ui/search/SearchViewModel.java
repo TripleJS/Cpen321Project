@@ -3,7 +3,8 @@ package com.cpen321.ubconnect.ui.search;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cpen321.ubconnect.model.Constants;
+import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 
@@ -33,7 +34,7 @@ public class SearchViewModel extends ViewModel {
     }
 
     private void initService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -46,6 +47,7 @@ public class SearchViewModel extends ViewModel {
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 if (!response.isSuccessful()) {
                     // to do
+                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)

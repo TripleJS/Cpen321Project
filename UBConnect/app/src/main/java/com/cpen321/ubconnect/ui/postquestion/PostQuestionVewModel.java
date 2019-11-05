@@ -1,11 +1,10 @@
 package com.cpen321.ubconnect.ui.postquestion;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cpen321.ubconnect.model.Constants;
+import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 
@@ -26,7 +25,7 @@ public class PostQuestionVewModel extends ViewModel {
     }
 
     private void initService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -38,13 +37,11 @@ public class PostQuestionVewModel extends ViewModel {
         mBackEndService.postQuestion(questionToSubmit).enqueue(new Callback<Question>() {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
-                Log.d("Fuck" , "onResponse: postqqqqq ");
                 if (!response.isSuccessful()) {
-                    Log.d("Fuck" , "onResponse: ffffffffffffffffffff");
+                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null) {
-                    Log.d("Fuck" , "onResponse: null null nulll null");
                     return;
                 }
 
@@ -54,7 +51,7 @@ public class PostQuestionVewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-                Log.d("Fuck" , "onfail: postqqqqq ");
+                // to do
             }
         });
     }

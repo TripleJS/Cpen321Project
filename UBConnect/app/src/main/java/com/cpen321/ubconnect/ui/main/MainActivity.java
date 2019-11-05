@@ -54,14 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.get("qid")!= null) {
-            //here can get notification message
-            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-            intent.putExtra("qid", bundle.get("qid").toString());
-            startActivity(intent);
-            MainActivity.this.finish();
-        }
+        bundleHandling(getIntent().getExtras());
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         getLifecycle().addObserver(mainViewModel);
@@ -74,48 +67,6 @@ public class MainActivity extends AppCompatActivity {
         Button signupButton = findViewById(R.id.signUpButton);
         email = findViewById(R.id.emailText);
         password = findViewById(R.id.passwordText);
-
-
-        View.OnClickListener loginOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (! checkEmailFormat(email.getText().toString())) {
-                    Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-                    String encrypted = AESCrypt.encrypt(password.getText().toString());
-                    User user = new User();
-                    user.setEmail(email.getText().toString());
-                    user.setEncryptedPassword(encrypted);
-                    mainViewModel.getAppUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        View.OnClickListener signupOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (! checkEmailFormat(email.getText().toString())) {
-                    Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-                    String encrypted = AESCrypt.encrypt(password.getText().toString());
-                    User user = new User();
-                    user.setEmail(email.getText().toString());
-                    user.setEncryptedPassword(encrypted);
-                    mainViewModel.setAppUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
 
         appLoginButton.setOnClickListener(loginOnClickListener);
         signupButton.setOnClickListener(signupOnClickListener);
@@ -200,4 +151,56 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    private void bundleHandling(Bundle bundle) {
+        if (bundle != null && bundle.get("qid")!= null) {
+            //here can get notification message
+            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+            intent.putExtra("qid", bundle.get("qid").toString());
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
+    }
+
+    private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (! checkEmailFormat(email.getText().toString())) {
+                Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                String encrypted = AESCrypt.encrypt(password.getText().toString());
+                User user = new User();
+                user.setEmail(email.getText().toString());
+                user.setEncryptedPassword(encrypted);
+                mainViewModel.getAppUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private View.OnClickListener signupOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (! checkEmailFormat(email.getText().toString())) {
+                Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                String encrypted = AESCrypt.encrypt(password.getText().toString());
+                User user = new User();
+                user.setEmail(email.getText().toString());
+                user.setEncryptedPassword(encrypted);
+                mainViewModel.setAppUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
 }

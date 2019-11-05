@@ -3,7 +3,8 @@ package com.cpen321.ubconnect.ui.question;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cpen321.ubconnect.model.Constants;
+import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 
@@ -24,7 +25,7 @@ public class QuestionViewModel extends ViewModel {
     }
 
     private void initService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -37,6 +38,8 @@ public class QuestionViewModel extends ViewModel {
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
                     // to do
+                    ErrorHandlingUtils.errorHandling("dummy");
+
                 }
 
                 if (response.body() == null)

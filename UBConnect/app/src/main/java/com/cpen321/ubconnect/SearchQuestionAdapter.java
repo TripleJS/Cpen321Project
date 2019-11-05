@@ -19,11 +19,9 @@ import java.util.List;
 public class SearchQuestionAdapter extends RecyclerView.Adapter<SearchQuestionAdapter.ViewHolder> {
 
     private List<Question> searchQuestionItems;
-    private Context context;
 
-    public SearchQuestionAdapter(List<Question> searchQuestionItems, Context context) {
+    public SearchQuestionAdapter(List<Question> searchQuestionItems) {
         this.searchQuestionItems = searchQuestionItems;
-        this.context = context;
     }
 
     @NonNull

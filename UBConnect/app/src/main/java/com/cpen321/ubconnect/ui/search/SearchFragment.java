@@ -18,8 +18,6 @@ import com.cpen321.ubconnect.model.data.Question;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 public class SearchFragment extends Fragment {
     private SearchViewModel searchViewModel;
 
@@ -48,7 +46,7 @@ public class SearchFragment extends Fragment {
 
     public void onChangedResult(List<Question> questions){
         this.questions.addAll(questions);
-        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions, getApplicationContext());
+        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
 
     }

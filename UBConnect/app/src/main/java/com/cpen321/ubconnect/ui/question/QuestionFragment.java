@@ -22,8 +22,7 @@ public class QuestionFragment extends Fragment {
     private TextView content;
     private TextView dateAuthor;
     private TextView answer;
-    private Button startAnswer;
-    String questionId;
+    private String questionId;
 
     private QuestionViewModel questionViewModel;
 
@@ -37,7 +36,7 @@ public class QuestionFragment extends Fragment {
         content = root.findViewById(R.id.questionAContent);
         dateAuthor = root.findViewById(R.id.questionADateAuthor);
         answer = root.findViewById(R.id.questionAAnswer);
-        startAnswer = root.findViewById(R.id.answerButton);
+        Button startAnswer = root.findViewById(R.id.answerButton);
 
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
 

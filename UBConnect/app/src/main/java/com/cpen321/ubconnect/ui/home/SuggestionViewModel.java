@@ -5,7 +5,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cpen321.ubconnect.model.Constants;
+import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
@@ -21,22 +22,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SuggestionViewModel extends ViewModel {
 
     private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
-    private int pageNumber;
 
     private IBackEndService mBackEndService;
 
     public SuggestionViewModel() {
         super();
-        init();
         initService();
     }
 
-    private void init() {
-        pageNumber = 0;
-    }
-
     private void initService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -51,7 +46,8 @@ public class SuggestionViewModel extends ViewModel {
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-
+                    // to do
+                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -62,8 +58,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
-                Log.d("Suggest", "getSuggestion:3 ");
-
+                // to do
             }
         });
     }
@@ -81,7 +76,8 @@ public class SuggestionViewModel extends ViewModel {
             public void onResponse(Call<Swiped> call, Response<Swiped> response) {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-
+                    // to do
+                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -91,7 +87,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Swiped> call, Throwable t) {
-                Log.d("Suggest", "getSuggestion:3 ");
+                // to do
 
             }
         });

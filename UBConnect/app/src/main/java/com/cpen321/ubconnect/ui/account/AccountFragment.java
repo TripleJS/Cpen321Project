@@ -27,7 +27,6 @@ public class AccountFragment extends Fragment {
 
 
     private EditText emailNameET;
-    private Button editEmail;
 
     private EditText coursesNameET;
 
@@ -35,7 +34,6 @@ public class AccountFragment extends Fragment {
     private SearchViewModel searchViewModel;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
     private List<Question> questions;
 
     @Nullable
@@ -50,7 +48,7 @@ public class AccountFragment extends Fragment {
 
         emailNameET = root.findViewById(R.id.emailET);
 
-        editEmail = root.findViewById(R.id.edit_email);
+        Button editEmail = root.findViewById(R.id.edit_email);
 
         coursesNameET = root.findViewById(R.id.coursesET);
         Button editCourses = root.findViewById(R.id.edit_courses);
@@ -128,7 +126,7 @@ public class AccountFragment extends Fragment {
 
     public void onChangedQuestions(List<Question> questions){
         this.questions.addAll(questions);
-        adapter = new SearchQuestionAdapter(questions, getActivity());
+        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
     }
 
