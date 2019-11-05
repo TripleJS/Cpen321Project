@@ -9,7 +9,7 @@ const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
 
 const createNewUser = (profile, loginMethod) => {
-    const id = profile.id;
+    const newId = profile.id;
     const userEmail = profile.emails[0].value;
                 
     console.log(userEmail);
@@ -19,7 +19,7 @@ const createNewUser = (profile, loginMethod) => {
     user = new User({
         method: loginMethod,
             facebook: {
-            id: id,
+            id: newId,
             email: userEmail
             },
             userName: userEmail
@@ -28,7 +28,7 @@ const createNewUser = (profile, loginMethod) => {
         user = new User({
             method: loginMethod,
             google: {
-            id: id,
+            id: newId,
             email: userEmail
         },
             userName: userEmail
@@ -77,9 +77,11 @@ passport.use(new JwtStrategy({
         // Find user specified in token
         const user = await User.findById(payload.user);
 
-        if (!user)
+        if (!user) {
             errorThrow({}, "User Does not Exist", 403);
 
+        }
+            
         done(null, user);
     } catch (error) {
         done(error, false);

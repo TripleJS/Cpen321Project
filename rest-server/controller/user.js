@@ -28,7 +28,7 @@ const addUser = async (req, res, next) => {
                 email: userEmail, 
                 passwordHash: hashedPassword
             },
-            userName: userName,
+            userName: newUserName,
         });
     
         let result = await newUser.save();
@@ -44,7 +44,7 @@ const addUser = async (req, res, next) => {
     {
         errorHandler.errorCatch(err, next);
     }
-}
+};
 
 const getUser = async (req, res, next) => {
     try {

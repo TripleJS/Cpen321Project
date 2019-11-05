@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
 const Question = require("../schema/questions");
-const User = require("../schema/user");
 const errorHandler = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
@@ -42,7 +40,7 @@ const postQuestion = async (req, res, next) => {
 
     try {
         if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn"t Find User", 403);
+            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
         }
         const question = new Question({
             title : title,
@@ -66,7 +64,7 @@ const postQuestion = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-}
+};
 
 
 const suggestedQuestions = async (req, res, next) => {
@@ -74,16 +72,11 @@ const suggestedQuestions = async (req, res, next) => {
     console.log(req.params.userId);
 
     try {
-        let randomQuestion = await Question.findOne();
+        let question = await Question.findOne();
 
         let questionList = await Question.find({}).limit(5);
-        let questionKeywords = [];
-        
-        for (i of questionList) {
-            questionKeywords.push(questionList[i]);
-        }
 
-        let returnedQuestions = getBagOfQuestions(questionKeywords, questionList, randomQuestion.keywords);
+        let returnedQuestions = getBagOfQuestions(questionList, question);
 
         res.status(200).json(
             returnedQuestions
@@ -93,7 +86,7 @@ const suggestedQuestions = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error);
     }
-}
+};
 
 const suggestedQuestionsV2 = (req, res, next) => {
     try {
@@ -114,8 +107,7 @@ const suggestedQuestionsV2 = (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-
-}
+};
 
 const searchQuestion = async (req, res, next) => {
 
@@ -138,7 +130,7 @@ const searchQuestion = async (req, res, next) => {
             }
         ]
     });
-}
+};
 
 const swipedQuestion = (req, res, next) => {
     const questionId = req.body.questionId;
@@ -153,7 +145,7 @@ const swipedQuestion = (req, res, next) => {
         user: userId,
         direction : direction
     });
-}
+};
 
 module.exports = {
     getQuestion,
@@ -161,7 +153,7 @@ module.exports = {
     suggestedQuestions,
     searchQuestion,
     swipedQuestion
-}
+};
 
 
 

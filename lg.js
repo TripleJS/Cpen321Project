@@ -94,9 +94,8 @@ const keywords = (string) => {
         new RegExp("[, ]+","gi")
     ];
 
-    let index; 
 
-    for(index in regexes){
+    for(var index = 0; index < regexes.length; index++) {
         if (index >16 || index <20){
             string = string.replace(regexes[index]," ");
         }
