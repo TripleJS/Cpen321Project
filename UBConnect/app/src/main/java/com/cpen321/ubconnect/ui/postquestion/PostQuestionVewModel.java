@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandling;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 
@@ -38,13 +39,11 @@ public class PostQuestionVewModel extends ViewModel {
         mBackEndService.postQuestion(questionToSubmit).enqueue(new Callback<Question>() {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
-                Log.d("Fuck" , "onResponse: postqqqqq ");
                 if (!response.isSuccessful()) {
-                    Log.d("Fuck" , "onResponse: ffffffffffffffffffff");
+                    ErrorHandling.errorHandling("dummy");
                 }
 
                 if (response.body() == null) {
-                    Log.d("Fuck" , "onResponse: null null nulll null");
                     return;
                 }
 
@@ -54,7 +53,7 @@ public class PostQuestionVewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-                Log.d("Fuck" , "onfail: postqqqqq ");
+                // to do
             }
         });
     }

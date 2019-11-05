@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.ConstantsUtils;
+import com.cpen321.ubconnect.model.ErrorHandling;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
@@ -46,6 +47,7 @@ public class SuggestionViewModel extends ViewModel {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
                     // to do
+                    ErrorHandling.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -75,6 +77,7 @@ public class SuggestionViewModel extends ViewModel {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
                     // to do
+                    ErrorHandling.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
