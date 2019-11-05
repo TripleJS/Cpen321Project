@@ -98,8 +98,7 @@ const keywords = (string) => {
     for(var index = 0; index < regexes.length; index++) {
         if (index >16 || index <20){
             string = string.replace(regexes[index]," ");
-        }
-        else if (index >=20){
+        } else {
             string = string.replace(regexes[index],",");
         }
 
