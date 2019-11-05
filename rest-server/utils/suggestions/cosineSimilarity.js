@@ -1,40 +1,39 @@
+const normalizeVector = (vector, length) => {
+    const newVector = vector;
+    for (let i = 0; i < length; i++) {
+        newVector.push(0);
+    }
+
+    return newVector; 
+};
+
+const computeCosineSimilarity = (v1, v2) => {
+    let sumxx = 0; let sumyy = 0; let sumxy = 0;
+
+    for (let i = 0; i < length; i++) {
+        let x = v1[i]; 
+        let y = v2[i];
+        sumxx += x*x;
+        sumyy += y*y;
+        sumxy += x*y;
+    }
+
+    return sumxy/Math.sqrt(sumxx*sumyy);
+}
 
 const getCosineSimilarity = (v1, v2) => {
 
-    let sumxx = 0; let sumyy = 0; let sumxy = 0;
-    if(v1.length < v2.length) {
+    let normalizedVector; 
 
-        for (let j = 0; j < (v2.length - v1.length); j++) {
-            v1.push(0);
-        }
-
-        let i;
-        for (i of v1) {
-            let x = v1[i]; 
-            let y = v2[i];
-            sumxx += x*x;
-            sumyy += y*y;
-            sumxy += x*y;
-        }
-            
+    if (v1.length < v2.length) {
+        normalizedVector = normalizeVector(v1, v2.length - v1.length);
+        return computeCosineSimilarity(v2, normalizedVector);
     } else {
-        let i;
-
-        for (let j = 0; j < (v1.length - v2.length); j++) {
-            v1.push(0);
-        }
-
-        for(i of v2) {
-            let x = v1[i]; 
-            let y = v2[i];
-            sumxx += x*x;
-            sumyy += y*y;
-            sumxy += x*y;
-        }
-
+        normalizedVector = normalizeVector(v2, v1.length - v2.length);
+        return computeCosineSimilarity(v1, normalizedVector);
     }
-    return sumxy/Math.sqrt(sumxx*sumyy);
 };
+
 
 const getBagOfQuestions = (questionKeywords, question) => {
     const bagOfQuestions = [];
