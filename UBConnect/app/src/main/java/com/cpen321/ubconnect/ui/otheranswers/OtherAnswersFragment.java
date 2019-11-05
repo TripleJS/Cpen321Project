@@ -122,7 +122,7 @@ public class OtherAnswersFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
+                        // to do
                     }
                 });
             }});
@@ -133,17 +133,7 @@ public class OtherAnswersFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        JSONObject data = (JSONObject) args[0];
-                        try {
-                            //extract data from fired event
-
-                            String nickname = data.getString("senderNickname");
-                            String message = data.getString("message");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        // to do
 
                     }
                 });

@@ -48,7 +48,7 @@ public class SearchFragment extends Fragment {
 
     public void onChangedResult(List<Question> questions){
         this.questions.addAll(questions);
-        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions, getApplicationContext());
+        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
 
     }

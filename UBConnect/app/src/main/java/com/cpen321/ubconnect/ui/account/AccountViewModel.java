@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.AuthInterceptor;
-import com.cpen321.ubconnect.model.Constants;
+import com.cpen321.ubconnect.model.ConstantsUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.data.User;
 
@@ -28,7 +28,7 @@ public class AccountViewModel extends ViewModel {
     }
 
     private void initService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -40,7 +40,7 @@ public class AccountViewModel extends ViewModel {
                 .addInterceptor(new AuthInterceptor(token))
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BaseUrl)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
@@ -51,7 +51,7 @@ public class AccountViewModel extends ViewModel {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-
+                    // to do
                 }
 
                 if (response.body() == null)
@@ -61,7 +61,7 @@ public class AccountViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                // to do
             }
         });
     }

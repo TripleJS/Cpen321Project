@@ -22,10 +22,6 @@ import java.net.URISyntaxException;
 
 public class ViewOnlyOthersAnswerFragment extends Fragment {
     private Socket socket;
-    private String message;
-    private String nickname;
-
-
     public TextView messagetxt ;
 
     @Nullable

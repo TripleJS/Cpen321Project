@@ -128,7 +128,7 @@ public class AccountFragment extends Fragment {
 
     public void onChangedQuestions(List<Question> questions){
         this.questions.addAll(questions);
-        adapter = new SearchQuestionAdapter(questions, getActivity());
+        adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
     }
 

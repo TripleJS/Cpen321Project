@@ -23,7 +23,7 @@ public class QuestionFragment extends Fragment {
     private TextView dateAuthor;
     private TextView answer;
     private Button startAnswer;
-    String questionId;
+    private String questionId;
 
     private QuestionViewModel questionViewModel;
 
