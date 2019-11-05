@@ -56,101 +56,37 @@ public class OtherAnswersFragment extends Fragment {
         questionId = getArguments().getString("arg");
 
         FloatingActionButton floatingActionButton = root.findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle=new Bundle();
-                bundle.putString("arg", questionId);
-                ViewOnlyOthersAnswerFragment viewOnlyOthersAnswerFragment = new ViewOnlyOthersAnswerFragment();
-                viewOnlyOthersAnswerFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction()
-                        .add(((ViewGroup)getView().getParent()).getId(), viewOnlyOthersAnswerFragment).commit();
-            }
-        });
+        floatingActionButton.setOnClickListener(floatingActionButtonOnClickListener);
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
-
-//connect you socket client to the server
+        //connect you socket client to the server
         question = root.findViewById(R.id.QuestioToAnswer);
         userId = ((GlobalVariables) getActivity().getApplication()).getUserID();
 
         try {
-
-
-//if you are using a phone device you should connect to same local network as your laptop and disable your pubic firewall as well
-
+            //if you are using a phone device you should connect to same local
+            //network as your laptop and disable your pubic firewall as well
             socket = IO.socket("https://ubconnect.azurewebsites.net");
 
             //create connection
-
             socket.connect();
 
-// emit the event join along side with the nickname
-
+            // emit the event join along side with the nickname
             socket.emit("join", userId, questionId);
-
-
         } catch (URISyntaxException e) {
             e.printStackTrace();
-
         }
 
-        messagetxt.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-                // to do
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // to do
-            }
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-
-                socket.emit("messagedetection", userId, s);
-            }
-        });
+        messagetxt.addTextChangedListener(textWatcher);
 
 
-        socket.on("typing", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // to do
-                    }
-                });
-            }});
+        socket.on("typing", onTyping);
 
-        socket.on("message", new Emitter.Listener() {
-            @Override
-            public void call(final Object... args) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // to do
+        socket.on("message", onMessage);
 
-                    }
-                });
-            }
-        });
+        socket.on("userdisconnect", onUserDisconnect);
 
-        socket.on("userdisconnect", new Emitter.Listener() {
-            @Override
-            public void call(final Object... args) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String data = (String) args[0];
-
-                        Toast.makeText(getActivity(),data,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-            }
-        });
         observeViewModel();
         otherAnswersViewModel.getQuestionById(questionId);
 
@@ -165,5 +101,73 @@ public class OtherAnswersFragment extends Fragment {
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
     }
+
+    View.OnClickListener floatingActionButtonOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Bundle bundle=new Bundle();
+            bundle.putString("arg", questionId);
+            ViewOnlyOthersAnswerFragment viewOnlyOthersAnswerFragment = new ViewOnlyOthersAnswerFragment();
+            viewOnlyOthersAnswerFragment.setArguments(bundle);
+            getFragmentManager().beginTransaction()
+                    .add(((ViewGroup)getView().getParent()).getId(), viewOnlyOthersAnswerFragment).commit();
+        }
+    };
+
+    TextWatcher textWatcher = new TextWatcher() {
+
+        public void afterTextChanged(Editable s) {
+            // to do
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // to do
+        }
+        public void onTextChanged(CharSequence s, int start,
+        int before, int count) {
+
+            socket.emit("messagedetection", userId, s);
+        }
+    };
+
+    Emitter.Listener onTyping = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // to do
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // to do
+
+                }
+            });
+        }
+    };
+
+     Emitter.Listener onUserDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String data = (String) args[0];
+
+                    Toast.makeText(getActivity(),data,Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+    };
 
 }
