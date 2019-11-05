@@ -19,7 +19,7 @@ const computeCosineSimilarity = (v1, v2) => {
     }
 
     return sumxy/Math.sqrt(sumxx*sumyy);
-}
+};
 
 const getCosineSimilarity = (v1, v2) => {
 

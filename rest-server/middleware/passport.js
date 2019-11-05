@@ -47,8 +47,7 @@ const oAuthLogin = (method) => {
 
             if (method === "facebook") {
                 user = await User.findOne({"facebook.id": profile.id});
-            }
-            else if (method === "google") {
+            } else {
                 user = await User.findOne({"google.id" : profile.id});
             }
                 
