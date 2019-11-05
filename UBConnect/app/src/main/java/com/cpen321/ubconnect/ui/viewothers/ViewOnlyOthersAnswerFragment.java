@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 
 public class ViewOnlyOthersAnswerFragment extends Fragment {
-    private Socket socket;
     public TextView messagetxt ;
 
     @Nullable
@@ -31,6 +30,7 @@ public class ViewOnlyOthersAnswerFragment extends Fragment {
         View root = inflater.inflate(R.layout.activity_view_only_other_answer, container, false);
 
         messagetxt = (TextView) root.findViewById(R.id.myTextBox1);
+        Socket socket = null;
         try {
 
 
@@ -47,7 +47,7 @@ public class ViewOnlyOthersAnswerFragment extends Fragment {
             e.printStackTrace();
 
         }
-
+        
         socket.on("message", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {

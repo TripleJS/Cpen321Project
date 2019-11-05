@@ -102,7 +102,7 @@ public class OtherAnswersFragment extends Fragment {
         this.question.setText(question.getQuestion());
     }
 
-    View.OnClickListener floatingActionButtonOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener floatingActionButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Bundle bundle=new Bundle();
