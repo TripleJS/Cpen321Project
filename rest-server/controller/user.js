@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const errorHandler = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -98,19 +98,19 @@ const oAuthLogin = async (req, res, next) => {
         errorHandler.errorCatch(error, next);
     }
     
-}
+};
 
 const signJWT = (req, res, next) => {
     const token = jwt.sign(
         {
             user: req.user
         },
-            cfg.secretKey, 
+            secretKey, 
             { expiresIn: "24h" },
         );
     
     return token;
-}
+};
 
 module.exports = {
     addUser,

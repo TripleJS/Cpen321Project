@@ -16,9 +16,9 @@ const getCosineSimilarity = (v1, v2) => {
         let i;
         for(i of v2) {
             let x = v1[i]; let y = v2[i]
-            sumxx += x*x
-            sumyy += y*y
-            sumxy += x*y
+            sumxx += x*x;
+            sumyy += y*y;
+            sumxy += x*y;
         }
 
     }

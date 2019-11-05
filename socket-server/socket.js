@@ -20,7 +20,7 @@ class SocketServer {
 
             socket.on("messagedetection", (nickname, messageContent, ) => {
 
-                console.log(senderNickname + " sent " + messageContent);
+                console.log(nickname + " sent " + messageContent);
 
                 let message = {"message" : messageContent, "senderNickname" : nickname};
 

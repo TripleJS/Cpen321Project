@@ -15,7 +15,7 @@ const createNewUser = (profile, loginMethod) => {
     console.log(userEmail);
     let user; 
 
-    if (method === "facebook") {
+    if (loginMethod === "facebook") {
     user = new User({
         method: loginMethod,
             facebook: {
@@ -24,7 +24,7 @@ const createNewUser = (profile, loginMethod) => {
             },
             userName: userEmail
         });
-    } else if (method === "google") {
+    } else if (loginMethod === "google") {
         user = new User({
             method: loginMethod,
             google: {

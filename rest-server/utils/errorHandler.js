@@ -12,7 +12,7 @@ const errorCatch = (err, next) =>
     }
 
     next(err);
-}
+};
 
 /**
  * Throws and error with the given message and status code.
@@ -28,7 +28,7 @@ const errorThrowValidator = (errors, message, statusCode) =>
         error.data = errors; 
         throw error;
     }
-}
+};
 
 /**  
 * Throw an error with given message and status code
@@ -45,7 +45,7 @@ const errorThrow = (errors, message, statusCode) => {
     }
      
     throw error;
-}
+};
 
 module.exports = {
     errorThrow,

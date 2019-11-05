@@ -109,8 +109,8 @@ const keywords = (string) => {
 
     string = string.replace(new RegExp(" ","gi"),",");
 
-    string = string.split(",").filter(function(item,j,allItems){
-        return j==allItems.indexOf(item);
+    string = string.split(",").filter((item,j,allItems) => {
+        return j === allItems.indexOf(item);
     }).join(",");
-}
+};
 
