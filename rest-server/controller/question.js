@@ -78,7 +78,7 @@ const suggestedQuestions = async (req, res, next) => {
         let returnedQuestions = getBagOfQuestions(questionList, question);
 
         res.status(200).json(
-            returnedQuestions
+            questionList
         );
 
         
