@@ -151,7 +151,8 @@ module.exports = {
     postQuestion,
     suggestedQuestions,
     searchQuestion,
-    swipedQuestion
+    swipedQuestion,
+    suggestedQuestionsV2
 };
 
 
