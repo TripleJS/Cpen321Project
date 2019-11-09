@@ -87,7 +87,7 @@ const suggestedQuestions = async (req, res, next) => {
     }
 };
 
-const suggestedQuestionsV2 = (req, res, next) => {
+const suggestedQuestionsV2 = async (req, res, next) => {
     try {
         let randomQuestion = await Question.findOne();
 
