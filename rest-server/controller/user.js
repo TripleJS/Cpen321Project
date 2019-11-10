@@ -100,21 +100,9 @@ const oAuthLogin = async (req, res, next) => {
     
 };
 
-const signJWT = (req, res, next) => {
-    const token = jwt.sign(
-        {
-            user: req.user
-        },
-            secretKey, 
-            { expiresIn: "24h" },
-        );
-    
-    return token;
-};
 
 module.exports = {
     addUser,
     oAuthLogin,
-    getUser,
-    signJWT
+    getUser
 };
