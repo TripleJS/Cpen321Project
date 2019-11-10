@@ -1,3 +1,6 @@
+const SIMILARITY_THRESHOLD = 0.4;
+const MINIMUM_RETURNED_QUESTIONS = 4;
+
 const normalizeVector = (vector, length) => {
     const newVector = vector;
     for (let i = 0; i < length; i++) {
@@ -41,11 +44,11 @@ const getBagOfQuestions = (questionKeywords, question) => {
     for (let i = 0; i < questionKeywords.size; i++) {
     
         const cosineSimilarity = getCosineSimilarity(question, questionKeywords[i]);
-        if (cosineSimilarity > 0.4) {
+        if (cosineSimilarity > MINIMUM_RETURNED_QUESTIONS) {
             bagOfQuestions.push(questionKeywords[i]);
         }
 
-        if (bagOfQuestions > 4) {
+        if (bagOfQuestions > SIMILARITY_THRESHOLD) {
             return bagOfQuestions;
         }
     }
