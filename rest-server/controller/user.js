@@ -4,6 +4,7 @@ const errorHandler = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
 const jwt = require("jsonwebtoken");
+const {logger} = require('../../logger');
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -57,7 +58,7 @@ const getUser = async (req, res, next) => {
             errorHandler.errorThrow({}, "User Does Not Exist", 403);
         }
 
-        console.log(user);
+        logger.info(user);
 
         res.status(200).json({
             userData : user
@@ -72,7 +73,7 @@ const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});
     const user = select(req.user);
 
-    console.log(req.user);
+    logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
 
@@ -87,7 +88,7 @@ const oAuthLogin = async (req, res, next) => {
 
     try {
         let result = await req.user.save();
-        console.log("new user data: " + result);
+        logger.info("new user data: " + result);
 
         res.status(200).json({
             userId : user._id,

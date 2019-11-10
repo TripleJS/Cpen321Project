@@ -7,12 +7,13 @@ const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecre
 const User = require("../schema/user");
 const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
+const {logger} = require('../../logger');
 
 const createNewUser = (profile, loginMethod) => {
     const newId = profile.id;
     const userEmail = profile.emails[0].value;
                 
-    console.log(userEmail);
+    logger.info(userEmail);
     let user; 
 
     if (loginMethod === "facebook") {
@@ -41,7 +42,7 @@ const createNewUser = (profile, loginMethod) => {
 const oAuthLogin = (method) => {
     return async(accessToken, refreshToken, profile, done) => {
         try {
-            console.log("Printing Access Token: " + accessToken);
+            logger.info("Printing Access Token: " + accessToken);
 
             let user; 
 
@@ -51,7 +52,7 @@ const oAuthLogin = (method) => {
                 user = await User.findOne({"google.id" : profile.id});
             }
                 
-            console.log(profile);
+            logger.info(profile);
             
             if (!user) {
                 user = createNewUser(profile, method);
@@ -69,9 +70,9 @@ passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader("authorization"),
     secretOrKey: secretKey
 }, async(payload, done) => {
-    console.log(payload);
-    console.log("------------------------------------------");
-    console.log("Passed JWT Authentication");
+    logger.info(payload);
+    logger.info("------------------------------------------");
+    logger.info("Passed JWT Authentication");
     try {
         // Find user specified in token
         const user = await User.findById(payload.user);
@@ -101,7 +102,7 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
 
 // const oAuthLoginFB = async(accessToken, refreshToken, profile, done) => {
 //     try {
-//         console.log(accessToken);
+//         logger.info(accessToken);
 //         const user = await User.findOne({ "facebook.id": profile.id });
 
 //         if (!user)
@@ -123,7 +124,7 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
 //             return done(null, result)
 //         }
             
-//         console.log("here");
+//         logger.info("here");
 //         done(null, user);
 //     } catch (error) {
 //         done(error, false);
@@ -133,7 +134,7 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
 
 // const oAuthLoginGoogle = async(accessToken, refreshToken, profile, done) => {
 //     try {
-//         console.log(accessToken);
+//         logger.info(accessToken);
 //         const user = await User.findOne({ "google.id": profile.id });
 
 //         if (!user)
@@ -155,7 +156,7 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
 //             return done(null, result)
 //         }
             
-//         console.log("here");
+//         logger.info("here");
 //         done(null, googleProfile);
 //     } catch (error) {
 //         done(error, false);

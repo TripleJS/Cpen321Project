@@ -1,10 +1,11 @@
 const {body} = require("express-validator");
 const User = require("../schema/user");
+const {logger} = require('../../logger');
 
 const userValidator = body("owner")
     .custom(async (value) =>
     {
-        console.log("user id is :" + value);
+        logger.info("user id is :" + value);
 
         try {
             let user = await User.findById(value);

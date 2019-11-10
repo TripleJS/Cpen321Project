@@ -8,6 +8,7 @@ const apiRoute = require("./routes/createRouter");
 const error = require("./controller/error");
 const server = http.createServer(app);
 const printBody = require("./middleware/printBody");
+const {logger} = require('../logger');
 
 app.use(passport.initialize());
 app.use(bodyParser.json());
@@ -21,9 +22,9 @@ mongoose.set("useUnifiedTopology", true);
 
 async function startServer(url, port) {
     try {
-        console.log("Trying to connect to mongodb database");
+        logger.info("Trying to connect to mongodb database");
         await mongoose.connect(url, {useNewUrlParser: true});
-        server.listen(port, () => console.log("Listening on port: ", port));
+        server.listen(port, () => logger.info("Listening on port: ", port));
     }
     catch (err) {
         console.error(err);

@@ -66,7 +66,7 @@ var data = [
 
 
 // data[0] = data[0].replace(re2,"");
-// console.log(data[0]);
+// logger.info(data[0]);
 
 const keywords = (string) => {
     var regexes = [
@@ -113,4 +113,4 @@ const keywords = (string) => {
 };
 
 
-console.log(keywords(data));
+logger.info(keywords(data));

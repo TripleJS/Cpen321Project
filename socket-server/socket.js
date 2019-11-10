@@ -1,5 +1,6 @@
 const socketio = require("socket.io");
 const {onJoin} = require("./socketFunctions");
+const {logger} = require('../logger');
 
 class SocketServer {
     
@@ -20,11 +21,11 @@ class SocketServer {
 
             socket.on("messagedetection", (nickname, messageContent, ) => {
 
-                console.log(nickname + " sent " + messageContent);
+                logger.info(nickname + " sent " + messageContent);
 
                 let message = {"message" : messageContent, "senderNickname" : nickname};
 
-                console.log(message);
+                logger.info(message);
                 this.io.emit("message", message);
             });
         });

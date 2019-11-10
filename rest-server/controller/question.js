@@ -4,11 +4,12 @@ const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const getKeywords = require("../utils/suggestions/keywordExtractor");
 const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
+const {logger} = require('../../logger');
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
 
-    console.log("current question id" + questionID);
+    logger.info("current question id" + questionID);
     try {
         
         let question = await Question.findById(questionID);
@@ -31,7 +32,7 @@ const postQuestion = async (req, res, next) => {
     const questionString = req.body.question;
     const lowerCaseString = questionString.toLowerCase();
 
-    console.log(lowerCaseString);
+    logger.info(lowerCaseString);
     const creator = req.body.owner; 
     const course = req.body.course;
 
@@ -68,7 +69,7 @@ const postQuestion = async (req, res, next) => {
 
 const suggestedQuestions = async (req, res, next) => {
 
-    console.log(req.params.userId);
+    logger.info(req.params.userId);
 
     try {
         let question = await Question.findOne();
@@ -136,9 +137,9 @@ const swipedQuestion = (req, res, next) => {
     const userId = req.body.userId;
     const direction = req.body.direction; 
 
-    console.log(questionId);
-    console.log(userId);
-    console.log(direction);
+    logger.info(questionId);
+    logger.info(userId);
+    logger.info(direction);
 
     res.status(200).json({
         user: userId,
