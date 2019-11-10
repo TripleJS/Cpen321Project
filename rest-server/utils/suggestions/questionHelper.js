@@ -1,6 +1,6 @@
 const Question = require('../../schema/questions');
 const User = require('../../schema/user');
-
+const MAX_RETRIEVED_QUESTIONS = 20;
 
 
 const getQuestions = async (userID) => {
@@ -8,10 +8,12 @@ const getQuestions = async (userID) => {
         let currentUser = await User.findById(userID);
 
         if (currentUser === null) {
-            return new Error()
+            return null;
         }
 
+        let userQuestions = currentUser.
+
     } catch {
-        
+
     }
 }

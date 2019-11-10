@@ -11,5 +11,4 @@ router.get("/questions/search", questionController.searchQuestion);
 router.post("/questions/swipe", questionController.swipedQuestion);
 
 
-
 module.exports = router;

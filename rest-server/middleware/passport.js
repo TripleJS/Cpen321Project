@@ -70,6 +70,7 @@ passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader("authorization"),
     secretOrKey: secretKey
 }, async(payload, done) => {
+
     logger.info(payload);
     logger.info("------------------------------------------");
     logger.info("Passed JWT Authentication");
@@ -79,7 +80,6 @@ passport.use(new JwtStrategy({
 
         if (!user) {
             errorThrow({}, "User Does not Exist", 403);
-
         }
             
         done(null, user);
@@ -98,68 +98,4 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
     clientSecret: facebookClientSecret
 }, oAuthLogin("facebook")));
 
-
-
-// const oAuthLoginFB = async(accessToken, refreshToken, profile, done) => {
-//     try {
-//         logger.info(accessToken);
-//         const user = await User.findOne({ "facebook.id": profile.id });
-
-//         if (!user)
-//         {
-//             const id = profile.id;
-//             const email = profile.emails[0].value;
-
-//             const user = new User({
-//                     method: "facebook",
-//                     facebook: {
-//                         id: id,
-//                         email: email
-//                     },
-//                     userName: email
-//                 }
-//             );
-
-//             let result = await user.save();
-//             return done(null, result)
-//         }
-            
-//         logger.info("here");
-//         done(null, user);
-//     } catch (error) {
-//         done(error, false);
-//     }
-// };
-
-
-// const oAuthLoginGoogle = async(accessToken, refreshToken, profile, done) => {
-//     try {
-//         logger.info(accessToken);
-//         const user = await User.findOne({ "google.id": profile.id });
-
-//         if (!user)
-//         {
-//             const id = profile.id;
-//             const email = profile.emails[0].value;
-
-//             const user = new User({
-//                     method: "google",
-//                     google: {
-//                         id: id,
-//                         email: email
-//                     },
-//                     userName: email
-//                 }
-//             );
-
-//             let result = await user.save();
-//             return done(null, result)
-//         }
-            
-//         logger.info("here");
-//         done(null, googleProfile);
-//     } catch (error) {
-//         done(error, false);
-//     }
-// };
 

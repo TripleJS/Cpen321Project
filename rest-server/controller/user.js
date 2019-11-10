@@ -86,10 +86,11 @@ const oAuthLogin = async (req, res, next) => {
             { expiresIn: "24h" },
     );
 
+    logger.info("JWT TOKEN: " + token);
+
     try {
         let result = await req.user.save();
-        logger.info("new user data: " + result);
-
+        logger.info("User Info: " + result);
         res.status(200).json({
             userId : user._id,
             jwt : token
@@ -98,7 +99,7 @@ const oAuthLogin = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-    
+
 };
 
 
