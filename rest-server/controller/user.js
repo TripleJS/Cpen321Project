@@ -5,6 +5,7 @@ const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
 const jwt = require("jsonwebtoken");
 const {logger} = require('../../logger');
+const {getQuestionsByUser} = require('../utils/suggestions/questionHelper');
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -51,7 +52,7 @@ const getUser = async (req, res, next) => {
     try {
 
         const id = req.params.userId;
-        logger.info(id);
+        logger.info("User ID: " + id);
 
         let user = await User.findById(id);
 
@@ -59,10 +60,11 @@ const getUser = async (req, res, next) => {
             errorHandler.errorThrow({}, "User Does Not Exist", 403);
         }
 
-        logger.info(user);
+        let userQuestions = await getQuestionsByUser(id);
 
         res.status(200).json({
-            user
+            user, 
+            questions: userQuestions
         });
 
     } catch (error) {

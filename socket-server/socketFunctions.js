@@ -3,11 +3,7 @@ const serviceAccount = require("../fcm/ubconnect-ec25e-firebase-adminsdk-4zww0-0
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
 const logger = require('../logger');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://ubconnect-ec25e.firebaseio.com"
-});
+const {sendNotification, subscribeToTopic} = require('./utils/fcm');
 
 const onJoin = async (userId, questionId) => {
     logger.info(userId + ": joined chat and current question id is " + questionId);
@@ -26,13 +22,7 @@ const onJoin = async (userId, questionId) => {
 
         fcmAccessToken = user.fcmAccessToken;
         
-        admin.messaging().subscribeToTopic(fcmAccessToken, questionId)
-            .then((res) => {
-                logger.info("subscribed to topic " + res);
-            })
-            .catch((err) => {
-                console.err("error subscribing " + err);
-            });
+        
 
     } catch (error) {
         console.error(error);

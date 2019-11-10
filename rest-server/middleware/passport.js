@@ -23,7 +23,8 @@ const createNewUser = (profile, loginMethod) => {
             id: newId,
             email: userEmail
             },
-            userName: userEmail
+            userName: userEmail,
+            email: userEmail
         });
     } else if (loginMethod === "google") {
         user = new User({
@@ -32,7 +33,8 @@ const createNewUser = (profile, loginMethod) => {
             id: newId,
             email: userEmail
         },
-            userName: userEmail
+            userName: userEmail,
+            email: userEmail
         });
     }
 
