@@ -38,4 +38,8 @@ const questionSchema = new Schema({
     }
 }); 
 
+questionSchema.query.byUserId = function(userId) {
+    return this.find({owner : userId});
+}
+
 module.exports = mongoose.model("Question", questionSchema);

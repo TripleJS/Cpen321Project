@@ -51,6 +51,7 @@ const getUser = async (req, res, next) => {
     try {
 
         const id = req.params.userId;
+        logger.info(id);
 
         let user = await User.findById(id);
 
@@ -61,7 +62,7 @@ const getUser = async (req, res, next) => {
         logger.info(user);
 
         res.status(200).json({
-            userData : user
+            user
         });
 
     } catch (error) {
