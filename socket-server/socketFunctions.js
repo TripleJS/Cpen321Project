@@ -21,6 +21,15 @@ const onJoin = async (userId, questionId) => {
         logger.info("User is: " + user);
 
         fcmAccessToken = user.fcmAccessToken;
+
+        subscribeToTopic(questionId, fcmAccessToken);
+
+        const notification = {
+            token : fcmAccessToken,
+            message : "User is Answering Question + " + questionData.title 
+        };
+
+        sendNotification(questionId, notification);
         
     } catch (error) {
         console.error(error);
