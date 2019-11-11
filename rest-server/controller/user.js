@@ -61,7 +61,7 @@ const getUser = async (req, res, next) => {
         }
 
         let userQuestions = await getQuestionsByUser(id);
-        logger.info(userQuestions);
+        // logger.info(userQuestions);
         user.questions = userQuestions;
 
         logger.info(user);
