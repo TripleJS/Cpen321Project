@@ -55,14 +55,13 @@ const getUser = async (req, res, next) => {
         logger.info("User ID: " + id);
 
         let user = await User.findById(id);
-        let newUser = user;
 
         if (user == null) {
             errorHandler.errorThrow({}, "User Does Not Exist", 403);
         }
 
         let userQuestions = await getQuestionsByUser(id);
-        // logger.info(userQuestions);
+        let newUser = user.toObject();
         newUser.questions = userQuestions;
 
         logger.info(newUser);
