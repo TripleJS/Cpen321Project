@@ -62,14 +62,11 @@ const getUser = async (req, res, next) => {
 
         let userQuestions = await getQuestionsByUser(id);
 
-        const userDataWithQuestions = {
-            user, 
-            questions: userQuestions
-        };
+        user.questions = userQuestions;
 
-        logger.info(userDataWithQuestions);
+        logger.info(user);
 
-        res.status(200).json(userDataWithQuestions);
+        res.status(200).json(user);
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
