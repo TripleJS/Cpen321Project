@@ -72,6 +72,20 @@ const getUser = async (req, res, next) => {
     }
 };
 
+const editUser = async (req, res, next) => {
+    try {
+        const userName = req.body.username;
+        const courses = req.body.courses; 
+        const userId = req.params.userId;
+
+        let user = await User.findById(userId);
+
+
+    } catch (error) {
+        
+    }
+}
+
 const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});
     const user = select(req.user);
@@ -109,5 +123,6 @@ const oAuthLogin = async (req, res, next) => {
 module.exports = {
     addUser,
     oAuthLogin,
-    getUser
+    getUser,
+    editUser
 };

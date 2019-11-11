@@ -8,7 +8,7 @@ const {sendNotification, subscribeToTopic} = require('./utils/fcm');
 const onJoin = async (userId, questionId) => {
     logger.info(userId + ": joined chat and current question id is " + questionId);
     
-    let fcmAccessToken; 
+    let fcmAccessToken;
     let questionData;
 
     try {
@@ -22,33 +22,14 @@ const onJoin = async (userId, questionId) => {
 
         fcmAccessToken = user.fcmAccessToken;
         
-        
-
     } catch (error) {
         console.error(error);
     }
 
-    const message = {
-        notification: {
-            title: "Someone is answering your question!",
-            body: "Your question " + questionData.title + " is being answered"
-        },
-        data : {
-            message : "Some user is answering your question"
-        },
-        topic: questionId
-    };
       
       // Send a message to the device corresponding to the provided
       // registration token.
-    admin.messaging().send(message)
-        .then((response) => {
-          // Response is a message ID string.
-          logger.info("Successfully sent message:", response);
-        })
-        .catch((error) => {
-          logger.info("Error sending message:", error);
-        });
+    
 };
 
 module.exports = {
