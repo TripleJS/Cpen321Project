@@ -61,7 +61,9 @@ const getUser = async (req, res, next) => {
         }
 
         let userQuestions = await getQuestionsByUser(id);
-
+        logger.info("user data: " + user);
+        logger.info("user questions: " + questions);
+        
         res.status(200).json({
             user, 
             questions: userQuestions
