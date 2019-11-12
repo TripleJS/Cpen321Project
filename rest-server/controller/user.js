@@ -5,7 +5,7 @@ const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
 const jwt = require("jsonwebtoken");
 const {logger} = require("../../logger");
-const {getQuestionsByUser} = require("../utils/suggestions/questionHelper");
+const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggestions/questionHelper");
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -60,10 +60,10 @@ const getUser = async (req, res, next) => {
             errorThrow({}, "User Does Not Exist", 403);
         }
 
-        let userQuestions = await getQuestionsByUser(id);
+        let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
         let newUser = user.toObject();
         newUser.questions = userQuestions;
-
+        
         logger.info(newUser);
 
         res.status(200).json(newUser);
@@ -79,6 +79,7 @@ const updateUser = async (req, res, next) => {
         const newUserName = req.body.username;
         const newCourses = req.body.courses; 
         const userId = req.params.userId;
+        const newUserEmail = req.body.email;
 
         let user = await User.findById(userId);
 
@@ -87,6 +88,7 @@ const updateUser = async (req, res, next) => {
         }
 
         user.userName = newUserName;
+        user.email = newUserEmail;
         
         for (var i = 0; i < courses.length; i++) {
             user.coures.push(newCourses[parseInt(i)]);

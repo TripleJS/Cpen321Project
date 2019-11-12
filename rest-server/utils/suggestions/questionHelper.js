@@ -3,15 +3,15 @@ const User = require("../../schema/user");
 // const {logger} = require("../../../logger");
 // const {startServer} = require("../../api");
 // const {mongodburl, port} = require("../../../config");
-const MAX_RETRIEVED_QUESTIONS  = 3;
+const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
 
 /**
  * @param {ObjectID} userID MongoDB ObjectID of a user
  */
-const getQuestionsByUser = async (userID) => {
+const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {
-        let userQuestions = await Question.find({}).limit(MAX_RETRIEVED_QUESTIONS).byUserId(userID);
+        let userQuestions = await Question.find({}).limit(numberOfQuestions).byUserId(userID);
         // logger.info("User Questions Length: " + userQuestions.length);
         return userQuestions;
 
@@ -62,7 +62,8 @@ console.log(getKeywordFrequency(testArray));
 
 module.exports = {
     getQuestionsByUser,
-    getKeywordFrequency
+    getKeywordFrequency,
+    MAX_RETRIEVED_QUESTIONS
 }
 
 // const test = async() => {
