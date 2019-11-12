@@ -9,7 +9,6 @@ router.post("/user/oauth/facebook", passport.authenticate("Facebook-Login", {ses
 router.get("/user/getuser/:userId", passport.authenticate("jwt", {session: false}), userController.getUser);
 
 /* TODO: THESE FUNCTIONS */
-
 router.post("/user/update-user/:userId"); 
 
 module.exports = router;

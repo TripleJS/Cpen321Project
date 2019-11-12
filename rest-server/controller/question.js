@@ -4,7 +4,7 @@ const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const getKeywords = require("../utils/suggestions/keywordExtractor");
 const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
-const {logger} = require('../../logger');
+const {logger} = require("../../logger");
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
@@ -40,7 +40,7 @@ const postQuestion = async (req, res, next) => {
 
     try {
         if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
+            errorHandler.errorThrowValidator(errors, "Couldn"t Find User", 403);
         }
         const question = new Question({
             title : title,

@@ -2,8 +2,8 @@ const admin = require("firebase-admin");
 const serviceAccount = require("../fcm/ubconnect-ec25e-firebase-adminsdk-4zww0-0d250bdc3b.json");
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
-const logger = require('../logger');
-const {sendNotification, subscribeToTopic} = require('./utils/fcm');
+const logger = require("../logger");
+const {sendNotification, subscribeToTopic} = require("./utils/fcm");
 
 const onJoin = async (userId, questionId) => {
     logger.info(userId + ": joined chat and current question id is " + questionId);

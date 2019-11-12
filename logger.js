@@ -1,10 +1,10 @@
-const winston = require('winston');
+const winston = require("winston");
 const logger = winston.createLogger({
     format: winston.format.json(),
-    defaultMeta : { service : 'user-service'},
+    defaultMeta : { service : "user-service"},
     transports : [
-        new winston.transports.File({filename : 'error.log', level : 'error'}),
-        new winston.transports.File({filename: 'combined.log'})    ]
+        new winston.transports.File({filename : "error.log", level : "error"}),
+        new winston.transports.File({filename: "combined.log"})    ]
 });
 
 logger.add(new winston.transports.Console({
@@ -20,8 +20,8 @@ const loggerLevels =  {
     silly: 5
 };
 
-logger.error('error message test');
-logger.info('info message test');
+logger.error("error message test");
+logger.info("info message test");
 
 module.exports = {
     loggerLevels,

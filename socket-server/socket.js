@@ -1,6 +1,6 @@
 const socketio = require("socket.io");
 const {onJoin} = require("./socketFunctions");
-const {logger} = require('../logger');
+const {logger} = require("../logger");
 
 class SocketServer {
     

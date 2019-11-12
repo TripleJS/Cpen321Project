@@ -1,6 +1,6 @@
 const {body} = require("express-validator");
 const User = require("../schema/user");
-const {logger} = require('../../logger');
+const {logger} = require("../../logger");
 
 const userValidator = body("owner")
     .custom(async (value) =>

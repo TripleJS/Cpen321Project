@@ -1,7 +1,7 @@
 const CognitiveServicesCredentials = require("@azure/ms-rest-js");
 const TextAnalyticsAPIClient = require("@azure/cognitiveservices-textanalytics");
 const {subscriptionKey, endpoint} = require("../../../config");
-const {logger} = require('../../../logger');
+const {logger} = require("../../../logger");
 
 const creds = new CognitiveServicesCredentials.ApiKeyCredentials({ inHeader: { "Ocp-Apim-Subscription-Key": subscriptionKey } });
 const client = new TextAnalyticsAPIClient.TextAnalyticsClient(creds, endpoint);
