@@ -1,5 +1,5 @@
 const socketio = require("socket.io");
-const {onJoin} = require("./socketFunctions");
+const {onJoin} = require("./socketListenerFunctions");
 const {logger} = require("../logger");
 
 class SocketServer {
@@ -9,26 +9,28 @@ class SocketServer {
     }
 
     startServer() {
-        // this.io.on("connection", (socket) => {
+        this.io.on("connection", (socket) => {
 
-        //     socket.on("join", onJoin
-        //         .then((userId) => {
-        //             socket.broadcast.emit("userjoinedthechat", userId + " has joined the chat");
-        //     })
-        //     .catch((err) => {
-        //         console.error(err);
-        //     }));
+            socket.on("join", async (userId, questionId) => {
+                try {
+                    await onJoin(userId, questionId);
+                    socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
+                } catch (error) {
+                    logger.error(error);
+                }
+            });
+        
 
-        //     socket.on("messagedetection", (nickname, messageContent, ) => {
+            socket.on("messagedetection", (nickname, messageContent, ) => {
 
-        //         logger.info(nickname + " sent " + messageContent);
+                logger.info(nickname + " sent " + messageContent);
 
-        //         let message = {"message" : messageContent, "senderNickname" : nickname};
+                let message = {"message" : messageContent, "senderNickname" : nickname};
 
-        //         logger.info(message);
-        //         this.io.emit("message", message);
-        //     });
-        // });
+                logger.info(message);
+                this.io.emit("message", message);
+            });
+        });
     }
 }
 

@@ -7,7 +7,6 @@ admin.initializeApp({
     databaseURL: "https://ubconnect-ec25e.firebaseio.com" // TODO: Add to constants later 
   });
 
-
 const sendNotification = (topic, notification) => {
 
     const message = {
@@ -45,8 +44,16 @@ const subscribeToTopic = (topic, token) => {
     })
 };
 
+const createNotificationMessage = (notificationBody, notificationTitle) => {
+    return {
+        title: notificationTitle,
+        body: notificationBody
+    }
+}
+
 module.exports = {
     sendNotification,
-    subscribeToTopic
+    subscribeToTopic,
+    createNotificationMessage
 };
 
