@@ -20,16 +20,13 @@ class SocketServer {
                 }
             });
         
-
             socket.on("messagedetection", (nickname, messageContent, ) => {
-
-                logger.info(nickname + " sent " + messageContent);
-
                 let message = {"message" : messageContent, "senderNickname" : nickname};
-
-                logger.info(message);
                 this.io.emit("message", message);
             });
+
+
+            
         });
     }
 }

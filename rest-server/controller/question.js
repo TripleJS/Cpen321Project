@@ -40,7 +40,7 @@ const postQuestion = async (req, res, next) => {
 
     try {
         if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn"t Find User", 403);
+            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
         }
         const question = new Question({
             title : title,
