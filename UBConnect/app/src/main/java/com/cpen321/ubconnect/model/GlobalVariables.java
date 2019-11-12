@@ -5,6 +5,8 @@ import android.app.Application;
 public class GlobalVariables extends Application {
 
     private String userID;
+    private String jwt;
+
 
     public String getUserID() {
         return userID;
@@ -12,5 +14,13 @@ public class GlobalVariables extends Application {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }

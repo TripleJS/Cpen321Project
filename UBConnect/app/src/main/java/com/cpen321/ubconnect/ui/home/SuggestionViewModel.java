@@ -1,18 +1,22 @@
 package com.cpen321.ubconnect.ui.home;
 
 import android.util.Log;
+import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
+import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SuggestionViewModel extends ViewModel {
 
     private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
+    private MutableLiveData<String> error = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
 
@@ -38,8 +43,19 @@ public class SuggestionViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getSuggestion(String user) {
+    public void getSuggestion(String user, String token, View view) {
         Log.d("Suggest", "getSuggestion:1 ");
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor(token))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        mBackEndService = retrofit.create(IBackEndService.class);
+
         mBackEndService.getSuggestedQuestions(user).enqueue(new Callback<List<Question>>() {
 
             @Override
@@ -47,7 +63,10 @@ public class SuggestionViewModel extends ViewModel {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+//                    ErrorHandlingUtils.errorHandling("dummy");
+                    Log.d("Suggest", "getSuggestion:3 ");
+                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    return;
                 }
 
                 if (response.body() == null)
@@ -59,6 +78,8 @@ public class SuggestionViewModel extends ViewModel {
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
                 // to do
+                Log.d("Suggest", "getSuggestion:4 ");
+                error.postValue("No Network Connection");
             }
         });
     }
@@ -77,7 +98,7 @@ public class SuggestionViewModel extends ViewModel {
                 Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+//                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -92,4 +113,8 @@ public class SuggestionViewModel extends ViewModel {
             }
         });
     }
-}
+
+    public MutableLiveData<String> getError(){
+        return error;
+    }
+ }

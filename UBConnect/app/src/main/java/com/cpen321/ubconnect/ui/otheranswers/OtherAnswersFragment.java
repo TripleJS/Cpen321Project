@@ -44,6 +44,7 @@ public class OtherAnswersFragment extends Fragment {
     //    public  Button send ;
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
+    private String token;
 
     @Nullable
     @Override
@@ -60,6 +61,7 @@ public class OtherAnswersFragment extends Fragment {
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
+        token = ((GlobalVariables) getActivity().getApplication()).getJwt();
         //connect you socket client to the server
         question = root.findViewById(R.id.QuestioToAnswer);
         userId = ((GlobalVariables) getActivity().getApplication()).getUserID();
@@ -88,7 +90,7 @@ public class OtherAnswersFragment extends Fragment {
         socket.on("userdisconnect", onUserDisconnect);
 
         observeViewModel();
-        otherAnswersViewModel.getQuestionById(questionId);
+        otherAnswersViewModel.getQuestionById(questionId, token);
 
         return root;
     }

@@ -47,7 +47,7 @@ public class ViewOnlyOthersAnswerFragment extends Fragment {
             e.printStackTrace();
 
         }
-        
+
         socket.on("message", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
