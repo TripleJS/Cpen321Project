@@ -72,7 +72,6 @@ const suggestedQuestions = async (req, res, next) => {
     logger.info(req.params.userId);
 
     try {
-        let user = await user
         let question = await Question.findOne();
 
         let questionList = await Question.find({}).limit(5);
@@ -81,9 +80,7 @@ const suggestedQuestions = async (req, res, next) => {
 
         res.status(200).json(
             questionList
-        );
-
-        
+        );    
     } catch (error) {
         errorHandler.errorCatch(error);
     }

@@ -83,7 +83,7 @@ passport.use(new JwtStrategy({
         if (!user) {
             errorThrow({}, "User Does not Exist", 403);
         }
-            
+        
         done(null, user);
     } catch (error) {
         done(error, false);
