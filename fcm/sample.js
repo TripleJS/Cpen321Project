@@ -34,10 +34,10 @@ admin.initializeApp({
 // admin.messaging().send(message)
 //   .then((response) => {
     // Response is a message ID string.
-//     console.log("Successfully sent message:", response);
+//     logger.info("Successfully sent message:", response);
 //   })
 //   .catch((error) => {
-//     console.log("Error sending message:", error);
+//     logger.info("Error sending message:", error);
 //   });
 
 
@@ -62,6 +62,6 @@ admin.initializeApp({
 //             failedTokens.push(registrationTokens[idx]);
 //           }
 //         });
-//         console.log("List of tokens that caused failures: " + failedTokens);
+//         logger.info("List of tokens that caused failures: " + failedTokens);
 //       }
 //     });

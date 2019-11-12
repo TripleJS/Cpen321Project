@@ -1,5 +1,7 @@
+const {logger} = require('../../logger');
+
 const printBody = (req, res, next) => {
-    console.log(req.body);
+    logger.info(req.body);
     next();
 };
 

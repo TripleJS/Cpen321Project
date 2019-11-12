@@ -4,6 +4,8 @@ const errorHandler = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
 const jwt = require("jsonwebtoken");
+const {logger} = require('../../logger');
+const {getQuestionsByUser} = require('../utils/suggestions/questionHelper');
 
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
@@ -28,7 +30,7 @@ const addUser = async (req, res, next) => {
                 email: userEmail, 
                 passwordHash: hashedPassword
             },
-            userName: userName,
+            userName: newUserName,
         });
     
         let result = await newUser.save();
@@ -44,12 +46,13 @@ const addUser = async (req, res, next) => {
     {
         errorHandler.errorCatch(err, next);
     }
-}
+};
 
 const getUser = async (req, res, next) => {
     try {
 
         const id = req.params.userId;
+        logger.info("User ID: " + id);
 
         let user = await User.findById(id);
 
@@ -57,22 +60,38 @@ const getUser = async (req, res, next) => {
             errorHandler.errorThrow({}, "User Does Not Exist", 403);
         }
 
-        console.log(user);
+        let userQuestions = await getQuestionsByUser(id);
+        let newUser = user.toObject();
+        newUser.questions = userQuestions;
 
-        res.status(200).json({
-            userData : user
-        });
+        logger.info(newUser);
+
+        res.status(200).json(newUser);
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
 };
 
+const editUser = async (req, res, next) => {
+    try {
+        const userName = req.body.username;
+        const courses = req.body.courses; 
+        const userId = req.params.userId;
+
+        let user = await User.findById(userId);
+
+
+    } catch (error) {
+        
+    }
+}
+
 const oAuthLogin = async (req, res, next) => {
     const select = ({_id, userName}) => ({_id, userName});
     const user = select(req.user);
 
-    console.log(req.user);
+    logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
 
@@ -85,10 +104,11 @@ const oAuthLogin = async (req, res, next) => {
             { expiresIn: "24h" },
     );
 
+    logger.info("JWT TOKEN: " + token);
+
     try {
         let result = await req.user.save();
-        console.log("new user data: " + result);
-
+        logger.info("User Info: " + result);
         res.status(200).json({
             userId : user._id,
             jwt : token
@@ -97,24 +117,13 @@ const oAuthLogin = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-    
+
 };
 
-const signJWT = (req, res, next) => {
-    const token = jwt.sign(
-        {
-            user: req.user
-        },
-            secretKey, 
-            { expiresIn: "24h" },
-        );
-    
-    return token;
-};
 
 module.exports = {
     addUser,
     oAuthLogin,
     getUser,
-    signJWT
+    editUser
 };

@@ -1,14 +1,14 @@
-// var data = [
-// " The frequency response of a causal continuous-time\
-//                                                     \
-//  LTI system is given by H(ω)=jω+524−ω2+10jω, where the input signal to the system is x(t) and the output is y(t).",
-// "A system is described by the differential equation ddty(t)+9y(t)=2ddtx(t)+x(t), where x(t) is the input and y(t) is the output of the system.In your answers below, enter D(t) instead of δ(t), and “w” for ω. a) Find the frequency response of the system, H(ω).",
-// "Find the Fourier transform X1(ω), X2(ω), and X3(ω) of the signals x1(t), x2(t), and x3(t), using the Fourier transform pair x(t)=u(t+1)−u(t−1)⟷X(ω)=2sinc(ω). Then select the Fourier transform property you used for each signal, from the corresponding drop-down menu.",
-// "Consider a contintuous-time LTI system for which the response to the input x(t)=[e−2t+e−3t]u(t) is given by y(t)=[5e−2t−5e−5t]u(t). a) Find the frequency response, H(ω), of the system.",
-// "In the circuit shown in the figure, the input is the voltage source, v(t), and the output is the voltange vc(t) across the capacitor. Determine the transfer function, H(s), the impulse response h(t), and the step response d(t), of this circuit. Assume R1=2 kΩ, R2=2 kΩ and C=7 mF.",
-// "Given that the Laplace transform of the output is Y(s)=(s+4)(1−e−5s)2s(s+2)2, a) Find the transfer function of the system and the region of convergence for σ=Re(s).",
-// "In the circuit shown in the figure below, the switch has been in a closed position for a long time before it is opened at t=0. Find the inductor’s current, i(t), for t>0 if R1=2 Ω, R2=5 Ω, Vi=11, C=177 F, and L=110 H."
-// ];
+var data = [
+" The frequency response of a causal continuous-time\
+                                                    \
+ LTI system is given by H(ω)=jω+524−ω2+10jω, where the input signal to the system is x(t) and the output is y(t).",
+"A system is described by the differential equation ddty(t)+9y(t)=2ddtx(t)+x(t), where x(t) is the input and y(t) is the output of the system.In your answers below, enter D(t) instead of δ(t), and “w” for ω. a) Find the frequency response of the system, H(ω).",
+"Find the Fourier transform X1(ω), X2(ω), and X3(ω) of the signals x1(t), x2(t), and x3(t), using the Fourier transform pair x(t)=u(t+1)−u(t−1)⟷X(ω)=2sinc(ω). Then select the Fourier transform property you used for each signal, from the corresponding drop-down menu.",
+"Consider a contintuous-time LTI system for which the response to the input x(t)=[e−2t+e−3t]u(t) is given by y(t)=[5e−2t−5e−5t]u(t). a) Find the frequency response, H(ω), of the system.",
+"In the circuit shown in the figure, the input is the voltage source, v(t), and the output is the voltange vc(t) across the capacitor. Determine the transfer function, H(s), the impulse response h(t), and the step response d(t), of this circuit. Assume R1=2 kΩ, R2=2 kΩ and C=7 mF.",
+"Given that the Laplace transform of the output is Y(s)=(s+4)(1−e−5s)2s(s+2)2, a) Find the transfer function of the system and the region of convergence for σ=Re(s).",
+"In the circuit shown in the figure below, the switch has been in a closed position for a long time before it is opened at t=0. Find the inductor’s current, i(t), for t>0 if R1=2 Ω, R2=5 Ω, Vi=11, C=177 F, and L=110 H."
+];
 
 
 
@@ -66,7 +66,7 @@
 
 
 // data[0] = data[0].replace(re2,"");
-// console.log(data[0]);
+// logger.info(data[0]);
 
 const keywords = (string) => {
     var regexes = [
@@ -94,13 +94,11 @@ const keywords = (string) => {
         new RegExp("[, ]+","gi")
     ];
 
-    let index; 
 
-    for(index in regexes){
+    for(var index = 0; index < regexes.length; index++) {
         if (index >16 || index <20){
             string = string.replace(regexes[index]," ");
-        }
-        else if (index >=20){
+        } else {
             string = string.replace(regexes[index],",");
         }
 
@@ -114,3 +112,5 @@ const keywords = (string) => {
     }).join(",");
 };
 
+
+logger.info(keywords(data));

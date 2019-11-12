@@ -7,31 +7,34 @@ const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecre
 const User = require("../schema/user");
 const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
+const {logger} = require('../../logger');
 
 const createNewUser = (profile, loginMethod) => {
-    const id = profile.id;
+    const newId = profile.id;
     const userEmail = profile.emails[0].value;
                 
-    console.log(userEmail);
+    logger.info(userEmail);
     let user; 
 
     if (loginMethod === "facebook") {
     user = new User({
         method: loginMethod,
             facebook: {
-            id: id,
+            id: newId,
             email: userEmail
             },
-            userName: userEmail
+            userName: userEmail,
+            email: userEmail
         });
     } else if (loginMethod === "google") {
         user = new User({
             method: loginMethod,
             google: {
-            id: id,
+            id: newId,
             email: userEmail
         },
-            userName: userEmail
+            userName: userEmail,
+            email: userEmail
         });
     }
 
@@ -41,18 +44,17 @@ const createNewUser = (profile, loginMethod) => {
 const oAuthLogin = (method) => {
     return async(accessToken, refreshToken, profile, done) => {
         try {
-            console.log("Printing Access Token: " + accessToken);
+            logger.info("Printing Access Token: " + accessToken);
 
             let user; 
 
             if (method === "facebook") {
-                user = await User.findOne({"facebook.id": profile.id });
-            }
-            else if (method === "google") {
+                user = await User.findOne({"facebook.id": profile.id});
+            } else {
                 user = await User.findOne({"google.id" : profile.id});
             }
                 
-            console.log(profile);
+            logger.info(profile);
             
             if (!user) {
                 user = createNewUser(profile, method);
@@ -70,16 +72,18 @@ passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader("authorization"),
     secretOrKey: secretKey
 }, async(payload, done) => {
-    console.log(payload);
-    console.log("------------------------------------------");
-    console.log("Passed JWT Authentication");
+
+    logger.info(payload);
+    logger.info("------------------------------------------");
+    logger.info("Passed JWT Authentication");
     try {
         // Find user specified in token
         const user = await User.findById(payload.user);
 
-        if (!user)
+        if (!user) {
             errorThrow({}, "User Does not Exist", 403);
-
+        }
+            
         done(null, user);
     } catch (error) {
         done(error, false);
@@ -96,68 +100,4 @@ passport.use("Facebook-Login", new FacebookTokenStrategy({
     clientSecret: facebookClientSecret
 }, oAuthLogin("facebook")));
 
-
-
-// const oAuthLoginFB = async(accessToken, refreshToken, profile, done) => {
-//     try {
-//         console.log(accessToken);
-//         const user = await User.findOne({ "facebook.id": profile.id });
-
-//         if (!user)
-//         {
-//             const id = profile.id;
-//             const email = profile.emails[0].value;
-
-//             const user = new User({
-//                     method: "facebook",
-//                     facebook: {
-//                         id: id,
-//                         email: email
-//                     },
-//                     userName: email
-//                 }
-//             );
-
-//             let result = await user.save();
-//             return done(null, result)
-//         }
-            
-//         console.log("here");
-//         done(null, user);
-//     } catch (error) {
-//         done(error, false);
-//     }
-// };
-
-
-// const oAuthLoginGoogle = async(accessToken, refreshToken, profile, done) => {
-//     try {
-//         console.log(accessToken);
-//         const user = await User.findOne({ "google.id": profile.id });
-
-//         if (!user)
-//         {
-//             const id = profile.id;
-//             const email = profile.emails[0].value;
-
-//             const user = new User({
-//                     method: "google",
-//                     google: {
-//                         id: id,
-//                         email: email
-//                     },
-//                     userName: email
-//                 }
-//             );
-
-//             let result = await user.save();
-//             return done(null, result)
-//         }
-            
-//         console.log("here");
-//         done(null, googleProfile);
-//     } catch (error) {
-//         done(error, false);
-//     }
-// };
 

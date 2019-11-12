@@ -7,6 +7,10 @@ const userSchema = new Schema({
             enum : ["local", "google", "facebook"],
             required : true
         },
+        email: {
+            type : String, 
+            required : true
+        },
         local : {
             type: {
                 passwordHash: {

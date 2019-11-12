@@ -1,16 +1,15 @@
-const mongoose = require("mongoose");
 const Question = require("../schema/questions");
-const User = require("../schema/user");
 const errorHandler = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const getKeywords = require("../utils/suggestions/keywordExtractor");
 const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
+const {logger} = require('../../logger');
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
 
-    console.log("current question id" + questionID);
+    logger.info("current question id" + questionID);
     try {
         
         let question = await Question.findById(questionID);
@@ -23,9 +22,8 @@ const getQuestion = async (req, res, next) => {
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
-    }
-    
-}
+    }  
+};
 
 const postQuestion = async (req, res, next) => {
 
@@ -34,7 +32,7 @@ const postQuestion = async (req, res, next) => {
     const questionString = req.body.question;
     const lowerCaseString = questionString.toLowerCase();
 
-    console.log(lowerCaseString);
+    logger.info(lowerCaseString);
     const creator = req.body.owner; 
     const course = req.body.course;
 
@@ -42,7 +40,7 @@ const postQuestion = async (req, res, next) => {
 
     try {
         if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn"t Find User", 403);
+            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
         }
         const question = new Question({
             title : title,
@@ -66,36 +64,31 @@ const postQuestion = async (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-}
+};
 
 
 const suggestedQuestions = async (req, res, next) => {
 
-    console.log(req.params.userId);
+    logger.info(req.params.userId);
 
     try {
-        let randomQuestion = await Question.findOne();
+        let question = await Question.findOne();
 
         let questionList = await Question.find({}).limit(5);
-        let questionKeywords = [];
-        
-        for (i of questionList) {
-            questionKeywords.push(questionList[i]);
-        }
 
-        let returnedQuestions = getBagOfQuestions(questionKeywords, questionList, randomQuestion.keywords);
+        let returnedQuestions = getBagOfQuestions(questionList, question);
 
         res.status(200).json(
-            returnedQuestions
+            questionList
         );
 
         
     } catch (error) {
         errorHandler.errorCatch(error);
     }
-}
+};
 
-const suggestedQuestionsV2 = (req, res, next) => {
+const suggestedQuestionsV2 = async (req, res, next) => {
     try {
         let randomQuestion = await Question.findOne();
 
@@ -114,8 +107,7 @@ const suggestedQuestionsV2 = (req, res, next) => {
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
-
-}
+};
 
 const searchQuestion = async (req, res, next) => {
 
@@ -138,30 +130,32 @@ const searchQuestion = async (req, res, next) => {
             }
         ]
     });
-}
+};
 
 const swipedQuestion = (req, res, next) => {
     const questionId = req.body.questionId;
     const userId = req.body.userId;
     const direction = req.body.direction; 
 
-    console.log(questionId);
-    console.log(userId);
-    console.log(direction);
+    logger.info(questionId);
+    logger.info(userId);
+    logger.info(direction);
 
     res.status(200).json({
         user: userId,
         direction : direction
     });
-}
+};
+
 
 module.exports = {
     getQuestion,
     postQuestion,
     suggestedQuestions,
     searchQuestion,
-    swipedQuestion
-}
+    swipedQuestion,
+    suggestedQuestionsV2
+};
 
 
 
