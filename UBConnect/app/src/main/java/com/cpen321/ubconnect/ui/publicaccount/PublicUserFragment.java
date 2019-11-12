@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.User;
 
 public class PublicUserFragment extends Fragment {
 
     private PublicUserViewModel publicUserViewModel;
+    private String token;
 
     @Nullable
     @Override
@@ -27,6 +29,8 @@ public class PublicUserFragment extends Fragment {
 
         Button rate = root.findViewById(R.id.publicRate);
         Button report = root.findViewById(R.id.publicReport);
+
+        token = ((GlobalVariables) getActivity().getApplication()).getJwt();
 
         publicUserViewModel = ViewModelProviders.of(this).get(PublicUserViewModel.class);
 
@@ -52,7 +56,7 @@ public class PublicUserFragment extends Fragment {
     }
 
     protected void observeViewModelRate(String userId) {
-        publicUserViewModel.userRate(userId).observe(this, this::onChangedRate);
+        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedRate);
     }
 
     public void onChangedRate(User user){
@@ -60,7 +64,7 @@ public class PublicUserFragment extends Fragment {
     }
 
     protected void observeViewModelReport(String userId) {
-        publicUserViewModel.userRate(userId).observe(this, this::onChangedReport);
+        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedReport);
     }
 
     public void onChangedReport(User user){

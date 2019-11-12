@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
+import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 
 import java.util.ArrayList;
@@ -23,25 +24,27 @@ public class SearchFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private List<Question> questions;
+    private String token;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_home, container, false);
+        View root = inflater.inflate(R.layout.activity_search, container, false);
+
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-
+        token = ((GlobalVariables) getActivity().getApplication()).getJwt();
         questions = new ArrayList<>();
-        recyclerView = root.findViewById(R.id.suggestedRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        observeViewModel();
-        searchViewModel.getResults();
+//        recyclerView = root.findViewById(R.id.suggestedRecyclerView);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        observeViewModel();
+//        searchViewModel.getResults();
         return root;
     }
 
     protected void observeViewModel() {
-        searchViewModel.getQuestions().observe(this, this::onChangedResult);
+        searchViewModel.getQuestions(token).observe(this, this::onChangedResult);
     }
 
     public void onChangedResult(List<Question> questions){
@@ -50,5 +53,6 @@ public class SearchFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
     }
+
 
 }

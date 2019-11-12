@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersFragment;
 
@@ -26,6 +27,8 @@ public class QuestionFragment extends Fragment {
 
     private QuestionViewModel questionViewModel;
 
+    private String token;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class QuestionFragment extends Fragment {
         dateAuthor = root.findViewById(R.id.questionADateAuthor);
         answer = root.findViewById(R.id.questionAAnswer);
         Button startAnswer = root.findViewById(R.id.answerButton);
+
+        token = ((GlobalVariables) getActivity().getApplication()).getJwt();
 
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
 
@@ -62,7 +67,7 @@ public class QuestionFragment extends Fragment {
     }
 
     protected void observeViewModel(String questionId) {
-        questionViewModel.getQuestion(questionId).observe(this, this::onChangedQuestion);
+        questionViewModel.getQuestion(questionId, token).observe(this, this::onChangedQuestion);
     }
 
     public void onChangedQuestion(Question question){

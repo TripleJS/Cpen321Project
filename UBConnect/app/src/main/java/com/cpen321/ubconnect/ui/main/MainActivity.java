@@ -134,11 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onChangedUserIdByFB(User user){
         ((GlobalVariables) this.getApplication()).setUserID(user.getUserId());
-
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.authorization), user.getJwt());
-        editor.commit();
+        ((GlobalVariables) this.getApplication()).setJwt(user.getJwt());
 
         Intent intent = new Intent(MainActivity.this, Main2Activity.class);
         startActivity(intent);

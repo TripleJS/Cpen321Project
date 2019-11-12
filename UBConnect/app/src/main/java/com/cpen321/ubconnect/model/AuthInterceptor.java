@@ -18,7 +18,7 @@ public class AuthInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request authenticatedRequest = request.newBuilder()
-                .header("Authorization", token)
+                .header("authorization", token)
                 .build();
 
         return chain.proceed(authenticatedRequest);

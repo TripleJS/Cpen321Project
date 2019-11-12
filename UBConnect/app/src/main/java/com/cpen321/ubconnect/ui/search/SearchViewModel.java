@@ -3,6 +3,7 @@ package com.cpen321.ubconnect.ui.search;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
@@ -10,6 +11,7 @@ import com.cpen321.ubconnect.model.data.Question;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,13 +43,14 @@ public class SearchViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getResults() {
+    public void getResults(String token) {
+        setupRetrofit(token);
         mBackEndService.getSearchResult().enqueue(new Callback<List<Question>>() {
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+                    //ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -63,11 +66,24 @@ public class SearchViewModel extends ViewModel {
         });
     }
 
-    public MutableLiveData<List<Question>> getQuestions() {
+    public MutableLiveData<List<Question>> getQuestions(String token) {
         if(pageNumber == 0){
-            getResults();
+            getResults(token);
         }
 
         return questions;
+    }
+
+    void setupRetrofit(String token){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor(token))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        mBackEndService = retrofit.create(IBackEndService.class);
     }
 }

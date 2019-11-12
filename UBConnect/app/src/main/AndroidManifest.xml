@@ -23,26 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.search.SearchActivity" />
-        <activity android:name=".ui.otheranswers.OtherAnswersActivity" />
-        <activity android:name=".ui.home.HomeActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-            <!-- <intent-filter> -->
-            <!-- <action android:name=".ui.HomeActivity" /> -->
-            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".ui.question.QuestionActivity" />
-        <activity android:name=".ui.account.AccountActivity" />
-        <activity android:name=".ui.publicaccount.PublicUserActivity" />
-        <activity android:name=".ui.postquestion.PostQuestionActivity" />
-        <activity android:name=".ui.viewothers.ViewOnlyOtherAnswerActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

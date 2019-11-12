@@ -27,6 +27,7 @@ public class PostQuestionFragment extends Fragment {
     private EditText course;
     private EditText topic;
     private String userId;
+    private String token;
 
     private PostQuestionVewModel postQuestionVewModel;
 
@@ -42,6 +43,7 @@ public class PostQuestionFragment extends Fragment {
         topic = root.findViewById(R.id.topicPQ2);
         Button submit = root.findViewById(R.id.submitButton);
 
+        token = ((GlobalVariables) getActivity().getApplication()).getJwt();
         title.setText("");
         question.setText("");
         course.setText("");
@@ -55,7 +57,7 @@ public class PostQuestionFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(!isValid()){
+                if(notValid()){
                     Toast.makeText(getApplicationContext(),"Please complete all the entries", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -66,20 +68,18 @@ public class PostQuestionFragment extends Fragment {
                 questionToSubmit.setCourse(course.getText().toString());
                 questionToSubmit.setTopic(topic.getText().toString());
                 questionToSubmit.setTitle(title.getText().toString());
-                postQuestionVewModel.submitQuestion(questionToSubmit);
-
-                FirebaseMessaging.getInstance().subscribeToTopic(questionToSubmit.getId());
+                postQuestionVewModel.submitQuestion(questionToSubmit,token);
             }
         };
 
         submit.setOnClickListener(submitOnClickListener);
 
-        observeViewModel();
+        //observeViewModel();
 
         return root;
     }
 
-    private boolean isValid() {
+    private boolean notValid() {
         return (question.getText().toString().length() == 0) || (course.getText().toString().length() == 0) || (topic.getText().toString().length() == 0) || (title.getText().toString().length() == 0);
     }
 
@@ -89,6 +89,7 @@ public class PostQuestionFragment extends Fragment {
 
     public void onSubmit(Question question){
         Toast.makeText(getApplicationContext(),"submitted", Toast.LENGTH_SHORT).show();
+        FirebaseMessaging.getInstance().subscribeToTopic(question.getId());
         title.setText("");
         this.question.setText("");
         course.setText("");

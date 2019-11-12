@@ -1,5 +1,8 @@
 package com.cpen321.ubconnect.ui.account;
 
+import android.util.Log;
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -36,51 +39,44 @@ public class AccountViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    private void getUserInfo(String token) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthInterceptor(token))
-                .build();
+    public void getUserInfo(String token, String userId) {
+        setupRetrofit(token);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        mBackEndService = retrofit.create(IBackEndService.class);
-
-        mBackEndService.getUserAccount("dummy").enqueue(new Callback<User>() {
+        mBackEndService.getUserAccount(userId).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+                    //ErrorHandlingUtils.errorHandling("dummy");
+                    Log.d("XXX", "onResponse: not successful");
                 }
 
                 if (response.body() == null)
                     return;
+
+                userAccount.postValue(response.body());
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 // to do
+                Log.d("XXX", "onFailure: failed");
             }
         });
     }
 
-    public MutableLiveData<User> getUserAccount(String token) {
-
-        getUserInfo(token);
-
+    public MutableLiveData<User> getUserAccount() {
         return userAccount;
     }
 
-    private void setUserInfo() {
-        mBackEndService.postUserAccount("dummy").enqueue(new Callback<User>() {
+    public void setUserInfo(String token, String userId, User user) {
+        setupRetrofit(token);
+        mBackEndService.postUserAccount(userId, user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+//                    ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -96,10 +92,20 @@ public class AccountViewModel extends ViewModel {
     }
 
     public MutableLiveData<User> setUserAccount() {
-
-        setUserInfo();
-
         return userAccount;
+    }
+
+    void setupRetrofit(String token){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor(token))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ConstantsUtils.BaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        mBackEndService = retrofit.create(IBackEndService.class);
     }
 
 }

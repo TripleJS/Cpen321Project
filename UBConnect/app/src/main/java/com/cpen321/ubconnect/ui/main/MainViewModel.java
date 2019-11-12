@@ -43,7 +43,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+                    //ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -55,6 +55,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 // to do
+
             }
         });
     }
@@ -70,7 +71,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+                    //ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)
@@ -92,7 +93,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
                     // to do
-                    ErrorHandlingUtils.errorHandling("dummy");
+                    //ErrorHandlingUtils.errorHandling("dummy");
                 }
 
                 if (response.body() == null)

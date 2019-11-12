@@ -32,8 +32,8 @@ public interface IBackEndService {
     @GET("/api/user/getuser/{userId}")
     Call<User> getUserAccount(@Path("userId")String userId);
 
-    @POST("")
-    Call<User> postUserAccount(@Path("userId")String userId);
+    @POST("/api/user/update-user/{userId}")
+    Call<User> postUserAccount(@Path("userId")String userId, @Body User user);
 
     @GET("/user/public/{userId}")
     Call<PublicUser> getPublicUser(@Path("userId")String userId);
@@ -44,7 +44,10 @@ public interface IBackEndService {
     @POST("")
     Call<User> reteUser(@Path("userId")String userId);
 
-    @GET("/api/questions/suggest/{userId}")
+
+//    @GET("/{userId}")
+//    @GET("api/questions/suggest/{userId}")
+    @GET("/{userId}")
     Call<List<Question>> getSuggestedQuestions(@Path("userId")String userId);
 
     @GET("")
