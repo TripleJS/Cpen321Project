@@ -50,7 +50,7 @@ public class OtherAnswersFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_other_answers, container, false);
+        View root = inflater.inflate(R.layout.content_other_answers, container, false);
 
         messagetxt = (EditText) root.findViewById(R.id.myTextBox) ;
 

@@ -33,7 +33,7 @@ public class QuestionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_question, container, false);
+        View root = inflater.inflate(R.layout.content_question, container, false);
 
         title = root.findViewById(R.id.questionATitle);
         content = root.findViewById(R.id.questionAContent);

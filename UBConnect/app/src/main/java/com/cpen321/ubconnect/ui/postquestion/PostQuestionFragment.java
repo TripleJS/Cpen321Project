@@ -35,7 +35,7 @@ public class PostQuestionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_postquestion, container, false);
+        View root = inflater.inflate(R.layout.content_postquestion, container, false);
 
         title = root.findViewById(R.id.titlePQ);
         question = root.findViewById(R.id.contentPQ);

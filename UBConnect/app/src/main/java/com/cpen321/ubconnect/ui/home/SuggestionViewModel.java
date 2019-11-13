@@ -43,7 +43,7 @@ public class SuggestionViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getSuggestion(String user, String token, View view) {
+    public void getSuggestion(String user, String token) {
         Log.d("Suggest", "getSuggestion:1 ");
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
@@ -79,7 +79,7 @@ public class SuggestionViewModel extends ViewModel {
             public void onFailure(Call<List<Question>> call, Throwable t) {
                 // to do
                 Log.d("Suggest", "getSuggestion:4 ");
-                error.postValue("No Network Connection");
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!");
             }
         });
     }

@@ -24,7 +24,7 @@ public class PublicUserFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_publicuser, container, false);
+        View root = inflater.inflate(R.layout.content_publicuser, container, false);
 
 
         Button rate = root.findViewById(R.id.publicRate);
