@@ -1,12 +1,11 @@
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 const serviceAccount = require("../../fcm/ubconnect-ec25e-firebase-adminsdk-4zww0-0d250bdc3b.json");
-const {logger} = require('../../logger');
+const {logger} = require("../../logger");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://ubconnect-ec25e.firebaseio.com" // TODO: Add to constants later 
   });
-
 
 const sendNotification = (topic, notification) => {
 
@@ -45,8 +44,16 @@ const subscribeToTopic = (topic, token) => {
     })
 };
 
+const createNotificationMessage = (notificationBody, notificationTitle) => {
+    return {
+        title: notificationTitle,
+        body: notificationBody
+    }
+}
+
 module.exports = {
     sendNotification,
-    subscribeToTopic
+    subscribeToTopic,
+    createNotificationMessage
 };
 

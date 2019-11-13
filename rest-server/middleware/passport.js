@@ -7,7 +7,7 @@ const {googleClientID, googleClientSecret, facebookClientID, facebookClientSecre
 const User = require("../schema/user");
 const {errorThrow} = require("../utils/errorHandler");
 const {secretKey} = require("../../config");
-const {logger} = require('../../logger');
+const {logger} = require("../../logger");
 
 const createNewUser = (profile, loginMethod) => {
     const newId = profile.id;
@@ -83,7 +83,7 @@ passport.use(new JwtStrategy({
         if (!user) {
             errorThrow({}, "User Does not Exist", 403);
         }
-            
+        
         done(null, user);
     } catch (error) {
         done(error, false);

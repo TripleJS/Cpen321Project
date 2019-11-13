@@ -8,7 +8,7 @@ const apiRoute = require("./routes/createRouter");
 const error = require("./controller/error");
 const server = http.createServer(app);
 const printBody = require("./middleware/printBody");
-const {logger} = require('../logger');
+const {logger} = require("../logger");
 
 app.use(passport.initialize());
 app.use(bodyParser.json());

@@ -1,4 +1,4 @@
-const {logger} = require('../../logger');
+const {logger} = require("../../logger");
 
 const printBody = (req, res, next) => {
     logger.info(req.body);
