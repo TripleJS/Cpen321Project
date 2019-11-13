@@ -87,6 +87,10 @@ const updateUser = async (req, res, next) => {
             errorThrow({}, "User Does Not Exist", 403);
         }
 
+        logger.info("new user name " + newUserName);
+        logger.info("new user email " + newUserEmail);
+        logger.info(coureses);
+
         user.userName = newUserName;
         user.email = newUserEmail;
         
@@ -94,7 +98,8 @@ const updateUser = async (req, res, next) => {
             user.courses.push(newCourses[parseInt(i)]);
         }
 
-        await user.save();
+        let result = await user.save();
+        logger.info(result);
 
         res.status(200).json({
             message : "Sucessfully Updated User " + userId
