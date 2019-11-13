@@ -89,7 +89,7 @@ const updateUser = async (req, res, next) => {
 
         logger.info("new user name " + newUserName);
         logger.info("new user email " + newUserEmail);
-        logger.info(courses);
+        logger.info(newCourses);
 
         user.userName = newUserName;
         user.email = newUserEmail;
