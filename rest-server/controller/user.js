@@ -76,7 +76,7 @@ const getUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
 
     try {
-        const newUserName = req.body.username;
+        const newUserName = req.body.userName;
         const newCourses = req.body.courses; 
         const userId = req.params.userId;
         const newUserEmail = req.body.email;
@@ -89,7 +89,7 @@ const updateUser = async (req, res, next) => {
 
         logger.info("new user name " + newUserName);
         logger.info("new user email " + newUserEmail);
-        logger.info(coureses);
+        logger.info(courses);
 
         user.userName = newUserName;
         user.email = newUserEmail;
