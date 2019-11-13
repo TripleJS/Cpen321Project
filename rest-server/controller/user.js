@@ -91,7 +91,7 @@ const updateUser = async (req, res, next) => {
         user.email = newUserEmail;
         
         for (var i = 0; i < courses.length; i++) {
-            user.coures.push(newCourses[parseInt(i)]);
+            user.courses.push(newCourses[parseInt(i)]);
         }
 
         await user.save();
