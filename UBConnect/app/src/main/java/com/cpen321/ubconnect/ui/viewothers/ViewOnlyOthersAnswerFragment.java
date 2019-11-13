@@ -27,7 +27,7 @@ public class ViewOnlyOthersAnswerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_view_only_other_answer, container, false);
+        View root = inflater.inflate(R.layout.content_view_only_other_answer, container, false);
 
         messagetxt = (TextView) root.findViewById(R.id.myTextBox1);
         Socket socket = null;

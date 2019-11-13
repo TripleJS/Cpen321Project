@@ -1,9 +1,6 @@
 package com.cpen321.ubconnect.ui.home;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +42,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.activity_home, container, false);
+        View root = inflater.inflate(R.layout.content_home, container, false);
 
         suggestionViewModel = ViewModelProviders.of(this).get(SuggestionViewModel.class);
         userId = ((GlobalVariables) getActivity().getApplication()).getUserID();
@@ -84,7 +81,7 @@ public class HomeFragment extends Fragment {
                     questions.remove(pos);
                     adapter.notifyItemRemoved(pos);
                     if(questions.size()==1){
-                        suggestionViewModel.getSuggestion(userId, token, getActivity().getCurrentFocus());
+                        suggestionViewModel.getSuggestion(userId, token);
                     }
                     Swiped swiped = new Swiped();
                     swiped.setDirection("left");
@@ -119,7 +116,7 @@ public class HomeFragment extends Fragment {
 
         User user = new User();
         user.setUserId(userId);
-        suggestionViewModel.getSuggestion(userId, token, getView());
+        suggestionViewModel.getSuggestion(userId, token);
 
         return root;
 
@@ -181,7 +178,7 @@ public class HomeFragment extends Fragment {
             error.setVisibility(View.GONE);
             User user = new User();
             user.setUserId(userId);
-            suggestionViewModel.getSuggestion(userId, token, getView());
+            suggestionViewModel.getSuggestion(userId, token);
         }
     };
 

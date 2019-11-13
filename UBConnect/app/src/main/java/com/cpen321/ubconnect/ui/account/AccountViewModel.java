@@ -82,6 +82,7 @@ public class AccountViewModel extends ViewModel {
                 if (response.body() == null)
                     return;
 
+                userAccount.postValue(response.body());
             }
 
             @Override

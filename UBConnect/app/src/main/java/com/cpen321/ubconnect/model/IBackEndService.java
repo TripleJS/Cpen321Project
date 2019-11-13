@@ -46,8 +46,7 @@ public interface IBackEndService {
 
 
 //    @GET("/{userId}")
-//    @GET("api/questions/suggest/{userId}")
-    @GET("/{userId}")
+    @GET("api/questions/suggest/{userId}")
     Call<List<Question>> getSuggestedQuestions(@Path("userId")String userId);
 
     @GET("")

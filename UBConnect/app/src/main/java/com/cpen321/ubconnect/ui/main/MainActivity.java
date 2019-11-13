@@ -14,12 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.cpen321.ubconnect.Main2Activity;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.AESCrypt;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.User;
+import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         ((GlobalVariables) this.getApplication()).setUserID(user.getUserId());
         ((GlobalVariables) this.getApplication()).setJwt(user.getJwt());
 
-        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(intent);
         MainActivity.this.finish();
     }
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     private void bundleHandling(Bundle bundle) {
         if (bundle != null && bundle.get("qid")!= null) {
             //here can get notification message
-            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             intent.putExtra("qid", bundle.get("qid").toString());
             startActivity(intent);
             MainActivity.this.finish();
