@@ -69,12 +69,6 @@ const userSchema = new Schema({
             default : [],
             required: true
         },
-        postedQuestions : {
-            type: [mongoose.Schema.Types.ObjectId], 
-            ref: "Questions",
-            default : [],
-            required: true
-        },
         groups : {
             type : [mongoose.Schema.Types.ObjectId],
             ref : "Groups",

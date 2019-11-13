@@ -16,7 +16,9 @@ const questionHandler = (io, socket) => {
             await onJoin(userId, questionId);
             // socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
             let curUser = await User.findById(userId);
-            
+        
+
+
         } catch (error) {
             logger.error(error);
         }

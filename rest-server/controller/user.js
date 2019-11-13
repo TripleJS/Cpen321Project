@@ -99,6 +99,10 @@ const updateUser = async (req, res, next) => {
         }
 
         let result = await user.save();
+        let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
+        result.toObject();
+        result.questions = userQuestions;
+        
         logger.info(result);
 
         res.status(200).json(result);
