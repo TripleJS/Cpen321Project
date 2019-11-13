@@ -102,7 +102,7 @@ const updateUser = async (req, res, next) => {
         logger.info(result);
 
         res.status(200).json({
-            message : "Sucessfully Updated User " + userId
+            result
         });
 
     } catch (error) {
