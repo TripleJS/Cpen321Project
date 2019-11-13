@@ -101,9 +101,7 @@ const updateUser = async (req, res, next) => {
         let result = await user.save();
         logger.info(result);
 
-        res.status(200).json({
-            result
-        });
+        res.status(200).json(result);
 
     } catch (error) {
         errorCatch(error, next);
