@@ -21,9 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.OtherAnswersAdapter;
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Message;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
@@ -58,6 +60,8 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private ErrorHandlingUtils errorHandlingUtils;
+
     @Override
     protected
     void onCreate(Bundle savedInstanceState) {
@@ -69,12 +73,15 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        errorHandlingUtils = new ErrorHandlingUtils();
 
 
         messagetxt = (EditText) findViewById(R.id.myTextBox) ;
@@ -121,7 +128,21 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
     private void observeViewModel(){
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
+        otherAnswersViewModel.getError().observe(this, this::onError);
     }
+
+    public void onError(String err){
+        findViewById(R.id.contentotheranswersLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(OtherAnswersActivity.this,err, retryOnClickListener, "Retry");
+    }
+
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            findViewById(R.id.contentotheranswersLayout).setVisibility(View.VISIBLE);
+        }
+    };
 
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());

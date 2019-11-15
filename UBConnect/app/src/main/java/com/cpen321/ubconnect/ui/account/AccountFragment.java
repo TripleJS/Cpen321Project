@@ -237,7 +237,7 @@ public class AccountFragment extends Fragment {
 
 
     protected void observeViewModelSet() {
-        accountViewModel.setUserAccount().observe(this, this::onChangedUserSet);
+        //accountViewModel.setUserAccount().observe(this, this::onChangedUserSet);
     }
 
     public void onChangedUserSet(User user){
@@ -254,7 +254,7 @@ public class AccountFragment extends Fragment {
     }
 
     protected void observeViewModelGet() {
-        accountViewModel.getUserAccount().observe(this, this::onChangedUser);
+        //accountViewModel.getUserAccount().observe(this, this::onChangedUser);
 //        searchViewModel.getQuestions(token).observe(this, this::onChangedQuestions);
     }
 

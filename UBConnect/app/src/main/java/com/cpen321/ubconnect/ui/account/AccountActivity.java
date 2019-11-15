@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
@@ -71,6 +72,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private boolean applied = false;
+
+    private ErrorHandlingUtils errorHandlingUtils;
 
 
     @Override
@@ -84,7 +88,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -226,9 +230,11 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         View.OnClickListener applyOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 userNameET.setFocusableInTouchMode(false);
                 emailNameET.setFocusableInTouchMode(false);
                 coursesNameET.setFocusableInTouchMode(false);
+                applied = true;
                 User user = new User();
                 user.setEmail(emailNameET.getText().toString());
                 user.setUserName(userNameET.getText().toString());
@@ -252,37 +258,36 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        observeViewModelGet();
-        observeViewModelSet();
+        observeViewModel();
 
         accountViewModel.getUserInfo(token, userId);
     }
 
 
-    protected void observeViewModelSet() {
-        accountViewModel.setUserAccount().observe(this, this::onChangedUserSet);
+    protected void observeViewModel() {
+        accountViewModel.getSetUserAccount().observe(this, this::onChangedUser);
+        accountViewModel.getError().observe(this, this::onError);
     }
 
-    public void onChangedUserSet(User user){
-        Toast.makeText(getApplicationContext(),"Applied", Toast.LENGTH_SHORT).show();
-        userNameET.setText(user.getUserName());
-        emailNameET.setText(user.getEmail());
-        coursesNameET.setText(updateCourses(user.getCourses()));
-        this.questions.clear();
-        this.questions.addAll(user.getQuestions());
-        RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
-        recyclerView.setAdapter(adapter);
-        oldEmail = user.getEmail();
-        oldUsername = user.getUserName();
-        oldCourses = updateCourses(user.getCourses());
+    public void onError(String err){
+        findViewById(R.id.accountLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(AccountActivity.this,err, retryOnClickListener, "Retry");
     }
 
-    protected void observeViewModelGet() {
-        accountViewModel.getUserAccount().observe(this, this::onChangedUser);
-//        searchViewModel.getQuestions(token).observe(this, this::onChangedQuestions);
-    }
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            findViewById(R.id.accountLayout).setVisibility(View.VISIBLE);
+
+        }
+    };
 
     public void onChangedUser(User user){
+        if(applied){
+            Toast.makeText(getApplicationContext(),"Applied", Toast.LENGTH_SHORT).show();
+            applied = false;
+        }
         userNameET.setText(user.getUserName());
         emailNameET.setText(user.getEmail());
         coursesNameET.setText(updateCourses(user.getCourses()));
@@ -294,6 +299,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         oldUsername = user.getUserName();
         oldCourses = updateCourses(user.getCourses());
     }
+
 
     public void onChangedQuestions(List<Question> questions){
         this.questions.clear();
@@ -338,6 +344,10 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         }
     }
 
+    private boolean notValid() {
+        return ((userNameET.getText().toString().length() == 0) || (emailNameET.getText().toString().length() == 0) || (coursesNameET.getText().toString().length() == 0));
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -372,6 +382,8 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
