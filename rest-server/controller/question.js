@@ -1,6 +1,6 @@
 const Question = require("../schema/questions");
 const User = require("../schema/user");
-const errorHandler = require("../utils/errorHandler");
+const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const getKeywords = require("../utils/suggestions/keywordExtractor");
@@ -127,10 +127,11 @@ const suggestedQuestionsV2 = async (req, res, next) => {
             
         } catch (error) {
             
+        }
 
         res.status(203).json(
             resultingQuestions
-        )
+        );
     } catch (error) {
         errorHandler.errorCatch(error, next);
     }
@@ -168,10 +169,21 @@ const swipedQuestion = (req, res, next) => {
     logger.info(userId);
     logger.info(direction);
 
-    res.status(200).json({
-        user: userId,
-        direction : direction
-    });
+    try {
+        let result = await Question.findByIdAndUpdate(questionId, {$push: {swipedUsers : userId}});
+
+        if (result === null) {
+            errorThrow({}, "Question Not Found", 403);
+        }
+
+        res.status(200).json({
+            user: userId,
+            direction : direction
+        });
+
+    } catch (error) {
+        errorCatch(error, next);
+    }
 };
 
 

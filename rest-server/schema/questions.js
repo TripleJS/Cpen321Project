@@ -35,6 +35,12 @@ const questionSchema = new Schema({
     date : {
         type : Date,
         required : true
+    },
+    swipedUsers : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref: "Users",
+        required : true,
+        default: []
     }
 }); 
 
