@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
@@ -40,6 +44,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private ErrorHandlingUtils errorHandlingUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,8 +57,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+
+        errorHandlingUtils = new ErrorHandlingUtils();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
@@ -61,22 +69,34 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         token = ((GlobalVariables) this.getApplication()).getJwt();
         questions = new ArrayList<>();
-//        recyclerView = root.findViewById(R.id.suggestedRecyclerView);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        observeViewModel();
-//        searchViewModel.getResults();
+        recyclerView = findViewById(R.id.searchRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        observeViewModel();
     }
 
     protected void observeViewModel() {
         searchViewModel.getQuestions(token).observe(this, this::onChangedResult);
+        searchViewModel.getError().observe(this,this::onError);
     }
+
+    public void onError(String err){
+        findViewById(R.id.searchLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(SearchActivity.this,err, retryOnClickListener, "Retry");
+    }
+
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            findViewById(R.id.searchLayout).setVisibility(View.VISIBLE);
+        }
+    };
 
     public void onChangedResult(List<Question> questions){
         this.questions.addAll(questions);
         RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override

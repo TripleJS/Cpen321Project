@@ -17,8 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
@@ -44,6 +46,8 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private ErrorHandlingUtils errorHandlingUtils;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,8 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
+
+        errorHandlingUtils = new ErrorHandlingUtils();
 
         title = findViewById(R.id.questionATitle);
         content = findViewById(R.id.questionAContent);
@@ -90,7 +96,21 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     protected void observeViewModel(String questionId) {
         questionViewModel.getQuestion(questionId, token).observe(this, this::onChangedQuestion);
+        questionViewModel.getError().observe(this, this::onError);
     }
+
+    public void onError(String err){
+        findViewById(R.id.questionLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(QuestionActivity.this,err, retryOnClickListener, "Retry");
+    }
+
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            findViewById(R.id.questionLayout).setVisibility(View.VISIBLE);
+        }
+    };
 
     public void onChangedQuestion(Question question){
         title.setText(question.getQuestionTitle());

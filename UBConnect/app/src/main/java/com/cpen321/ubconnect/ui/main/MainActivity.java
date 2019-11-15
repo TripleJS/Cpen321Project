@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.AESCrypt;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.User;
@@ -24,6 +25,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String fcmtoken;
 
+    private ErrorHandlingUtils errorHandlingUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         getLifecycle().addObserver(mainViewModel);
 
         callbackManager = CallbackManager.Factory.create();
+
+        errorHandlingUtils = new ErrorHandlingUtils();
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
@@ -130,7 +136,22 @@ public class MainActivity extends AppCompatActivity {
 
     protected void observeViewModelGetByFB() {
         mainViewModel.getCurrentUserByFB().observe(this,this::onChangedUserIdByFB);
+        mainViewModel.getError().observe(this,this::onError);
     }
+
+    public void onError(String err){
+        findViewById(R.id.mainLayoutLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(MainActivity.this,err, retryOnClickListener, "Retry");
+    }
+
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            LoginManager.getInstance().logOut();
+            findViewById(R.id.mainLayoutLayout).setVisibility(View.VISIBLE);
+        }
+    };
 
     public void onChangedUserIdByFB(User user){
         ((GlobalVariables) this.getApplication()).setUserID(user.getUserId());

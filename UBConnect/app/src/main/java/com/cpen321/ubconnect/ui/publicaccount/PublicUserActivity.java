@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
@@ -35,6 +36,8 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    private ErrorHandlingUtils errorHandlingUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,21 +83,28 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
 
     }
 
-    protected void observeViewModelRate(String userId) {
-        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedRate);
+    protected void observeViewModel(String userId) {
+        publicUserViewModel.userRate(userId, token).observe(this, this::onChangeUser);
+        publicUserViewModel.getError().observe(this,this::onError);
     }
 
-    public void onChangedRate(User user){
-        // to do
+    public void onError(String err){
+        findViewById(R.id.publicuserLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(PublicUserActivity.this,err, retryOnClickListener, "Retry");
     }
 
-    protected void observeViewModelReport(String userId) {
-        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedReport);
+    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            errorHandlingUtils.hideError();
+            findViewById(R.id.publicuserLayout).setVisibility(View.VISIBLE);
+        }
+    };
+
+    private void onChangeUser(User user){
+
     }
 
-    public void onChangedReport(User user){
-        // to do
-    }
 
     @Override
     public void onBackPressed() {

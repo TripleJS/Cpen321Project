@@ -44,7 +44,6 @@ public interface IBackEndService {
     @POST("")
     Call<User> reteUser(@Path("userId")String userId);
 
-
 //    @GET("/{userId}")
     @GET("api/questions/suggest/{userId}")
     Call<List<Question>> getSuggestedQuestions(@Path("userId")String userId);

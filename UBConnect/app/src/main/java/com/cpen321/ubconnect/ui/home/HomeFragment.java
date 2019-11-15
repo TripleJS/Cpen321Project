@@ -60,9 +60,7 @@ public class HomeFragment extends Fragment {
 
         token = ((GlobalVariables) getActivity().getApplication()).getJwt();
 
-        error = root.findViewById(R.id.errMessage);
         error.setVisibility(View.GONE);
-        retry = root.findViewById(R.id.retry);
         retry.setVisibility(View.GONE);
         retry.setOnClickListener(retryOnClickListener);
 

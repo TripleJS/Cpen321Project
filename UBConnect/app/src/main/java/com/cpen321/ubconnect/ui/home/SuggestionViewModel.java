@@ -44,7 +44,6 @@ public class SuggestionViewModel extends ViewModel {
     }
 
     public void getSuggestion(String user, String token) {
-        Log.d("Suggest", "getSuggestion:1 ");
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();
@@ -60,11 +59,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
-                Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-                    // to do
-//                    ErrorHandlingUtils.errorHandling("dummy");
-                    Log.d("Suggest", "getSuggestion:3 ");
                     error.postValue(NetworkUtil.onServerResponseError(response));
                     return;
                 }
@@ -77,9 +72,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
-                // to do
-                Log.d("Suggest", "getSuggestion:4 ");
-                error.postValue("Oops Something Went Wrong! Please Try Again Later!");
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
             }
         });
     }
@@ -90,15 +83,13 @@ public class SuggestionViewModel extends ViewModel {
     }
 
     public void sendSwipe(Swiped swiped) {
-        Log.d("Suggest", "getSuggestion:1 ");
         mBackEndService.postQuestionSwipe(swiped).enqueue(new Callback<Swiped>() {
 
             @Override
             public void onResponse(Call<Swiped> call, Response<Swiped> response) {
-                Log.d("Suggest", "getSuggestion:2 ");
                 if (!response.isSuccessful()) {
-                    // to do
-//                    ErrorHandlingUtils.errorHandling("dummy");
+                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    return;
                 }
 
                 if (response.body() == null)
@@ -108,8 +99,7 @@ public class SuggestionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Swiped> call, Throwable t) {
-                // to do
-
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
             }
         });
     }

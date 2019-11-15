@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SuggestedQuestionAdapter;
+import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.Swiped;
@@ -32,6 +33,7 @@ import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,13 +48,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String userId;
     private String token;
 
-    private Button retry;
-    private TextView error;
-
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private ErrorHandlingUtils errorHandlingUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         toolbar.bringToFront();
         drawer.bringToFront();
@@ -92,11 +93,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
 
-        error = findViewById(R.id.errMessage);
-        error.setVisibility(View.GONE);
-        retry = findViewById(R.id.retry);
-        retry.setVisibility(View.GONE);
-        retry.setOnClickListener(retryOnClickListener);
+        errorHandlingUtils = new ErrorHandlingUtils();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -137,11 +134,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         }).attachToRecyclerView(recyclerView);
 
-//        updatejljl();
-//
-//        adapter = new SuggestedQuestionAdapter(this.questions);
-//        recyclerView.setAdapter(adapter);
-
         observeViewModel();
 
         User user = new User();
@@ -152,34 +144,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.bringToFront();
         navigationView.bringToFront();
 
-    }
-
-    public void updatejljl(){
-        // begin
-        Question q1 = new Question();
-        q1.setQuestionTitle("q1");
-        Date d1 = new Date();
-        q1.setDate(d1);
-        q1.setOwner("gg");
-        q1.setQuestion("joojpp");
-        q1.setId("qqqqqqqqqqqqqqqq");
-        questions.add(q1);
-        Question q2 = new Question();
-        q2.setQuestionTitle("q2");
-        Date d2 = new Date();
-        q2.setDate(d2);
-        q2.setOwner("gg222222");
-        q2.setQuestion("joojpp22222222");
-        q2.setId("wwwwwwwwwwwwwwwwwwww");
-        questions.add(q2);
-        Question q3 = new Question();
-        q3.setQuestionTitle("q3");
-        Date d3 = new Date();
-        q3.setDate(d3);
-        q3.setOwner("gg3333333");
-        q3.setQuestion("joojpp33333333");
-        q3.setId("eeeeeeeeeeeeeeeee");
-        questions.add(q3);
     }
 
     protected void observeViewModel() {
@@ -197,19 +161,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void onError(String err){
-        recyclerView.setVisibility(View.GONE);
-        retry.setVisibility(View.VISIBLE);
-        error.setVisibility(View.VISIBLE);
-
-        error.setText(err);
+        findViewById(R.id.homeLayout).setVisibility(View.GONE);
+        errorHandlingUtils.showError(HomeActivity.this,err, retryOnClickListener, "Retry");
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            recyclerView.setVisibility(View.VISIBLE);
-            retry.setVisibility(View.GONE);
-            error.setVisibility(View.GONE);
+            errorHandlingUtils.hideError();
+            findViewById(R.id.homeLayout).setVisibility(View.VISIBLE);
             User user = new User();
             user.setUserId(userId);
             suggestionViewModel.getSuggestion(userId, token);

@@ -7,6 +7,7 @@ import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
+import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.Question;
 
 import okhttp3.OkHttpClient;
@@ -18,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostQuestionVewModel extends ViewModel {
     private MutableLiveData<Question> question = new MutableLiveData<>();
+    private MutableLiveData<String> error = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
 
@@ -40,7 +42,8 @@ public class PostQuestionVewModel extends ViewModel {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
-                    //ErrorHandlingUtils.errorHandling("dummy");
+                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    return;
                 }
 
                 if (response.body() == null) {
@@ -53,7 +56,7 @@ public class PostQuestionVewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-                // to do
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
             }
         });
     }
@@ -73,5 +76,9 @@ public class PostQuestionVewModel extends ViewModel {
                 .build();
 
         mBackEndService = retrofit.create(IBackEndService.class);
+    }
+
+    public MutableLiveData<String> getError(){
+        return error;
     }
 }
