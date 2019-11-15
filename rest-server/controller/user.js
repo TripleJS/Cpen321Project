@@ -76,7 +76,7 @@ const getUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
 
     try {
-        const newUserName = req.body.username;
+        const newUserName = req.body.userName;
         const newCourses = req.body.courses; 
         const userId = req.params.userId;
         const newUserEmail = req.body.email;
@@ -87,18 +87,25 @@ const updateUser = async (req, res, next) => {
             errorThrow({}, "User Does Not Exist", 403);
         }
 
+        logger.info("new user name " + newUserName);
+        logger.info("new user email " + newUserEmail);
+        logger.info(newCourses);
+
         user.userName = newUserName;
         user.email = newUserEmail;
         
-        for (var i = 0; i < courses.length; i++) {
-            user.coures.push(newCourses[parseInt(i)]);
+        for (var i = 0; i < newCourses.length; i++) {
+            user.courses.push(newCourses[parseInt(i)]);
         }
 
-        await user.save();
+        let result = await user.save();
+        let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
+        result.toObject();
+        result.questions = userQuestions;
+        
+        logger.info(result);
 
-        res.status(200).json({
-            message : "Sucessfully Updated User " + userId
-        });
+        res.status(200).json(result);
 
     } catch (error) {
         errorCatch(error, next);
