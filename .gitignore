@@ -5,5 +5,5 @@
 !/rest-server/routes
 !/rest-server/utils
 !/rest-server/middlware
-!combined.log
-!error.log
+combined.log
+error.log

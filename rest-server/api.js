@@ -1,6 +1,8 @@
+/**
+ * Imports
+ */
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
 const http = require("http");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -9,6 +11,8 @@ const error = require("./controller/error");
 const server = http.createServer(app);
 const printBody = require("./middleware/printBody");
 const {logger} = require("../logger");
+const app = express();
+
 
 app.use(passport.initialize());
 app.use(bodyParser.json());

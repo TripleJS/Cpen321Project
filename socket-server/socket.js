@@ -1,17 +1,19 @@
 const socketio = require("socket.io");
-const {onJoin} = require("./socketListenerFunctions");
 const {logger} = require("../logger");
 const questionHandler = require('./questionSocket');
+
 class SocketServer {
     
-    constructor(server) {
+    constructor(server, redisClient) {
         this.io = socketio(server);
+        this.redisClient = redisClient;
     }
 
     startServer() {
         this.io.on("connection", (socket) => {
 
-            questionHandler(io, socket);
+            questionHandler(io, socket, this.redisClient);
+
             // socket.on("join", async (userId, questionId) => {
             //     try {
             //         await onJoin(userId, questionId);

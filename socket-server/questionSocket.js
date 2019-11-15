@@ -7,7 +7,7 @@ const User = require('../rest-server/schema/user');
  * @param {SocketIO} io 
  * @param {*} socket 
  */
-const questionHandler = (io, socket) => {
+const questionHandler = (io, socket, redisClient) => {
 
     socket.on("join_question", async (userId, questionId) => {
         socket.join("question_" + questionId + "_" + userId);
@@ -15,10 +15,6 @@ const questionHandler = (io, socket) => {
         try {
             await onJoin(userId, questionId);
             // socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
-            let curUser = await User.findById(userId);
-        
-
-
         } catch (error) {
             logger.error(error);
         }
@@ -28,10 +24,14 @@ const questionHandler = (io, socket) => {
         io.to("question_" + questionId).emit("create", )
     });
 
-    socket.on("message", (questionId, message) => {
-        io.broadcast.to("question_"  + questionId).emit(() => {
-            
-        })
+    socket.on("message", (questionId, answerId, message) => {
+
+        const key = `${questionId}-${answerId}`;
+
+        // Save the sent message to the redis cache
+        redisClient.setex(key, 20000, message);
+
+        io.broadcast.to(`question_${questionId}`).emit('send-message', message);
     });
 
     
