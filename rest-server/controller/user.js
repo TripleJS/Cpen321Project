@@ -11,7 +11,6 @@ const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggesti
 const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
-    const userName = newUserData.userName;
     const newUserName = newUserData.name;
     const userEmail = newUserData.email;
     const password = newUserData.password;    

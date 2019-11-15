@@ -38,8 +38,28 @@ const questionSchema = new Schema({
     }
 }); 
 
+/** 
+ * Finds the Questions based off the userId 
+ */
 questionSchema.query.byUserId = function(userId) {
     return this.find({owner : userId});
+}
+
+/** 
+ * Finds the Questions if the question contains a value from array of courses
+ */
+questionSchema.query.byCourseTag = function(courses) { 
+
+    let allQuestions = [];
+    for (var i = 0; i < courses.length; i++) {
+        
+        // Finds questions that match the current course
+        const questions = this.find({course: courses[parseInt(i)]});
+
+        allQuestions.pushValues(questions);
+    }
+
+    return allQuestions;
 }
 
 module.exports = mongoose.model("Question", questionSchema);

@@ -1,5 +1,3 @@
-const admin = require("firebase-admin");
-const serviceAccount = require("../fcm/ubconnect-ec25e-firebase-adminsdk-4zww0-0d250bdc3b.json");
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
 const logger = require("../logger");
@@ -21,7 +19,7 @@ const onJoin = async (userId, questionId) => {
 
         fcmAccessToken = user.fcmAccessToken;
 
-        subscribeToTopic(questionId, fcmAccessToken);
+        await subscribeToTopic(questionId, fcmAccessToken);
 
         const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
 

@@ -1,6 +1,8 @@
 const SIMILARITY_THRESHOLD = 0.4;
 const MINIMUM_RETURNED_QUESTIONS = 4;
 
+const questionSimilarity
+
 const normalizeVector = (vector, length) => {
     const newVector = vector;
     for (let i = 0; i < length; i++) {

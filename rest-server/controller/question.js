@@ -1,10 +1,16 @@
 const Question = require("../schema/questions");
+const User = require("../schema/user");
 const errorHandler = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const getKeywords = require("../utils/suggestions/keywordExtractor");
 const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
 const {logger} = require("../../logger");
+const {isEmpty} = require('lodash');
+const { getQuestionsByUser, 
+        getKeywordFrequency,
+        MAX_RETRIEVED_QUESTIONS,
+        MAX_KEYWORDS } = require('../utils/suggestions/questionHelper');
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
@@ -88,16 +94,39 @@ const suggestedQuestions = async (req, res, next) => {
 
 const suggestedQuestionsV2 = async (req, res, next) => {
     try {
-        let randomQuestion = await Question.findOne();
+        
+        const userId = req.params.userId; 
+        // Array of Question Objects
+        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
+        
+        const curUser = await User.findById(userId);
+        const {courses} = curUser;
 
-        let questionList = await Question.find({}).limit(5);
-        let resultingQuestions = [randomQuestion];
+        
 
-        for (i of questionList) {
-            if (randomQuestion.course == questionList[i].course) {
-                resultingQuestions.push(questionList[i]);
-            }
+        // Array of all the keywords from all user questions
+        let userQuestionKeywords = [];
+
+        for (var i = 0; i < userQuestions.length; i++) {
+            userQuestionKeywords.pushValues(userQuestions[parseInt(i)].keywords);
         }
+
+        // Frequency of all keywords 
+        const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
+        
+        
+        try {
+            let questionsForUser; 
+
+            if (courses.isEmpty()) {
+                questionsForUser = await Question.find({});
+            } else {
+                questionsForUser = await Question.byCourseTag(courses);
+            }
+
+            
+        } catch (error) {
+            
 
         res.status(203).json(
             resultingQuestions

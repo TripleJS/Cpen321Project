@@ -1,10 +1,11 @@
 const Question = require("../../schema/questions");
 const User = require("../../schema/user");
-// const {logger} = require("../../../logger");
-// const {startServer} = require("../../api");
-// const {mongodburl, port} = require("../../../config");
+const {logger} = require("../../../logger");
+
 const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
+// const {startServer} = require("../../api");
+// const {mongodburl, port} = require("../../../config");
 
 /**
  * @param {ObjectID} userID MongoDB ObjectID of a user
@@ -13,19 +14,20 @@ const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {
         let userQuestions = await Question.find({}).limit(numberOfQuestions).byUserId(userID);
         // logger.info("User Questions Length: " + userQuestions.length);
-        return userQuestions;
+        return Promise.resolve(userQuestions);
 
     } catch (err) {
-        // logger.error("questions error" + err);
+        logger.error("questions error" + err);
+        return Promise.reject("Error Getting Questions");
     }
 };
 
 /**
  * @param {Array} questionKeywords List of keywords
- * @returns Frequency of keywords in descending order with size MAX_KEYWORDS or less
+ * @param {Number} numKeywords Number of keywords to return 
+ * @returns Frequency of keywords in descending order with size numKeywords or LESS
  */
- 
-const getKeywordFrequency = (questionKeywords) => {
+const getKeywordFrequency = (questionKeywords, numKeywords) => {
 
     // Sorts in alphabetical order 
     questionKeywords.sort();
@@ -53,26 +55,29 @@ const getKeywordFrequency = (questionKeywords) => {
         return (a.freq < b.freq) ? 1 : -1;
     });
 
-    return keywordFreqArray.slice(0, MAX_KEYWORDS);
+    return keywordFreqArray.slice(0, numKeywords);
 };
-
-const testArray = ["test", "hello", "myname", "test", "nibba", "xdddd", "xdddd", "cmon", "cuh", "yo", "yodawh", "yoyo", "hey", "there", "their", "there", "there", "xddd"];
-
-console.log(getKeywordFrequency(testArray));
 
 module.exports = {
     getQuestionsByUser,
     getKeywordFrequency,
-    MAX_RETRIEVED_QUESTIONS
+    MAX_RETRIEVED_QUESTIONS,
+    MAX_KEYWORDS
 }
+
+// const testArray = ["test", "hello", "myname", "test", "nibba", "xdddd", "xdddd", "cmon", "cuh", "yo", "yodawh", "yoyo", "hey", "there", "their", "there", "there", "xddd"];
+
+// console.log(getKeywordFrequency(testArray));
 
 // const test = async() => {
 //     try {
 //         await startServer(mongodburl, port);
-//         await getQuestions("5db007f55452070057d550aa");
+//         let userQuestions = await getQuestionsByUser("5db007f55452070057d550ab", 0);
 
+//         console.log(userQuestions);
 //     } catch (err) {
-//         logger.error(err);
+
+//         console.error(err);
 //     }
 // };
 
