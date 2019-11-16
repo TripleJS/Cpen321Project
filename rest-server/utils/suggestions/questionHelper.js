@@ -1,9 +1,11 @@
 const Question = require("../../schema/questions");
 const User = require("../../schema/user");
 const {logger} = require("../../../logger");
-
+const getCosineSimilarity = require("../suggestions/cosineSimilarity");
 const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
+const SIMILARITY_THRESHOLD = 0.4;
+const MAXIMUM_RETURNED_QUESTIONS = 5;
 // const {startServer} = require("../../api");
 // const {mongodburl, port} = require("../../../config");
 
@@ -62,7 +64,7 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
 /**
  * 
  * @param {Mongoose.Object} question Question object
- * @param {Array} keywordList 
+ * @param {Array} keywordList List of keywords to match with 
  */
 const matchKeywords = (question, keywordList) => {
 
@@ -80,23 +82,35 @@ const matchKeywords = (question, keywordList) => {
     return updatedKeywords;
 }
 
-
 /**
  * 
- * @param {Question Object} questions Array of question objects with their keywords
+ * @param {Object} questions Array of question objects with their keywords + frequency
+ *                           Note: the keywords + freq matches those of the questionKeywords
  * @param {Array} questionKeywords Array of keywords with their frequency
+ * @returns {Array} Of questions that meet the cosine similarity value threshold
  */
  const getBagOfQuestions = (questions, questionKeywords) => {
     const bagOfQuestions = [];
-
-    for (let i = 0; i < questionKeywords.size; i++) {
+    const keywordsFreqOnly = questionKeywords.map(({freq}) => freq);
     
-        const cosineSimilarity = getCosineSimilarity(question, questionKeywords[i]);
-        if (cosineSimilarity > MINIMUM_RETURNED_QUESTIONS) {
-            bagOfQuestions.push(questionKeywords[i]);
+    for (let i = 0; i < questions.size; i++) {
+
+        // Take only the frequency 
+        const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
+        
+
+        const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
+        logger.info("Current Question:");
+        logger.info(questions[parseInt(i)].question);
+        logger.info("Cosine Similarity Value: " + cosineSimilarity);
+
+        if (cosineSimilarity > SIMILARITY_THRESHOLD) {
+
+            // Push ONLY THE QUESTION OBJECT
+            bagOfQuestions.push(questions[parseInt(i)].question);
         }
 
-        if (bagOfQuestions > SIMILARITY_THRESHOLD) {
+        if (bagOfQuestions > MAXIMUM_RETURNED_QUESTIONS) {
             return bagOfQuestions;
         }
     }

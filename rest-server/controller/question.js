@@ -103,7 +103,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
             userQuestionKeywords.pushValues(userQuestions[parseInt(i)].keywords);
         }
 
-        // Frequency of all keywords 
+        // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         
     
@@ -125,7 +125,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
             for (var i = 0; i < questionsForUser.length; i++) {
                 const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
-                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordFreq : updatedKeywords});
+                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
             }
             
             const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
@@ -134,9 +134,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         } catch (error) {
             
         }
-
-        
-
 
         res.status(203).json(
             resultingQuestions

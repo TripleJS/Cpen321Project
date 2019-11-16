@@ -1,5 +1,4 @@
-const SIMILARITY_THRESHOLD = 0.4;
-const MINIMUM_RETURNED_QUESTIONS = 4;
+
 
 const normalizeVector = (vector, length) => {
     const newVector = vector;
@@ -37,4 +36,4 @@ const getCosineSimilarity = (v1, v2) => {
     }
 };
 
-module.exports = getBagOfQuestions;
+module.exports = getCosineSimilarity;
