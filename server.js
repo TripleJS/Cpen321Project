@@ -1,4 +1,4 @@
-const {port, mongodburl, redisPort} = require("./config");
+const {port, mongodburl, portRedis} = require("./config");
 const {server, startServer} = require("./rest-server/api");
 const SocketServer = require("./socket-server/socket");
 const redis = require('redis');
