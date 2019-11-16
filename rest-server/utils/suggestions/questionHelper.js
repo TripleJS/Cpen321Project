@@ -58,9 +58,57 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
     return keywordFreqArray.slice(0, numKeywords);
 };
 
+
+/**
+ * 
+ * @param {Mongoose.Object} question Question object
+ * @param {Array} keywordList 
+ */
+const matchKeywords = (question, keywordList) => {
+
+    const {keywords} = question; 
+    let updatedKeywords = [];
+    keywords.sort(); 
+    for (var i = 0; i < keywords.length; i++) {
+        const found = keywordList.some(el => el.keyword === keywords[i]);
+
+        if (found) {
+            updatedKeywords.push(keywords[i]);
+        }
+    }
+
+    return updatedKeywords;
+}
+
+
+/**
+ * 
+ * @param {Question Object} questions Array of question objects with their keywords
+ * @param {Array} questionKeywords Array of keywords with their frequency
+ */
+ const getBagOfQuestions = (questions, questionKeywords) => {
+    const bagOfQuestions = [];
+
+    for (let i = 0; i < questionKeywords.size; i++) {
+    
+        const cosineSimilarity = getCosineSimilarity(question, questionKeywords[i]);
+        if (cosineSimilarity > MINIMUM_RETURNED_QUESTIONS) {
+            bagOfQuestions.push(questionKeywords[i]);
+        }
+
+        if (bagOfQuestions > SIMILARITY_THRESHOLD) {
+            return bagOfQuestions;
+        }
+    }
+
+    return bagOfQuestions;
+};
+
 module.exports = {
     getQuestionsByUser,
     getKeywordFrequency,
+    matchKeywords,
+    getBagOfQuestions,
     MAX_RETRIEVED_QUESTIONS,
     MAX_KEYWORDS
 }

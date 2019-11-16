@@ -3,14 +3,18 @@ const User = require("../schema/user");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
-const getKeywords = require("../utils/suggestions/keywordExtractor");
-const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
 const {logger} = require("../../logger");
 const {isEmpty} = require('lodash');
 const { getQuestionsByUser, 
         getKeywordFrequency,
+        matchKeywords,
         MAX_RETRIEVED_QUESTIONS,
+        getBagOfQuestions,
         MAX_KEYWORDS } = require('../utils/suggestions/questionHelper');
+
+
+
+
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
@@ -57,15 +61,6 @@ const postQuestion = async (req, res, next) => {
         });
 
         res.status(203).json(question);
-        const document = {documents:[
-            {language:"en", id:"1", text: questionString}
-        ]};
-
-        let keywords = await getKeywords(document);
-
-        question.set("keywords", keywords);
-
-        question.save();
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
@@ -102,8 +97,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const curUser = await User.findById(userId);
         const {courses} = curUser;
 
-        
-
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
 
@@ -114,20 +107,37 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         // Frequency of all keywords 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         
-        
+    
         try {
-            let questionsForUser; 
+            // Question Objects for the User 
+            let questionsForUser;
+
+            /**
+             * Question Objects for the User with the updated keywords including
+             * their frequency 
+             */
+            let questionsWithUpdatedFreq = [];
 
             if (courses.isEmpty()) {
-                questionsForUser = await Question.find({});
+                questionsForUser = await Question.bySwipedUser(userId);
             } else {
-                questionsForUser = await Question.byCourseTag(courses);
+                questionsForUser = await Question.byCourseTag(courses, userId);
             }
 
+            for (var i = 0; i < questionsForUser.length; i++) {
+                const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordFreq : updatedKeywords});
+            }
             
+            const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
+
+            res.status(200).json(questionsToReturn);
         } catch (error) {
             
         }
+
+        
+
 
         res.status(203).json(
             resultingQuestions

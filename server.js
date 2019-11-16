@@ -4,9 +4,9 @@ const SocketServer = require("./socket-server/socket");
 const redis = require('redis');
 
 const serverPort = process.env.PORT || port;
-const redisPort = process.env.PORT || redisPort;
+const redisPort = process.env.PORT || portRedis;
 
-const redisClient = redis.createClient(redisPort);
+const redisClient = redis.createClient(portRedis);
 
 const socketServer = new SocketServer(server);
 
