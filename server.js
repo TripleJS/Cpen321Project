@@ -6,7 +6,7 @@ const redis = require('redis');
 const serverPort = process.env.PORT || port;
 const redisPort = process.env.PORT || portRedis;
 
-const redisClient = redis.createClient(redisPort);
+// const redisClient = redis.createClient(redisPort);
 
 const socketServer = new SocketServer(server);
 
