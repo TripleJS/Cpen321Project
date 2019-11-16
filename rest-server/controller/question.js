@@ -4,7 +4,6 @@ const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const {logger} = require("../../logger");
-const {isEmpty} = require('lodash');
 const { getQuestionsByUser, 
         getKeywordFrequency,
         matchKeywords,
