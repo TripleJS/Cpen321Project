@@ -75,4 +75,11 @@ questionSchema.query.bySwipedUser = function(userId) {
     return this.find({swipedUsers : {$ne: userId}});
 }
 
+/** 
+ * Finds the Questions that a user has most recently posted
+ */
+questionSchema.query.mostRecentUserQuestion = function(userId) {
+    return this.findOne({owner: userId}, {sort: {date : -1}});
+}
+
 module.exports = mongoose.model("Question", questionSchema);

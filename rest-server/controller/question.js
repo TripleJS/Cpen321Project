@@ -147,26 +147,18 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 };
 
 const searchQuestion = async (req, res, next) => {
+    
+    try {
+        const questions = await Question.find({}).limit(5);
 
-    const date1 = new Date();
-    const date2 = new Date();
-
-    res.status(200).json({
-        questions : [
-            {
-                questionTitle: "FUCK",
-                question: "CPEN321",
-                date: date1,
-                owner: "John"
-            },
-            {
-                questionTitle: "FUCK",
-                question: "CPEN331",
-                date: date2,
-                owner: "DJFASKDFJSAF"
-            }
-        ]
-    });
+        res.status(200).json({
+            questions
+        });
+        
+    } catch (error) {
+        errorCatch(error, next);
+    }
+    
 };
 
 const swipedQuestion = async (req, res, next) => {
