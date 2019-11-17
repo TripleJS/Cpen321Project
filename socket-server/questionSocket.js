@@ -13,17 +13,20 @@ const questionHandler = (io, socket, redisClient) => {
     socket.on("joinQuestion", async (data) => {
 
         const {questionId, userId} = data;
-        socket.join("question_" + questionId + "_" + userId);
+        const roomId = "room_" + questionId + "_" + userId
+        socket.join(roomId);
 
         try {
-            await onJoin(userId, questionId);
-            socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
+            const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
+            
+            // await onJoin(userId, questionId);
+            await curQuestion.save();
+
         } catch (error) {
             logger.error(error);
         }
 
-        
-        io.to("question_" + questionId + "_" + userId).emit("create", );
+        io.to(roomId).emit("create", );
     });
 
     socket.on("messagedetection", (data) => {
@@ -33,9 +36,9 @@ const questionHandler = (io, socket, redisClient) => {
         const key = `${questionId}-${userId}`;
 
         // Save the sent message to the redis cache
-        redisClient.setex(key, 20000, currentSequence);
+        redisClient.setex(key, 36000000, currentSequence);
 
-        io.to(`question_${questionId}_${userId}`).emit("message", currentSequence);
+        io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
     });
 
     socket.on("", (data) => {
