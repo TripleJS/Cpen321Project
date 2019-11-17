@@ -11,5 +11,8 @@ router.get("/user/getuser/:userId", passport.authenticate("jwt", {session: false
 router.get("/user/getpublicuser/:userId", passport.authenticate("jwt", {session: false}), )
 /* TODO: THESE FUNCTIONS */
 router.post("/user/update-user/:userId", userController.updateUser); 
+router.post("/user/rate/:userId");
+router.post("/user/report/:userId");
+
 
 module.exports = router;

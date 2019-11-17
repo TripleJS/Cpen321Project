@@ -76,6 +76,7 @@ const getUser = async (req, res, next) => {
         let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
         let newUser = user.toObject();
         newUser.questions = userQuestions;
+        newUser.userId = user._id;
         
         logger.info(newUser);
 
@@ -159,18 +160,24 @@ const oAuthLogin = async (req, res, next) => {
 
 };
 
-const getPublicUser = async (req, res, next) => {
-    const userId = req.params.userId; 
+const rate = async (req, res, next) => {
+    const userId = req.body.userId;
+    const rating = req.body.rating; 
 
     try {
-        const curUser = await User.findById(userId);
-
 
     } catch (error) {
-        
+
     }
 
-}
+    
+
+};
+
+const report = (req, res, next) => {
+
+
+};
 
 
 module.exports = {

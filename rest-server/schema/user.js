@@ -70,6 +70,9 @@ const userSchema = new Schema({
         },
         fcmAccessToken : {
             type : String
+        },
+        reported : {
+            type : [mongoose.Schema.Types.ObjectId]
         }
     }
 );
