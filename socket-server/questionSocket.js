@@ -14,14 +14,12 @@ const questionHandler = (io, socket, redisClient) => {
 
         try {
             await onJoin(userId, questionId);
-            // socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
+            socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
         } catch (error) {
             logger.error(error);
         }
 
-    
-        
-        io.to("question_" + questionId).emit("create", )
+        io.to("question_" + questionId).emit("create", );
     });
 
     socket.on("message", (questionId, answerId, message) => {
