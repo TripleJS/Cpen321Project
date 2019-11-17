@@ -22,7 +22,8 @@ const questionHandler = (io, socket, redisClient) => {
             logger.error(error);
         }
 
-        io.to("question_" + questionId).emit("create", );
+        
+        io.to("question_" + questionId + "_" + userId).emit("create", );
     });
 
     socket.on("messagedetection", (data) => {

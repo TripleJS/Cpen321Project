@@ -152,10 +152,17 @@ const searchQuestion = async (req, res, next) => {
     try {
         const questions = await Question.find({}).limit(5);
         const users = await User.find().limit(2);
+        const newUsers = [];
+
+        for (var i = 0 ; i < users.length; i++) {
+            const currentUser = users[parseInt(i)].toObject();
+            currentUser.userId = currentUser._id;
+            newUsers.push(currentUser);
+        }
 
         res.status(200).json({
             questions : questions,
-            users : users
+            users : newUsers
         });
         
     } catch (error) {
