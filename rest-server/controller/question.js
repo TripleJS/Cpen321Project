@@ -78,11 +78,7 @@ const suggestedQuestions = async (req, res, next) => {
     logger.info(req.params.userId);
 
     try {
-        let question = await Question.findOne();
-
         let questionList = await Question.find({}).limit(5);
-
-        let returnedQuestions = getBagOfQuestions(questionList, question);
 
         res.status(200).json(
             questionList
