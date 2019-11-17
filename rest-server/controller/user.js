@@ -127,18 +127,17 @@ const updateUser = async (req, res, next) => {
 }
 
 const oAuthLogin = async (req, res, next) => {
-    const select = ({_id, userName}) => ({_id, userName});
-    const user = select(req.user);
+    const {_id} = req.user;
 
     logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
     logger.info("FCM TOKEN: " + userFcmAccessToken);
 
-    user.set({fcmAccessToken : userFcmAccessToken});
+    
 
     const token = jwt.sign({
-            user: user._id 
+            user: _id 
         },
             secretKey, 
             { expiresIn: "24h" },
@@ -147,11 +146,13 @@ const oAuthLogin = async (req, res, next) => {
     logger.info("JWT TOKEN: " + token);
 
     try {
+        req.user.update({fcmAccessToken : userFcmAccessToken});
+
         let result = await req.user.save();
-        logger.info("User Info: " + result);
+        logger.info(result);
 
         res.status(200).json({
-            userId : user._id,
+            userId : _id,
             jwt : token
         });
 
