@@ -146,6 +146,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 };
 
 const searchQuestion = async (req, res, next) => {
+    logger.info("In search question");
     logger.info(req.params.searchQuery);
 
     try {
