@@ -14,15 +14,11 @@ const userSchema = new Schema({
         local : {
             passwordHash: {
                 type: String,
-                required: true,
                 select: false
             }, 
             resetToken : String,
             resetExpirationDate: Date,
-            email: {
-                type: String,
-                required: true
-            }
+            email: String
         }, 
         google: {
             id : {
