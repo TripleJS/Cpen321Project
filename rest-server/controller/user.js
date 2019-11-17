@@ -11,41 +11,55 @@ const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggesti
 const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
-    const newUserName = newUserData.name;
     const userEmail = newUserData.email;
     const password = newUserData.password;    
     
-    const errors = validationResult(req);
-
     try {
-        errorThrow(errors, "Validation Failed", 403);
         let hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = new User({
             method: "local",
-            local: 
-            {
+            local: {
                 name: newUserName, 
                 email: userEmail, 
                 passwordHash: hashedPassword
             },
-            userName: newUserName,
+            userName: userEmail,
+            email : userEmail
         });
     
         let result = await newUser.save();
 
-        res.status(201).json(
-            {
-                message: "Added User",
+        const token = jwt.sign({
+            user: result._id 
+        },
+            secretKey, 
+            { expiresIn: "24h" },
+        );
+
+        res.status(201).json({
+                jwt: token,
                 user : result 
             }
         );   
     }
-    catch (err)
-    {
+    catch (err) {
         errorCatch(err, next);
     }
 };
+
+const loginUser = async (req, res, next) => {
+    const userEmail = req.body.email;
+    const userPassword = req.body.password; 
+
+
+    try {
+
+        const curUser = User.find({email : userEmail, passwordHash : passwordHash});
+    } catch (error) {
+
+    }
+}
 
 const getUser = async (req, res, next) => {
     try {
@@ -145,10 +159,24 @@ const oAuthLogin = async (req, res, next) => {
 
 };
 
+const getPublicUser = async (req, res, next) => {
+    const userId = req.params.userId; 
+
+    try {
+        const curUser = await User.findById(userId);
+
+
+    } catch (error) {
+        
+    }
+
+}
+
 
 module.exports = {
     addUser,
     oAuthLogin,
     getUser,
-    updateUser
+    updateUser,
+    loginUser
 };

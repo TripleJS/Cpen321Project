@@ -2,6 +2,7 @@ const io = require('socket.io');
 const {onJoin} = require('./socketListenerFunctions');
 const Question = require('../rest-server/schema/questions');
 const User = require('../rest-server/schema/user');
+const {logger} = require("../logger");
 /**
  * 
  * @param {SocketIO} io 
@@ -9,7 +10,9 @@ const User = require('../rest-server/schema/user');
  */
 const questionHandler = (io, socket, redisClient) => {
 
-    socket.on("join_question", async (userId, questionId) => {
+    socket.on("join_question", async (data) => {
+
+        const {questionId, userId} = data;
         socket.join("question_" + questionId + "_" + userId);
 
         try {
@@ -22,7 +25,9 @@ const questionHandler = (io, socket, redisClient) => {
         io.to("question_" + questionId).emit("create", );
     });
 
-    socket.on("message", (questionId, answerId, message) => {
+    socket.on("message", (data) => {
+
+        const {questionId, answerId, message} = data; 
 
         const key = `${questionId}-${answerId}`;
 

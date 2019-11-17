@@ -12,18 +12,16 @@ const userSchema = new Schema({
             required : true
         },
         local : {
-            type: {
-                passwordHash: {
-                    type: String,
-                    required: true,
-                    select: false
-                }, 
-                resetToken : String,
-                resetExpirationDate: Date,
-                email: {
-                    type: String,
-                    required: true
-                },
+            passwordHash: {
+                type: String,
+                required: true,
+                select: false
+            }, 
+            resetToken : String,
+            resetExpirationDate: Date,
+            email: {
+                type: String,
+                required: true
             },
             required: false
         }, 

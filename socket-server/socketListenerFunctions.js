@@ -1,15 +1,17 @@
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
-const logger = require("../logger");
+const {logger} = require("../logger");
 const {sendNotification, subscribeToTopic, createNotificationMessage} = require("./utils/fcm");
 
 const onJoin = async (userId, questionId) => {
-    logger.info(userId + ": joined chat and current question id is " + questionId);
+    logger.info(userId);
+    // logger.info(userId + ": joined chat and current question id is " + questionId);
     
     let fcmAccessToken;
     let questionData;
 
     try {
+        logger.info(userId);
         questionData = await Question.findById(questionId);
         logger.info("Question Data: " + questionData);
 

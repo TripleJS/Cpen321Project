@@ -1,5 +1,6 @@
 const Question = require("../schema/questions");
 const User = require("../schema/user");
+const keywords = require("../utils/lg");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
@@ -60,6 +61,11 @@ const postQuestion = async (req, res, next) => {
         });
 
         res.status(203).json(question);
+
+        const keywords = keywords(lowerCaseString);
+        question.keywords = keywords;
+
+        await question.save();
 
     } catch (error) {
         errorHandler.errorCatch(error, next);
@@ -144,12 +150,15 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 };
 
 const searchQuestion = async (req, res, next) => {
-    
+    logger.info(req.params.searchQuery);
+
     try {
         const questions = await Question.find({}).limit(5);
+        const users = await User.find().limit(2);
 
         res.status(200).json({
-            questions
+            questions : questions,
+            users : users
         });
         
     } catch (error) {
@@ -184,6 +193,22 @@ const swipedQuestion = async (req, res, next) => {
     }
 };
 
+const getMostRecentQuestion = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+        const latestQuestion = await Question.findOne({sort : { date: -1}, owner : userId});
+
+        if (latestQuesion == null) {
+            errorThrow({}, "Could not find any questions", 403);
+        }
+
+        res.send(200).json(latestQuestion);
+    } catch (error) {
+        errorCatch(error, next);
+    }
+}
+
 
 module.exports = {
     getQuestion,
@@ -191,7 +216,8 @@ module.exports = {
     suggestedQuestions,
     searchQuestion,
     swipedQuestion,
-    suggestedQuestionsV2
+    suggestedQuestionsV2,
+    getMostRecentQuestion
 };
 
 
