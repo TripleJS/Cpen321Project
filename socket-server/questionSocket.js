@@ -19,7 +19,7 @@ const questionHandler = (io, socket, redisClient) => {
         try {
             const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
             
-            // await onJoin(userId, questionId);
+            await onJoin(userId, questionId);
             await curQuestion.save();
 
         } catch (error) {

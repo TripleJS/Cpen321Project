@@ -133,8 +133,9 @@ const oAuthLogin = async (req, res, next) => {
     logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
+    logger.info("FCM TOKEN: " + userFcmAccessToken);
 
-    req.user.set({fcmAccessToken : userFcmAccessToken});
+    user.set({fcmAccessToken : userFcmAccessToken});
 
     const token = jwt.sign({
             user: user._id 
