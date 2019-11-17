@@ -10,7 +10,7 @@ const {logger} = require("../logger");
  */
 const questionHandler = (io, socket, redisClient) => {
 
-    socket.on("join_question", async (data) => {
+    socket.on("joinQuestion", async (data) => {
 
         const {questionId, userId} = data;
         socket.join("question_" + questionId + "_" + userId);
@@ -25,9 +25,9 @@ const questionHandler = (io, socket, redisClient) => {
         io.to("question_" + questionId).emit("create", );
     });
 
-    socket.on("message", (data) => {
+    socket.on("messagedetection", (data) => {
 
-        const {questionId, answerId, message} = data; 
+        const {questionId, message} = data; 
 
         const key = `${questionId}-${answerId}`;
 
@@ -37,7 +37,10 @@ const questionHandler = (io, socket, redisClient) => {
         io.broadcast.to(`question_${questionId}`).emit('send-message', message);
     });
 
-    
+    socket.on("", (data) => {
+
+    });
+
 };
 
 module.exports = questionHandler; 
