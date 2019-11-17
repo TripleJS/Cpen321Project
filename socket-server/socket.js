@@ -10,9 +10,9 @@ class SocketServer {
     }
 
     startServer() {
-        this.io.on("connection", (socket) => {
+        this.io.of("/questions").on("connection", (socket) => {
 
-            questionHandler(io, socket, this.redisClient);
+            questionHandler(this.io, socket, this.redisClient);
 
             // socket.on("join", async (userId, questionId) => {
             //     try {
