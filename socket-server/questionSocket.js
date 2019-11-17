@@ -27,14 +27,14 @@ const questionHandler = (io, socket, redisClient) => {
 
     socket.on("messagedetection", (data) => {
 
-        const {questionId, message} = data; 
+        const {questionId, userId, currentSequence} = data; 
 
-        const key = `${questionId}-${answerId}`;
+        const key = `${questionId}-${userId}`;
 
         // Save the sent message to the redis cache
-        redisClient.setex(key, 20000, message);
+        redisClient.setex(key, 20000, currentSequence);
 
-        io.broadcast.to(`question_${questionId}`).emit('send-message', message);
+        io.to(`question_${questionId}_${userId}`).emit("message", currentSequence);
     });
 
     socket.on("", (data) => {
