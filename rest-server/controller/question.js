@@ -88,7 +88,7 @@ const suggestedQuestions = async (req, res, next) => {
             questionList
         );    
     } catch (error) {
-        errorHandler.errorCatch(error);
+        errorCatch(error);
     }
 };
 
