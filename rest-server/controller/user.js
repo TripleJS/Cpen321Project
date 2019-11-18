@@ -52,8 +52,8 @@ const addUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
     const userPassword = req.body.EncryptedPassword; 
-    logger.info("User email: " + userEmail);
-    logger.info("User pasword: " + userPassword);
+    console.log(userEmail);
+    console.log(userPassword);
 
     try {
 

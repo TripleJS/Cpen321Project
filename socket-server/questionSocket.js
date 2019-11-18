@@ -26,8 +26,9 @@ const questionHandler = (io, socket, redisClient) => {
 
             const curQuestion = await Question.findByIdAndUpdate(condition, {$push : {answerers : userId}});
             let curAnswer = await Answer.find({key : answerKey});
+            console.log("cur answer is: " + curAnswer);
 
-            if (!curAnswer) {
+            if (curAnswer == null) {
                 logger.info("No answer exists, creating new answer");
                 curAnswer = new Answer({
                     answer : "",
