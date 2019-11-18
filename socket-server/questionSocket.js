@@ -64,6 +64,8 @@ const questionHandler = (io, socket, redisClient) => {
         const {questionId, userId, currentSequence} = data; 
 
         const answerKey = `${questionId}-${userId}`;
+        logger.info(answerKey);
+        logger.info(currentSequence);
 
         // Save the sent message to the redis cache
         redisClient.setex(answerKey, 36000000, currentSequence);
@@ -71,7 +73,7 @@ const questionHandler = (io, socket, redisClient) => {
         io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
 
         try {
-            const curAnswer = Answer.findOne({key : answerKey});
+            const curAnswer = await Answer.findOne({key : answerKey});
             if (curAnswer === null) {
                 // TODO: fill this later 
             }
