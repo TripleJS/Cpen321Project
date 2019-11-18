@@ -25,7 +25,7 @@ const getQuestion = async (req, res, next) => {
         let question = await Question.findById(questionID);
         
         if (question == null) {
-            errorHandler.errorThrow({}, "Could not find Question", 403);
+            errorThrow({}, "Could not find Question", 403);
         }
 
         res.status(200).json(question);
@@ -68,7 +68,7 @@ const postQuestion = async (req, res, next) => {
         await question.save();
 
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }
 };
 
@@ -141,7 +141,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
             resultingQuestions
         );
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }
 };
 

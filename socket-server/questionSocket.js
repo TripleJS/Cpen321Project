@@ -25,8 +25,13 @@ const questionHandler = (io, socket, redisClient) => {
         } catch (error) {
             logger.error(error);
         }
+        const key = `${questionId}-${userId}`;
 
-        io.to(roomId).emit("create", );
+        redisClient.getAsync(key).then((result) => {
+            io.to(roomId).emit("create", result);
+        }).catch((err) => {
+            logger.error(err);
+        });
     });
 
     socket.on("messagedetection", (data) => {
