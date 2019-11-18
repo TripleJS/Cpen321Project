@@ -181,23 +181,33 @@ const rate = async (req, res, next) => {
             errorThrow({}, "User doesn't Exist", 404);
         }
 
-        let result = await User.update({_id : userId, "usersWhoRated.id" : ratingUserId}, 
-                    {$set: {"users.$.rating" : rating}});
+        let result = await User.findOneAndUpdate(
+            {_id : userId, usersWhoRated: {$elemMatch : {id : ratingUserId}}}, 
+            {$set: {"$.rating" : rating}
+        }, {new : true});
         
         if (!result) {
+            console.log("pushing new value into database");
             // Push new value onto array if not yet rated
-            result = await User.findByIdAndUpdate(userId, {$push : {usersWhoRated : {id : ratingUserId, rating : rating}}});
+            result = await User.findByIdAndUpdate(userId, {$push : 
+                {usersWhoRated : {id : ratingUserId, rating : rating}}}, 
+                {new : true});
         }
 
-        const totalRating = result.usersWhoRated.reduce((a, b) => {
+        let totalRating = result.usersWhoRated.reduce((a, b) => {
             return {rating : a.rating + b.rating};
-        });
+        }, {rating : 0});
 
-        const avgRating = totalRating / result.usersWhoRate.length;
+        totalRating = totalRating.rating;
 
+        const avgRating = totalRating / result.usersWhoRated.length;
+        console.log(avgRating);
+        console.log(totalRating);
         result.rating = avgRating;
 
         await result.save();
+
+        res.status(200).json(result);
 
     } catch (error) {
         errorCatch(error, next);
@@ -212,11 +222,12 @@ const report = (req, res, next) => {
 
 };
 
-
 module.exports = {
     addUser,
     oAuthLogin,
     getUser,
     updateUser,
-    loginUser
+    loginUser,
+    rate,
+    report
 };
