@@ -111,12 +111,12 @@ const updateUser = async (req, res, next) => {
 
         let result = await user.save();
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
-        result.toObject();
-        result.questions = userQuestions;
+        const newResult = result.toObject();
+        newResult.questions = userQuestions;
         
-        logger.info(result);
+        logger.info(newResult);
 
-        res.status(200).json(result);
+        res.status(200).json(newResult);
 
     } catch (error) {
         errorCatch(error, next);
