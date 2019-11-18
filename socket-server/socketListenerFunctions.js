@@ -4,9 +4,6 @@ const {logger} = require("../logger");
 const {sendNotification, subscribeToTopic, createNotificationMessage} = require("./utils/fcm");
 
 const onJoin = async (userId, questionId) => {
-    logger.info(userId);
-    // logger.info(userId + ": joined chat and current question id is " + questionId);
-    
     let fcmAccessToken;
     let questionData;
 
