@@ -33,6 +33,7 @@ const addUser = async (req, res, next) => {
 
     const userEmail = newUserData.email;
     const password = newUserData.password;    
+    const newUserName = newUserData.username;
     
     try {
 
@@ -45,7 +46,7 @@ const addUser = async (req, res, next) => {
                     email: userEmail, 
                     password: password
                 },
-                userName: userEmail,
+                userName: newUserName,
                 email : userEmail
             });
 
@@ -72,7 +73,6 @@ const loginUser = async (req, res, next) => {
         if (curUser.local.password !== userPassword) {
             errorThrow({}, "Incorrect Password", 403);
         }
-
 
         signTokenAndSignIn(curUser._id, res);
 
@@ -169,13 +169,38 @@ const oAuthLogin = async (req, res, next) => {
 };
 
 const rate = async (req, res, next) => {
+    const ratingUserId = req.params.ratingUserId;
     const userId = req.body.userId;
     const rating = req.body.rating; 
 
     try {
+        const ratingUser = await User.findById(ratingUserId)
+        const ratedUser = await User.findById(userId);
+
+        if (ratingUser == null || ratedUser == null) {
+            errorThrow({}, "User doesn't Exist", 404);
+        }
+
+        let result = await User.update({_id : userId, "usersWhoRated.id" : ratingUserId}, 
+                    {$set: {"users.$.rating" : rating}});
+        
+        if (!result) {
+            // Push new value onto array if not yet rated
+            result = await User.findByIdAndUpdate(userId, {$push : {usersWhoRated : {id : ratingUserId, rating : rating}}});
+        }
+
+        const totalRating = result.usersWhoRated.reduce((a, b) => {
+            return {rating : a.rating + b.rating};
+        });
+
+        const avgRating = totalRating / result.usersWhoRate.length;
+
+        result.rating = avgRating;
+
+        await result.save();
 
     } catch (error) {
-
+        errorCatch(error, next);
     }
 
     

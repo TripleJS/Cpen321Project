@@ -70,8 +70,17 @@ const userSchema = new Schema({
         fcmAccessToken : {
             type : String
         },
-        reported : {
-            type : [mongoose.Schema.Types.ObjectId]
+        usersWhoReported : {
+            type : [mongoose.Schema.Types.ObjectId],
+            ref : "User",
+            required : true,
+            default : []
+        },
+        usersWhoRated : {
+            type : [{id : mongoose.Schema.Types.ObjectId, rating : Number}],
+            ref : "User",
+            required : true,
+            default : []
         }
     }
 );

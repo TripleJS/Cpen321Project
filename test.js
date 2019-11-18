@@ -1,5 +1,7 @@
-const obj = { a: 1, b: 2};
-const obj2 = [{c: 3}, {d: 4}];
-obj.questions = obj2;
+const testobj = [{id : 2, rating: 4}, {id : 2, rating: 5}, {id : 2, rating: 3}, {id : 2, rating: 2}];
 
-console.log(obj);
+const total = testobj.reduce((a, b) => {
+    return {rating : a.rating + b.rating};
+});
+
+console.log(total);
