@@ -108,9 +108,10 @@ const updateUser = async (req, res, next) => {
         user.userName = newUserName;
         user.email = newUserEmail;
         
-        for (var i = 0; i < newCourses.length; i++) {
-            user.courses.push(newCourses[parseInt(i)]);
-        }
+        // for (var i = 0; i < newCourses.length; i++) {
+        //     user.courses.push(newCourses[parseInt(i)]);
+        // }
+        user.courses = newCourses;
 
         let result = await user.save();
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
@@ -146,7 +147,7 @@ const oAuthLogin = async (req, res, next) => {
     try {
         req.user.fcmAccessToken = userFcmAccessToken;
         let result = await req.user.save();
-        
+
         logger.info(result);
 
         res.status(200).json({
