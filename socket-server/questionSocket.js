@@ -13,15 +13,21 @@ const questionHandler = (io, socket, redisClient) => {
 
     socket.on("joinQuestion", async (data) => {
 
-        const {questionId, userId, answerId} = data;
+        const {questionId, userId} = data;
         const roomId = "room_" + questionId + "_" + userId
         socket.join(roomId);
 
         try {
             const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
             
-            
+            const key = `${questionId}-${userId}`;
 
+            let curAnswer = await Answer.find({key : key});
+            if (curAnswer === null) {
+                curAnswer = new Answer({
+
+                });
+            }
             await onJoin(userId, questionId);
             await curQuestion.save();
 
@@ -33,14 +39,16 @@ const questionHandler = (io, socket, redisClient) => {
         redisClient.getAsync(key).then((result) => {
 
             if (result === null) {
-                io.to(roomId).emit("create", "");
+                logger.info("value was not cached");
+                io.to(roomId).emit("create", {answer : ""});
             } else {
-                io.to(roomId).emit("create", result);
+                logger.info("cached");
+                io.to(roomId).emit("create", {answer : result});
             }
             
         }).catch((err) => {
             logger.error(err);
-            io.to(roomId).emit("create", "");
+            io.to(roomId).emit("create", {answer : ""});
         });
 
     });
