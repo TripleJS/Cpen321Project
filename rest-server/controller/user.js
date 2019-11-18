@@ -1,5 +1,6 @@
 const User = require("../schema/user");
 const bcrypt = require("bcryptjs");
+const aes = require("aes");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
@@ -12,7 +13,7 @@ const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
     const userEmail = newUserData.email;
-    const password = newUserData.password;    
+    const password = newUserData.EncryptedPassword;    
     
     try {
         let hashedPassword = await bcrypt.hash(password, 12);
@@ -50,12 +51,13 @@ const addUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
-    const userPassword = req.body.password; 
-
+    const userPassword = req.body.EncryptedPassword; 
+    logger.info("User email: " + userEmail);
+    logger.info("User pasword: " + userPassword);
 
     try {
 
-        const curUser = User.find({email : userEmail, passwordHash : passwordHash});
+        // const curUser = User.find({email : userEmail, passwordHash : passwordHash});
     } catch (error) {
 
     }
