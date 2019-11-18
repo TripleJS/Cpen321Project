@@ -24,6 +24,7 @@ const questionHandler = (io, socket, redisClient) => {
             let curAnswer = await Answer.find({key : key});
 
             if (curAnswer === null) {
+                logger.info("No answer exists, creating new answer");
                 curAnswer = new Answer({
                     answer : "",
                     questionRef : questionId,
