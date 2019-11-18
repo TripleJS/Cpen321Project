@@ -109,8 +109,8 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
-        
-    
+        logger.info("User Keyword Frequency:");
+        logger.info(userKeywordFrequency);
         try {
             // Question Objects for the User 
             let questionsForUser;
