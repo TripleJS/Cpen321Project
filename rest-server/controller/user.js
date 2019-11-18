@@ -13,7 +13,7 @@ const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
     const userEmail = newUserData.email;
-    const password = newUserData.EncryptedPassword;    
+    const password = newUserData.encryptedPassword;    
     
     try {
         let hashedPassword = await bcrypt.hash(password, 12);
@@ -51,7 +51,7 @@ const addUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
-    const userPassword = req.body.EncryptedPassword; 
+    const userPassword = req.body.encryptedPassword; 
     console.log(userEmail);
     console.log(userPassword);
 
