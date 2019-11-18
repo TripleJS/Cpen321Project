@@ -78,10 +78,11 @@ const questionHandler = (io, socket, redisClient) => {
         io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
 
         try {
-            const curAnswer = await Answer.findOne({key : answerKey});
+            const curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
             if (curAnswer === null) {
                 // TODO: fill this later 
             }
+
 
            await curAnswer.save();
         } catch (error) {

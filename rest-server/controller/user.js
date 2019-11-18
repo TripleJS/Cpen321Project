@@ -212,13 +212,24 @@ const rate = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-
-    
-
 };
 
 const report = (req, res, next) => {
+    const reportingUserId = req.params.reportingUserId;
+    const userId = req.body.userId;
 
+    try {
+        const reportingUser = await User.findById(reportingUserId);
+        const reportedUser = await User.findById(userId);
+
+        if (reportingUser == null || reportedUser == null) {
+            errorThrow({}, "User doesn't Exist", 404);
+        }
+
+        
+    } catch (error) {
+        
+    }
 
 };
 
