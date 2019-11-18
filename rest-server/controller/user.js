@@ -36,10 +36,10 @@ const addUser = async (req, res, next) => {
     
     try {
 
-        let user = await User.findOne({email : userEmail});
+        let curUser = await User.findOne({email : userEmail});
 
-        if (!user) {
-            user = new User({
+        if (!curUser) {
+            curUser = new User({
                 method: "local",
                 local: { 
                     email: userEmail, 
