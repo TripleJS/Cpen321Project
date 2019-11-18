@@ -16,12 +16,11 @@ const questionHandler = (io, socket, redisClient) => {
         const {questionId, userId} = data;
         const roomId = "room_" + questionId + "_" + userId
         socket.join(roomId);
+        const answerKey = `${questionId}-${userId}`;
 
         try {
             const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
             
-            const answerKey = `${questionId}-${userId}`;
-
             let curAnswer = await Answer.find({key : key});
 
             if (curAnswer === null) {
@@ -42,7 +41,6 @@ const questionHandler = (io, socket, redisClient) => {
         } catch (error) {
             logger.error(error);
         }
-        const key = `${questionId}-${userId}`;
 
         redisClient.getAsync(answerKey).then((result) => {
 
