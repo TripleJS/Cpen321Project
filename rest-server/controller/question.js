@@ -64,8 +64,8 @@ const postQuestion = async (req, res, next) => {
 
         res.status(203).json(question);
 
-        const keywords = keywords(lowerCaseString);
-        question.keywords = keywords;
+        const questionKeywords = keywords(lowerCaseString);
+        question.keywords = questionKeywords;
 
         await question.save();
 
