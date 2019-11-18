@@ -113,7 +113,7 @@ const updateUser = async (req, res, next) => {
         }
 
         let result = await user.save();
-        let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
+        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
         result.toObject();
         result.questions = userQuestions;
         
@@ -133,8 +133,6 @@ const oAuthLogin = async (req, res, next) => {
 
     const userFcmAccessToken = req.body.fcmAccessToken;
     logger.info("FCM TOKEN: " + userFcmAccessToken);
-
-    
 
     const token = jwt.sign({
             user: _id 
