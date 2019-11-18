@@ -16,6 +16,10 @@ const answerSchema = new Schema({
     },
     rating : {
         type : Number
+    },
+    date : {
+        type : Date,
+        required : true
     }
 });
 

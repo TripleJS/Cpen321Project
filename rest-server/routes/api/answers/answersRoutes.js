@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const {userValidator} = require("../../../utils/validator");
 const passport = require("passport");
 const passportConfig = require("../../../middleware/passport");
+const getMostRecentAnswer = require("../../../controller/answer");
 
+router.get("/answers/recent/:userId", getMostRecentAnswer);
 
-router.get("/answers/recent/:userId");
+module.exports = router;

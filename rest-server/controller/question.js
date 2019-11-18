@@ -203,17 +203,17 @@ const getMostRecentQuestion = async (req, res, next) => {
     const userId = req.params.userId;
 
     try {
-        const latestQuestion = await Question.findOne({sort : { date: -1}, owner : userId});
+        const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});
 
-        if (latestQuesion == null) {
+        if (latestQuestion == null) {
             errorThrow({}, "Could not find any questions", 403);
         }
 
-        res.send(200).json(latestQuestion);
+        res.status(200).json(latestQuestion);
     } catch (error) {
         errorCatch(error, next);
     }
-}
+};
 
 
 module.exports = {

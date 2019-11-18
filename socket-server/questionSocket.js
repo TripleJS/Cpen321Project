@@ -1,6 +1,7 @@
 const io = require('socket.io');
 const {onJoin} = require('./socketListenerFunctions');
 const Question = require('../rest-server/schema/questions');
+const Answer = require("../rest-server/schema/answers");
 const User = require('../rest-server/schema/user');
 const {logger} = require("../logger");
 /**
@@ -12,13 +13,15 @@ const questionHandler = (io, socket, redisClient) => {
 
     socket.on("joinQuestion", async (data) => {
 
-        const {questionId, userId} = data;
+        const {questionId, userId, answerId} = data;
         const roomId = "room_" + questionId + "_" + userId
         socket.join(roomId);
 
         try {
             const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
             
+            
+
             await onJoin(userId, questionId);
             await curQuestion.save();
 
@@ -39,10 +42,10 @@ const questionHandler = (io, socket, redisClient) => {
             logger.error(err);
             io.to(roomId).emit("create", "");
         });
-        
+
     });
 
-    socket.on("messagedetection", (data) => {
+    socket.on("messagedetection", async (data) => {
 
         const {questionId, userId, currentSequence} = data; 
 
@@ -52,6 +55,12 @@ const questionHandler = (io, socket, redisClient) => {
         redisClient.setex(key, 36000000, currentSequence);
 
         io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
+
+        try {
+
+        } catch (error) {
+
+        }
     });
 
     socket.on("", (data) => {
