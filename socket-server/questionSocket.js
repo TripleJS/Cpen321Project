@@ -56,6 +56,7 @@ const questionHandler = (io, socket, redisClient) => {
                 io.to(roomId).emit("create", {answer : ""});
             } else {
                 logger.info("cached");
+                logger.info(result);
                 io.to(roomId).emit("create", {answer : result});
             }
             
@@ -71,7 +72,7 @@ const questionHandler = (io, socket, redisClient) => {
         const {questionId, userId, currentSequence} = data; 
 
         const answerKey = `${questionId}-${userId}`;
-        logger.info(answerKey);
+        logger.info("answer key is: " +  answerKey);
         logger.info(currentSequence);
 
         // Save the sent message to the redis cache
@@ -81,13 +82,10 @@ const questionHandler = (io, socket, redisClient) => {
 
         try {
             const curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
-            logger.info(curAnswer);
+            
             if (curAnswer === null) {
                 // TODO: fill this later 
             }
-
-
-           await curAnswer.save();
         } catch (error) {
             logger.error("error in message detection");
             logger.error(error);

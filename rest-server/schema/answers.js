@@ -11,7 +11,7 @@ const answerSchema = new Schema({
         type : mongoose.Schema.Types.ObjectId,
         required: true
     },
-    userAnswerID : {
+    userAnswerId : {
         type : mongoose.Schema.Types.ObjectId,
         required: true
     },
