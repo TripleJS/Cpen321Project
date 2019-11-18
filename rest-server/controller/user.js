@@ -214,7 +214,7 @@ const rate = async (req, res, next) => {
     }
 };
 
-const report = (req, res, next) => {
+const report = async (req, res, next) => {
     const reportingUserId = req.params.reportingUserId;
     const userId = req.body.userId;
 
@@ -226,7 +226,7 @@ const report = (req, res, next) => {
             errorThrow({}, "User doesn't Exist", 404);
         }
 
-        
+
     } catch (error) {
         
     }

@@ -13,7 +13,7 @@ const getMostRecentAnswerId = async (req, res, next) => {
         const relatedQuestionId = latestAnswer.questionRef;
 
         const relatedQuestion = await Question.findById(relatedQuestionId);
-
+        
         res.status(200).json(relatedQuestion);
     } catch (error) {
         errorCatch(error, next);
