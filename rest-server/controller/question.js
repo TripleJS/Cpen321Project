@@ -1,7 +1,7 @@
 const Question = require("../schema/questions");
 const User = require("../schema/user");
 const keywords = require("../utils/lg");
-const {errorCatch, errorThrow} = require("../utils/errorHandler");
+const {errorCatch, errorThrow, errorThrowValidator} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
 const {logger} = require("../../logger");
@@ -31,7 +31,7 @@ const getQuestion = async (req, res, next) => {
         res.status(200).json(question);
 
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }  
 };
 
@@ -50,7 +50,7 @@ const postQuestion = async (req, res, next) => {
 
     try {
         if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
+            errorThrowValidator(errors, "Couldn't Find User", 403);
         }
         const question = new Question({
             title : title,
