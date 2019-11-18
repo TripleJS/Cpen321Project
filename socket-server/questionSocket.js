@@ -19,6 +19,7 @@ const questionHandler = (io, socket, redisClient) => {
         const answerKey = `${questionId}-${userId}`;
 
         try {
+            logger.info(questionId);
             const condition = {
                 _id : questionId,
                 answerers : {$ne : userId}
@@ -44,6 +45,7 @@ const questionHandler = (io, socket, redisClient) => {
             await curQuestion.save();
 
         } catch (error) {
+            logger.error("error in joinQuestion");
             logger.error(error);
         }
 
@@ -79,6 +81,7 @@ const questionHandler = (io, socket, redisClient) => {
 
         try {
             const curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
+            logger.info(curAnswer);
             if (curAnswer === null) {
                 // TODO: fill this later 
             }

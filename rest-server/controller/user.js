@@ -226,6 +226,16 @@ const report = async (req, res, next) => {
             errorThrow({}, "User doesn't Exist", 404);
         }
 
+        let result = await User.findOneAndUpdate(
+            {_id : userId, usersWhoReported: reportingUserId}, 
+            {$set: {"$.rating" : rating}
+        }, {new : true});
+
+        if (!result === null) {
+            result = await User.findByIdAndUpdate(userId, {$push : {usersWhoReported : reportingUserId}}, {new : true});
+        }
+
+        res.status(200).json(result);
 
     } catch (error) {
         

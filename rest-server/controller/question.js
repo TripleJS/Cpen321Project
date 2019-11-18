@@ -19,7 +19,7 @@ const { getQuestionsByUser,
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
 
-    logger.info("current question id" + questionID);
+    logger.info("current question id " + questionID);
     try {
         
         let question = await Question.findById(questionID);
