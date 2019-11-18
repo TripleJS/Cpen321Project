@@ -6,7 +6,7 @@ const passport = require("passport");
 const passportConfig = require("../../../middleware/passport");
 
 router.get("/questions/get-question/:questionId", questionController.getQuestion);
-router.post("/questions/post-question", userValidator, questionController.postQuestion);
+router.post("/questions/post-question", questionController.postQuestion);
 router.get("/questions/suggest/:userId", passport.authenticate("jwt", {session: false}), questionController.suggestedQuestions);
 router.get("/search", questionController.searchQuestion);
 router.post("/questions/swipe", questionController.swipedQuestion);

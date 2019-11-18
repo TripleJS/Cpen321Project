@@ -46,12 +46,14 @@ const postQuestion = async (req, res, next) => {
     const creator = req.body.owner; 
     const course = req.body.course;
 
-    const errors = validationResult(req);
 
     try {
-        if (!isEmpty(errors)) {
-            errorThrowValidator(errors, "Couldn't Find User", 403);
+        const curUser = await User.findById(creator);
+
+        if (curUser == null) {
+            errorThrow({}, "Could not find User", 403);
         }
+
         const question = new Question({
             title : title,
             question: questionString,
