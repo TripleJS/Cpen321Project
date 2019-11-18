@@ -144,7 +144,7 @@ const oAuthLogin = async (req, res, next) => {
     logger.info("JWT TOKEN: " + token);
 
     try {
-        req.user.update({fcmAccessToken : userFcmAccessToken});
+        req.user.update({$set : {fcmAccessToken : userFcmAccessToken}});
 
         let result = await req.user.save();
         logger.info(result);
