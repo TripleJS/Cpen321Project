@@ -11,7 +11,7 @@ const userSchema = new Schema({
             type : String, 
         },
         local : {
-            passwordHash: {
+            password: {
                 type: String,
                 select: false
             }, 

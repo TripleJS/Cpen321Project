@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const {logger} = require("../../logger");
 const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggestions/questionHelper");
 
-const signTokenAndSignIn = (id) => {
+const signTokenAndSignIn = (id, res) => {
     const token = jwt.sign({
         user: id
     },
@@ -41,8 +41,7 @@ const addUser = async (req, res, next) => {
         if (!user) {
             user = new User({
                 method: "local",
-                local: {
-                    name: newUserName, 
+                local: { 
                     email: userEmail, 
                     password: password
                 },
@@ -53,7 +52,7 @@ const addUser = async (req, res, next) => {
             await curUser.save();
         }
         
-        signTokenAndSignIn(curUser._id);
+        signTokenAndSignIn(curUser._id, res);
     } catch (err) {
         errorCatch(err, next);
     }
@@ -75,7 +74,7 @@ const loginUser = async (req, res, next) => {
         }
 
 
-        signTokenAndSignIn(curUser._id);
+        signTokenAndSignIn(curUser._id, res);
 
     } catch (error) {
         errorCatch(error, next);
@@ -161,7 +160,7 @@ const oAuthLogin = async (req, res, next) => {
 
         logger.info(result);
 
-        signTokenAndSignIn(result._id);
+        signTokenAndSignIn(result._id, res);
 
     } catch (error) {
         errorCatch(error, next);
