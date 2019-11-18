@@ -23,7 +23,12 @@ const questionSchema = new Schema({
         type : [mongoose.Schema.Types.ObjectId],
         required : true,
         default: []
-    }, 
+    },
+    answerers : { 
+        type : [mongoose.Schema.Types.ObjectId],
+        required : true,
+        default: []
+    },
     owner : {
         type : mongoose.Schema.Types.ObjectId,
         required: true
