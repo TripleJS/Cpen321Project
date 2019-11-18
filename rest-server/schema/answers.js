@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const answerSchema = new Schema({
     answer : {
         type : String,
-        required : true
+        required : true,
+        default : " "
     }, 
     questionRef : {
         type : mongoose.Schema.Types.ObjectId,

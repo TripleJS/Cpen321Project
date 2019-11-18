@@ -1,6 +1,6 @@
 const User = require("../schema/user");
 const bcrypt = require("bcryptjs");
-const aes = require("aes-js");
+const aesjs = require("aes-js");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
@@ -8,43 +8,53 @@ const jwt = require("jsonwebtoken");
 const {logger} = require("../../logger");
 const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggestions/questionHelper");
 
+const signTokenAndSignIn = (id) => {
+    const token = jwt.sign({
+        user: id
+    },
+        secretKey, 
+        { expiresIn: "24h" },
+    );
+
+    logger.info("JWT TOKEN: " + token);
+
+    res.status(201).json({
+            userId : id, 
+            jwt : token
+        }
+    );   
+
+    return;
+};
+
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
     const userEmail = newUserData.email;
-    const password = newUserData.encryptedPassword;    
+    const password = newUserData.password;    
     
     try {
-        let hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = new User({
-            method: "local",
-            local: {
-                name: newUserName, 
-                email: userEmail, 
-                passwordHash: hashedPassword
-            },
-            userName: userEmail,
-            email : userEmail
-        });
-    
-        let result = await newUser.save();
+        let user = await User.findOne({email : userEmail});
 
-        const token = jwt.sign({
-            user: result._id 
-        },
-            secretKey, 
-            { expiresIn: "24h" },
-        );
+        if (!user) {
+            user = new User({
+                method: "local",
+                local: {
+                    name: newUserName, 
+                    email: userEmail, 
+                    password: password
+                },
+                userName: userEmail,
+                email : userEmail
+            });
 
-        res.status(201).json({
-                jwt: token,
-                user : result 
-            }
-        );   
-    }
-    catch (err) {
+            await curUser.save();
+        }
+        
+        signTokenAndSignIn(curUser._id);
+    } catch (err) {
         errorCatch(err, next);
     }
 };
@@ -52,14 +62,23 @@ const addUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
     const userPassword = req.body.encryptedPassword; 
-    console.log(userEmail);
-    console.log(userPassword);
-
+    
     try {
+        let curUser = await User.findOne({email : userEmail});
 
-        // const curUser = User.find({email : userEmail, passwordHash : passwordHash});
+        if (!curUser) {
+            errorThrow({}, "User does not exist", 404);
+        }
+
+        if (curUser.local.password !== userPassword) {
+            errorThrow({}, "Incorrect Password", 403);
+        }
+
+
+        signTokenAndSignIn(curUser._id);
+
     } catch (error) {
-
+        errorCatch(error, next);
     }
 }
 
@@ -88,6 +107,8 @@ const getUser = async (req, res, next) => {
         errorCatch(error, next);
     }
 };
+
+
 
 const updateUser = async (req, res, next) => {
 
@@ -133,14 +154,6 @@ const oAuthLogin = async (req, res, next) => {
     const userFcmAccessToken = req.body.fcmAccessToken;
     logger.info("FCM TOKEN: " + userFcmAccessToken);
 
-    const token = jwt.sign({
-            user: _id 
-        },
-            secretKey, 
-            { expiresIn: "24h" },
-    );
-
-    logger.info("JWT TOKEN: " + token);
 
     try {
         req.user.fcmAccessToken = userFcmAccessToken;
@@ -148,10 +161,7 @@ const oAuthLogin = async (req, res, next) => {
 
         logger.info(result);
 
-        res.status(200).json({
-            userId : _id,
-            jwt : token
-        });
+        signTokenAndSignIn(result._id);
 
     } catch (error) {
         errorCatch(error, next);
