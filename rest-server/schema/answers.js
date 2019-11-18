@@ -20,6 +20,10 @@ const answerSchema = new Schema({
     date : {
         type : Date,
         required : true
+    },
+    key : {
+        type : String,
+        required : true
     }
 });
 

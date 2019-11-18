@@ -20,14 +20,22 @@ const questionHandler = (io, socket, redisClient) => {
         try {
             const curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
             
-            const key = `${questionId}-${userId}`;
+            const answerKey = `${questionId}-${userId}`;
 
             let curAnswer = await Answer.find({key : key});
+
             if (curAnswer === null) {
                 curAnswer = new Answer({
-
+                    answer : "",
+                    questionRef : questionId,
+                    userAnswerID : userId,
+                    date : Date.now(),
+                    key : answerKey
                 });
+
+                await curAnswer.save();
             }
+
             await onJoin(userId, questionId);
             await curQuestion.save();
 
@@ -36,7 +44,7 @@ const questionHandler = (io, socket, redisClient) => {
         }
         const key = `${questionId}-${userId}`;
 
-        redisClient.getAsync(key).then((result) => {
+        redisClient.getAsync(answerKey).then((result) => {
 
             if (result === null) {
                 logger.info("value was not cached");
@@ -57,17 +65,23 @@ const questionHandler = (io, socket, redisClient) => {
 
         const {questionId, userId, currentSequence} = data; 
 
-        const key = `${questionId}-${userId}`;
+        const answerKey = `${questionId}-${userId}`;
 
         // Save the sent message to the redis cache
-        redisClient.setex(key, 36000000, currentSequence);
+        redisClient.setex(answerKey, 36000000, currentSequence);
 
         io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
 
         try {
+            const curAnswer = Answer.findOne({key : answerKey});
+            if (curAnswer === null) {
+                // TODO: fill this later 
+            }
 
+           await curAnswer.save();
         } catch (error) {
-
+            logger.error("error in message detection");
+            logger.error(error);
         }
     });
 
