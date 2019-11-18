@@ -7,6 +7,7 @@ const getMostRecentAnswerId = async (req, res, next) => {
     const userId = req.params.userId;
 
     try {
+        logger.info(userId);
         const latestAnswer = await Answer.findOne({userAnswerID : userId}).sort({date : -1});
         logger.info(latestAnswer);
         const relatedQuestionId = latestAnswer.questionRef;
