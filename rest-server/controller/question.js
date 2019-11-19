@@ -183,10 +183,17 @@ const swipedQuestion = async (req, res, next) => {
     logger.info(direction);
 
     try {
-        let result = await Question.findByIdAndUpdate(questionId, {$push: {swipedUsers : userId}});
+        let result = await Question.findById(questionId);
 
         if (result === null) {
             errorThrow({}, "Question Not Found", 403);
+        }
+
+        result = await Question.findOneAndUpdate({_id : questionId, swipedUsers : userId}, {$set : {"swipedUsers.$" : userId}},
+                    {new : true});
+
+        if (!result) {
+            result = await Question.findByIdAndUpdate(questionId, {$push: {swipedUsers : userId}});
         }
 
         res.status(200).json({
