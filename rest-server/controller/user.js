@@ -146,8 +146,6 @@ const updateUser = async (req, res, next) => {
 }
 
 const oAuthLogin = async (req, res, next) => {
-    const {_id} = req.user;
-
     logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
@@ -173,10 +171,13 @@ const rate = async (req, res, next) => {
     const userId = req.body.userId;
     const rating = req.body.rating; 
 
+    console.log(ratingUserId);
+    console.log(userId);
+
     try {
         const ratingUser = await User.findById(ratingUserId)
         const ratedUser = await User.findById(userId);
-        console.log(rating);
+        
         if (ratingUser == null || ratedUser == null) {
             errorThrow({}, "User doesn't Exist", 404);
         }
@@ -186,7 +187,6 @@ const rate = async (req, res, next) => {
             {$set: {"usersWhoRated.$.rating" : rating}
         }, {new : true});
 
-        console.log(result);
         
         if (!result) {
             console.log("pushing new value into database");
@@ -196,8 +196,6 @@ const rate = async (req, res, next) => {
                 {new : true});
         }
 
-        
-
         let totalRating = result.usersWhoRated.reduce((a, b) => {
             return {rating : a.rating + b.rating};
         }, {rating : 0});
@@ -205,8 +203,6 @@ const rate = async (req, res, next) => {
         totalRating = totalRating.rating;
 
         const avgRating = totalRating / result.usersWhoRated.length;
-        console.log(avgRating);
-        console.log(totalRating);
         result.rating = avgRating;
 
         await result.save();
@@ -222,6 +218,7 @@ const report = async (req, res, next) => {
     const reportingUserId = req.params.reportingUserId;
     const userId = req.body.userId;
 
+    
     try {
         const reportingUser = await User.findById(reportingUserId);
         const reportedUser = await User.findById(userId);
@@ -232,7 +229,7 @@ const report = async (req, res, next) => {
 
         let result = await User.findOneAndUpdate(
             {_id : userId, usersWhoReported: reportingUserId}, 
-            {$set: {"$.rating" : rating}
+            {$set: {"usersWhoReported.$" : reportingUserId}
         }, {new : true});
 
         if (!result === null) {
@@ -242,7 +239,7 @@ const report = async (req, res, next) => {
         res.status(200).json(result);
 
     } catch (error) {
-        
+        errorCatch(error, next);
     }
 
 };
