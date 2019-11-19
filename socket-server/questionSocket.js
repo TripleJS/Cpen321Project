@@ -43,7 +43,7 @@ const questionHandler = (io, socket, redisClient) => {
                 await curAnswer.save();
             }
 
-            await onJoin(userId, questionId);
+            // await onJoin(userId, questionId);
             await curQuestion.save();
 
         } catch (error) {
