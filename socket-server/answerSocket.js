@@ -11,7 +11,7 @@ const answerHandler = (io, socket, redisClient) => {
 
         const roomId = `room_${questionId}_${userAnsweringId}`;
 
-        const answerKey = `${questionId}_${userAnsweringId}`
+        const answerKey = `${questionId}-${userAnsweringId}`
         socket.join(roomId);
 
         try {
