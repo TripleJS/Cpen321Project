@@ -21,8 +21,11 @@ const onJoin = async (userId, questionId) => {
         await subscribeToTopic(questionId, fcmAccessToken);
 
         const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
-
-        await sendNotification(questionId, notification);
+        const inputData = {
+            questionId : questionId,
+            userId : userId
+        }
+        await sendNotification(questionId, notification, inputData);
         
     } catch (error) {
         logger.error("error in onJOin");
