@@ -42,12 +42,12 @@ const answerHandler = (io, socket, redisClient) => {
 
         const room = "room_" + questionId;
         socket.join(room);
-        
+
         try {
             const curQuestion = await Question.findById(questionId);
             const answerers = curQuestion.answerers;
-
-            io.to(room).emit("getUserAnswering", answerers);
+            console.log(answerers);
+            io.to(room).emit("getUserAnswering", {userAnswering : answerers});
         } catch (error) {
             logger.error(error);
         }
