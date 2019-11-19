@@ -23,10 +23,10 @@ const answerHandler = (io, socket, redisClient) => {
 
             const curSequence = curAnswer.answer;
 
-            io.to(room).emit("message", curSequence);
+            io.to(roomId).emit("message", curSequence);
         
         } catch (error) {
-            io.to(room).emit("message", "error hehexd");
+            io.to(roomId).emit("message", "error hehexd");
         }
     });
 
