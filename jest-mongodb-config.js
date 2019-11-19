@@ -10,5 +10,8 @@ module.exports = {
       autoStart: false
     }
 };
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 198ac70da7799369b7c1a37573e2dfc1d265537b
