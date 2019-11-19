@@ -26,7 +26,7 @@ const answerHandler = (io, socket, redisClient) => {
             io.to(roomId).emit("message", {message : curSequence});
         
         } catch (error) {
-            io.to(roomId).emit("message", "error hehexd");
+            io.to(roomId).emit("message", {message : "error hehexd"});
         }
     });
 
