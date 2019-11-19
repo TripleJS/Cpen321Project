@@ -20,7 +20,7 @@ const questionHandler = (io, socket, redisClient) => {
         socket.join(roomId);
         const answerKey = `${questionId}-${userId}`;
         console.log("answer key is: " + answerKey);
-        
+
         try {
             const condition = {
                 _id : questionId,
@@ -46,26 +46,29 @@ const questionHandler = (io, socket, redisClient) => {
             await onJoin(userId, questionId);
             await curQuestion.save();
 
+            redisClient.getAsync(answerKey).then((result) => {
+
+                if (result === null) {
+                    logger.info("value was not cached");
+                    const curSequence = curAnswer.answer;
+                    io.to(roomId).emit("create", {answer : curSequence});
+                } else {
+                    logger.info("cached");
+                    logger.info(result);
+                    io.to(roomId).emit("create", {answer : result});
+                }
+                
+            }).catch((err) => {
+                logger.error(err);
+                io.to(roomId).emit("create", {answer : ""});
+            });
+
         } catch (error) {
             logger.error("error in joinQuestion");
             logger.error(error);
         }
 
-        redisClient.getAsync(answerKey).then((result) => {
-
-            if (result === null) {
-                logger.info("value was not cached");
-                io.to(roomId).emit("create", {answer : ""});
-            } else {
-                logger.info("cached");
-                logger.info(result);
-                io.to(roomId).emit("create", {answer : result});
-            }
-            
-        }).catch((err) => {
-            logger.error(err);
-            io.to(roomId).emit("create", {answer : ""});
-        });
+        
 
     });
 
