@@ -68,8 +68,6 @@ const questionHandler = (io, socket, redisClient) => {
             logger.error(error);
         }
 
-        
-
     });
 
     socket.on("messagedetection", async (data) => {
@@ -83,7 +81,7 @@ const questionHandler = (io, socket, redisClient) => {
         // Save the sent message to the redis cache
         redisClient.setex(answerKey, 36000000, currentSequence);
 
-        io.to(`room_${questionId}_${userId}`).emit("message", currentSequence);
+        io.to(`room_${questionId}_${userId}`).emit("message", {message : currentSequence});
 
         try {
             const curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
