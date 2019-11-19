@@ -43,6 +43,7 @@ const answerHandler = (io, socket, redisClient) => {
         try {
             const curQuestion = await Question.findById(questionId);
             const answerers = curQuestion.answerers;
+            
             io.emit("getUserAnswering", answerers);
         } catch (error) {
             logger.error(error);

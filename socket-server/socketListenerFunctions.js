@@ -16,7 +16,7 @@ const onJoin = async (userId, questionId) => {
         let user = await User.findById(questionOwner);
         logger.info("User is: " + user);
 
-        fcmAccessToken = user.fcmAccessToken;
+        // fcmAccessToken = user.fcmAccessToken;
 
         // await subscribeToTopic(questionId, fcmAccessToken);
 
