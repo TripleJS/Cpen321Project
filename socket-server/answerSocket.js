@@ -40,11 +40,14 @@ const answerHandler = (io, socket, redisClient) => {
     socket.on("joinNavAnswers", async (data) => {
         const {questionId} = data; 
 
+        const room = "room_" + questionId;
+        socket.join(room);
+        
         try {
             const curQuestion = await Question.findById(questionId);
             const answerers = curQuestion.answerers;
-            
-            io.emit("getUserAnswering", answerers);
+
+            io.to(room).emit("getUserAnswering", answerers);
         } catch (error) {
             logger.error(error);
         }
