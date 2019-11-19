@@ -4,14 +4,31 @@ const Question = require('../rest-server/schema/questions');
 const Answer = require("../rest-server/schema/answers");
 const User = require('../rest-server/schema/user');
 const {logger} = require("../logger");
-
+const Answer = require("../rest-server/schema/answers");
 const answerHandler = (io, socket, redisClient) => {
 
-    socket.on("joinViewAnswer", (data) => {
+    socket.on("joinViewAnswer", async (data) => {
         const {userAnsweringId, questionId} = data; 
 
         const roomId = `room_${questionId}_${userAnsweringId}`;
+
+        const answerKey = `${questionId}_${userAnsweringId}`
         socket.join(roomId);
+
+        try {
+            let curAnswer = await Answer.findOne({key : answerKey});
+
+            if (curAnswer === null) {
+                throw new Error("Couldn't Find Answer");
+            }
+
+            const curSequence = curAnswer.answer;
+
+            io.to(room).emit("message", curSequence);
+        
+        } catch (error) {
+            io.to(room).emit("message", "error hehexd");
+        }
     });
 
     socket.on("submitAnswer", async (data) => {
