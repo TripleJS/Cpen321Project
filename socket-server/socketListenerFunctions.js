@@ -8,21 +8,21 @@ const onJoin = async (userId, questionId) => {
     let questionData;
 
     try {
-        // logger.info(userId);
-        // questionData = await Question.findById(questionId);
-        // logger.info("Question Data: " + questionData);
+        logger.info(userId);
+        questionData = await Question.findById(questionId);
+        logger.info("Question Data: " + questionData);
 
-        // const questionOwner = questionData.owner;
-        // let user = await User.findById(questionOwner);
-        // logger.info("User is: " + user);
+        const questionOwner = questionData.owner;
+        let user = await User.findById(questionOwner);
+        logger.info("User is: " + user);
 
-        // fcmAccessToken = user.fcmAccessToken;
+        fcmAccessToken = user.fcmAccessToken;
 
-        // await subscribeToTopic(questionId, fcmAccessToken);
+        await subscribeToTopic(questionId, fcmAccessToken);
 
-        // const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
+        const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
 
-        // await sendNotification(questionId, notification);
+        await sendNotification(questionId, notification);
 
         return new Promise.resolve(userId);
         

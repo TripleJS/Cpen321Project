@@ -20,7 +20,9 @@
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-zip": "^5.0.1",
-    "nodemon": "^1.19.2"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "@azure/cognitiveservices-textanalytics": "^4.0.0",
