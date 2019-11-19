@@ -4,7 +4,6 @@ const Question = require('../rest-server/schema/questions');
 const Answer = require("../rest-server/schema/answers");
 const User = require('../rest-server/schema/user');
 const {logger} = require("../logger");
-const Answer = require("../rest-server/schema/answers");
 const answerHandler = (io, socket, redisClient) => {
 
     socket.on("joinViewAnswer", async (data) => {
