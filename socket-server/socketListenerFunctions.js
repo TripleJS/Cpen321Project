@@ -24,7 +24,7 @@ const onJoin = async (userId, questionId) => {
 
         await sendNotification(questionId, notification);
 
-        return new Promise.resolve(userId);
+        return new Promise.resolve();
         
     } catch (error) {
         logger.error("error in onJOin");

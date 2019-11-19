@@ -20,8 +20,8 @@ const questionHandler = (io, socket, redisClient) => {
         socket.join(roomId);
         const answerKey = `${questionId}-${userId}`;
         console.log("answer key is: " + answerKey);
+        
         try {
-            
             const condition = {
                 _id : questionId,
                 answerers : {$ne : userId}
