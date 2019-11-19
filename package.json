@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,8 @@
     "gulp": "^4.0.2",
     "gulp-zip": "^5.0.1",
     "jest": "^24.9.0",
+    "mockgoose": "^8.0.4",
+    "mongodb-memory-server": "^6.0.1",
     "nodemon": "^1.19.2",
     "socket.io-client": "^2.3.0",
     "supertest": "^4.0.2"
@@ -38,6 +40,7 @@
     "firebase-admin": "^8.6.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
+    "mongodb": "^3.3.4",
     "mongoose": "^5.7.10",
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
