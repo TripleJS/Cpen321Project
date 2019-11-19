@@ -33,7 +33,7 @@ const addUser = async (req, res, next) => {
 
     const userEmail = newUserData.email;
     const password = newUserData.password;    
-    const newUserName = newUserData.username;
+    const newUserName = newUserData.userName;
     
     try {
 
@@ -176,15 +176,17 @@ const rate = async (req, res, next) => {
     try {
         const ratingUser = await User.findById(ratingUserId)
         const ratedUser = await User.findById(userId);
-
+        console.log(rating);
         if (ratingUser == null || ratedUser == null) {
             errorThrow({}, "User doesn't Exist", 404);
         }
 
         let result = await User.findOneAndUpdate(
-            {_id : userId, usersWhoRated: {$elemMatch : {id : ratingUserId}}}, 
-            {$set: {"$.rating" : rating}
+            {_id : userId, "usersWhoRated.id" : ratingUserId}, 
+            {$set: {"usersWhoRated.$.rating" : rating}
         }, {new : true});
+
+        console.log(result);
         
         if (!result) {
             console.log("pushing new value into database");
@@ -193,6 +195,8 @@ const rate = async (req, res, next) => {
                 {usersWhoRated : {id : ratingUserId, rating : rating}}}, 
                 {new : true});
         }
+
+        
 
         let totalRating = result.usersWhoRated.reduce((a, b) => {
             return {rating : a.rating + b.rating};

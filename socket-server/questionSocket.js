@@ -33,7 +33,7 @@ const questionHandler = (io, socket, redisClient) => {
                 logger.info("No answer exists, creating new answer");
                 curAnswer = new Answer({
                     questionRef : questionId,
-                    userAnswerID : userId,
+                    userAnswerId : userId,
                     date : Date.now(),
                     key : answerKey
                 });
