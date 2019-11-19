@@ -1,6 +1,6 @@
 const Answer = require("../schema/answers");
 const Question = require("../schema/questions");
-const {errorCatch} = require("../utils/errorHandler");
+const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {logger} = require("../../logger");
 
 const getMostRecentAnswerId = async (req, res, next) => {
@@ -8,7 +8,12 @@ const getMostRecentAnswerId = async (req, res, next) => {
 
     try {
         logger.info(userId);
-        const latestAnswer = await Answer.findOne({userAnswerID : userId}).sort({date : -1});
+        const latestAnswer = await Answer.findOne({userAnswerId : userId}).sort({date : -1});
+
+        if (latestAnswer === null) {
+            errorThrow({}, "Answer does not exist", 403);
+        }
+        
         logger.info(latestAnswer);
         const relatedQuestionId = latestAnswer.questionRef;
 

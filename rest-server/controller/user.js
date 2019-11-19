@@ -218,6 +218,8 @@ const report = async (req, res, next) => {
     const reportingUserId = req.params.reportingUserId;
     const userId = req.body.userId;
 
+    console.log("reporting userid: " + reportingUserId);
+    console.log("reported userid: " + userId);
     
     try {
         const reportingUser = await User.findById(reportingUserId);
@@ -232,7 +234,7 @@ const report = async (req, res, next) => {
             {$set: {"usersWhoReported.$" : reportingUserId}
         }, {new : true});
 
-        if (!result === null) {
+        if (!result) {
             result = await User.findByIdAndUpdate(userId, {$push : {usersWhoReported : reportingUserId}}, {new : true});
         }
 
