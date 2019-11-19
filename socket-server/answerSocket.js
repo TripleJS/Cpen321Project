@@ -15,12 +15,15 @@ const answerHandler = (io, socket, redisClient) => {
         socket.join(roomId);
 
         try {
+            logger.info("answer key in joinViewAnswer " + answerKey);
             let curAnswer = await Answer.findOne({key : answerKey});
 
+            console.log("curAnswer: " + curAnswer);
             if (curAnswer === null) {
                 throw new Error("Couldn't Find Answer");
             }
 
+        
             const curSequence = curAnswer.answer;
 
             io.to(roomId).emit("message", {message : curSequence});
