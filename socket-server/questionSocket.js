@@ -15,6 +15,8 @@ const questionHandler = (io, socket, redisClient) => {
 
         const {questionId, userId} = data;
         const roomId = "room_" + questionId + "_" + userId
+        console.log("question id: " + questionId);
+        console.log("userid: " + userId);
         socket.join(roomId);
         const answerKey = `${questionId}-${userId}`;
         console.log("answer key is: " + answerKey);
