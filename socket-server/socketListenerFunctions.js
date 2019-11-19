@@ -27,6 +27,7 @@ const onJoin = async (userId, questionId) => {
         return new Promise.resolve(userId);
         
     } catch (error) {
+        logger.error("error in onJOin");
         logger.error(error);
         return new Promise.reject(error);
     }
