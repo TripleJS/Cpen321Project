@@ -15,6 +15,8 @@ const sendNotification = (topic, notification, inputData) => {
         notification
     };
 
+    logger.info("Message is: " + message);
+
     return new Promise((resolve, reject) => {
         admin.messaging().send(message)
         .then((response) => {
