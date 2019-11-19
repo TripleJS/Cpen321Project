@@ -24,7 +24,17 @@ const onJoin = async (userId, questionId) => {
         const inputData = {
             questionId : questionId,
             userId : userId
-        }
+        };
+
+        // {
+        //     data : {
+        //         questionId: SVGAnimatedTransformList,
+        //         userId: dfa;lsdfjlas;
+        //     },
+        //     topic : top,
+        //     notif : defaultksjf,
+        // }
+
         await sendNotification(questionId, notification, inputData);
         
     } catch (error) {

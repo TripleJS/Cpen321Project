@@ -44,7 +44,6 @@ const keywords = (string) => {
     return string; 
 };
 
+console.log(keywords("the is to"));
+
 module.exports = keywords;
-
-
-console.log(keywords("Hello my name is jeff"));

@@ -10,9 +10,7 @@ admin.initializeApp({
 const sendNotification = (topic, notification, inputData) => {
 
     const message = {
-        data : {
-            inputData
-        },
+        data : inputData,
         topic, 
         notification
     };
