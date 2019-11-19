@@ -11,6 +11,7 @@ const MAXIMUM_RETURNED_QUESTIONS = 5;
 
 /**
  * @param {ObjectID} userID MongoDB ObjectID of a user
+ * @param {Number} numberOfQuestions Number of Questions to return 
  */
 const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {

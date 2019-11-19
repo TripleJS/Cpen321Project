@@ -4,4 +4,11 @@ const total = testobj.reduce((a, b) => {
     return {rating : a.rating + b.rating};
 }, {rating : 0});
 
-console.log(total);
+
+const testFunc = (a, b) => {
+    return a + b;
+};
+
+module.exports = {
+    testFunc
+}
