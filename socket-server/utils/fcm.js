@@ -18,8 +18,8 @@ const sendNotification = (topic, notification) => {
         admin.messaging().send(message)
         .then((response) => {
           // Response is a message ID string.
-          logger.info("Successfully sent message:", response);
-          resolve("Successfully sent message:" + response);
+          logger.info("Successfully sent message: " + response);
+          resolve("Successfully sent message: " + response);
         })
         .catch((err) => {
           logger.error("Error sending message:" + error);

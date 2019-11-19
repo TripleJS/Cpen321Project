@@ -23,8 +23,6 @@ const onJoin = async (userId, questionId) => {
         const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
 
         await sendNotification(questionId, notification);
-
-        return new Promise.resolve();
         
     } catch (error) {
         logger.error("error in onJOin");
