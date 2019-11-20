@@ -23,8 +23,6 @@ const signTokenAndSignIn = (id, res) => {
             jwt : token
         }
     );   
-
-    return;
 };
 
 // Controllers for creating new users and getting users 
@@ -63,7 +61,7 @@ const addUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
-    const userPassword = req.body.encryptedPassword; 
+    const userPassword = req.body.password; 
     
     try {
         let curUser = await User.findOne({email : userEmail});
@@ -248,7 +246,7 @@ const report = async (req, res, next) => {
 
 };
 
-module.exports = {
+const exportFunctions = {
     addUser,
     oAuthLogin,
     getUser,
@@ -258,3 +256,5 @@ module.exports = {
     report,
     signTokenAndSignIn
 };
+
+module.exports = exportFunctions;

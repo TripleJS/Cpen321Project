@@ -47,8 +47,10 @@ const errorThrow = (errors, message, statusCode) => {
     throw error;
 };
 
-module.exports = {
+const exportFunctions = {
     errorThrow,
     errorCatch,
     errorThrowValidator
 };
+
+module.exports = exportFunctions;

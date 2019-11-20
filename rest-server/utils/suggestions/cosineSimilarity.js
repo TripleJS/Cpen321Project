@@ -42,7 +42,4 @@ const getCosineSimilarity = (v1, v2) => {
 
 module.exports = getCosineSimilarity;
 
-const v1 = [2, 5, 7];
-const v2 = [1, 4, 9, 8, 12];
-console.log(getCosineSimilarity(v1, v2));
 

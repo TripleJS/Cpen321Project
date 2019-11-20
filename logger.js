@@ -19,9 +19,6 @@ const loggerLevels =  {
     silly: 5
 };
 
-logger.error("error message test");
-logger.info("info message test");
-
 module.exports = {
     loggerLevels,
     logger

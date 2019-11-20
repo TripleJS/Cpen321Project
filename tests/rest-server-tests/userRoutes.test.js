@@ -1,16 +1,18 @@
 const userController = require("../../rest-server/controller/user");
-const errorHandler = require("../../rest-server/utils/errorHandler");
 const mongoose = require("mongoose");
 const User = require("../../rest-server/schema/user");
 const mockData = require("../mongoose-mock-data");
 
+jest.mock("../../rest-server/utils/errorHandler", () => ({
+  errorCatch : jest.fn(),
+  errorThrow : jest.fn()
+}));
+
+const mockErrorHandler = require("../../rest-server/utils/errorHandler");
+
 describe("User Route Test Suite", () => {
   let db;
 
-  const errorCatchMock = jest.fn(errorHandler.errorCatch);
-  const errorThrowMock = jest.fn(errorHandler.errorThrow);
-  const signJwtandSignInMock = jest.fn(userController.signTokenAndSignIn);
-                  
   beforeAll(async () => {
     try {
       db = await mongoose.connect(process.env.MONGO_URL, {
@@ -30,33 +32,31 @@ describe("User Route Test Suite", () => {
     await mongoose.connection.dropDatabase();
   });
 
+  const mockLoginSignupRequest = (email, username, password) => {
+    const req = {
+      body : {
+        email : email,
+        userName : username,
+        password : password
+      }
+    };
+
+    return req;
+  };
+
+  const mockResponse = () => {
+    const res = {};
+    res.status = jest.fn().mockReturnValue(res);
+    res.json = jest.fn().mockReturnValue(res);
+    return res;
+  };
+
+  const next = () => {};
+
   describe("Testing Signup", () => {
-    const mockRequest = (email, username, password) => {
-      const req = {
-        body : {
-          email : email,
-          userName : username,
-          password : password
-        }
-      };
-
-      return req;
-    };
-
-    const mockResponse = () => {
-      const res = {};
-      res.status = jest.fn().mockReturnValue(res);
-      res.user = jest.fn().mockReturnValue(res);
-      res.jwt = jest.fn().mockReturnValue(res);
-      return res;
-    };
-
-    const next = () => {
-
-    };
-
+    
     test("Signing Up Correctly", async () => {
-      const req = mockRequest("someemail@email.com", "someusername", "password");
+      const req = mockLoginSignupRequest("someemail@email.com", "someusername", "password");
       const res = mockResponse();
   
       await userController.addUser(req, res, next);
@@ -64,56 +64,92 @@ describe("User Route Test Suite", () => {
     });
 
     test("Signing Up with Email that Exists", async () => {
-      const req = mockRequest("testemail@email.com", "someusername", "password");
+      const req = mockLoginSignupRequest("testemail@email.com", "someusername", "password");
       const res = mockResponse();
       
       const user = new User(
         mockData.testUser
       );
 
-      let result = await user.save();
-      console.log(result);
+      await user.save();
       await userController.addUser(req, res, next);
-      // expect(errorThrowMock).toHaveBeenCalledWith({}, "User already Exists", 403);
-      expect(signJwtandSignInMock).toHaveBeenCalledTimes(1);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User already Exists", 403);
     });
 
   });
 
   describe("Check Login", () => {
-      const mockResponse = () => {
-        const res = {};
-        res.status = jest.fn().mockReturnValue(res);
-        res.json = jest.fn().mockReturnValue(res);
-        return res;
-      };
-
-      const mockRequest = () => {
-        const res = {};
-        res.user = jest.fn().mockReturnValue(res);
-        res.jwt = jest.fn().mockReturnValue(res);
-        return res;
-      };
 
       test("Logging In With Email", async () => {
-          
+          let user = new User(mockData.testUser);
+          await user.save();
+
+          const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, mockData.testUser.password);
+          const res = mockResponse();
+
+          await userController.loginUser(req, res, next);
+          expect(res.status).toHaveBeenCalledWith(201);
+          expect(res.json).toHaveBeenCalledWith({userId : mockData.testUser._id, jwt : mockData.testJwt});
       });
 
-      test("Logging in With ", async() => {
+      test("Logging in With Email where User doesn't exist", async () => {
+        const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, mockData.testUser.password);
+        const res = mockResponse();
 
+        await userController.loginUser(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User does not exist", 404);
       });
 
-      test("Logging in With Email where User Exists", async () => {
+      test("Logging in With incorrect Password", async () => {
+        let user = new User(mockData.testUser);
+        await user.save();
+
+        const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, "incorrect password");
+        const res = mockResponse();
+
+        await userController.loginUser(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Incorrect Password", 403);
       });
 
       test("Logging in With Facebook", async () => {
+        const user = new User(mockData.testFacebookUser);
+        const res = mockResponse();
+        await user.save();
 
+        const req = {
+          body : {
+            fcmAccesToken : "sometoken"
+          },
+          user : user
+        };
+
+        await userController.oAuthLogin(req, res, next);
+        expect(res.json).toHaveBeenCalledWith({userId : mockData.testFacebookUser._id, jwt : mockData.testJwt});
       });
   });
 
   describe("Testing Rate",  () => {
-      test("Rating With Correct Inputs", async () => {
 
+      const mockRatingRequest = (mockUserId, mockUserRatingId, mockRating) => {
+        const req = {
+          body : {
+            userId : mockUserId,
+            rating : mockRating
+          }, 
+          params : {
+            ratingUserId : mockUserRatingId
+          }
+        };
+
+        return req; 
+      };
+
+      test("Rating With Correct Inputs", async () => {
+        const req = mockRatingRequest();
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await 
       });
 
       test("Rating a user that does not exist", async() => {
@@ -151,9 +187,44 @@ describe("User Route Test Suite", () => {
       test("Reporting a user twice", async () => {
 
       });
-
-
   });
+
+  describe("Testing GetUser", () => {
+    test("Get existing User", async () => {
+
+    });
+
+    test("Get non-exisiting User", async () => {
+
+    });
+  });
+
+  describe("Testing Update User", () => {
+    test("Updating existing User", async () => {
+
+    });
+
+    test("Updating non-existing User", async () => {
+
+    });
+
+    test("Updating User with its current values", async () => {
+
+    });
+
+    test("Updating only username", async () => {
+
+    });
+
+    test("Updating only courses", async () => {
+
+    });
+
+    test("Updating only email", async () => {
+
+    });
+  });
+
 })
 
 
