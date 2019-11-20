@@ -1,4 +1,4 @@
-const keywords = require("../../rest-server/utils/lg");
+const keywords = require("../../../rest-server/utils/lg");
 
 
 describe("Keyword Test Suite", () => {

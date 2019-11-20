@@ -51,6 +51,8 @@ const addUser = async (req, res, next) => {
             });
 
             await curUser.save();
+        } else {
+            errorThrow({}, "User already Exists", 403);
         }
         
         signTokenAndSignIn(curUser._id, res);
@@ -253,5 +255,6 @@ module.exports = {
     updateUser,
     loginUser,
     rate,
-    report
+    report,
+    signTokenAndSignIn
 };
