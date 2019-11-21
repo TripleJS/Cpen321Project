@@ -62,6 +62,8 @@ const testJwt = jwt.sign({
 
 module.exports = {
     testUser,
+    testUser2,
+    testUser3,
     testQuestion,
     testJwt,
     testFacebookUser

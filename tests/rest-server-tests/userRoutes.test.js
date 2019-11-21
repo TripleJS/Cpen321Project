@@ -145,53 +145,185 @@ describe("User Route Test Suite", () => {
       };
 
       test("Rating With Correct Inputs", async () => {
-        const req = mockRatingRequest();
+        const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const res = mockResponse(); 
         const user = new User(mockData.testUser);
         const user2 = new User(mockData.testUser2);
-        await 
+        await user.save();
+        await user2.save();
+
+        await userController.rate(req, res, next);
+        expect(res.status).toHaveBeenCalledWith(200);
       });
 
       test("Rating a user that does not exist", async() => {
+        const req = mockRatingRequest(mongoose.Types.ObjectId(), mockData.testUser2._id, 5);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.rate(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
       });
 
       test("Rating a user with a user that does not exist", async() => {
+        const req = mockRatingRequest(mockData.testUser2._id, mongoose.Types.ObjectId(), 5);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.rate(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
       });
 
 
       test("Rating a user twice with same inputs", async () => {
+        const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.rate(req, res, next);
+        await userController.rate(req, res, next);
+        let result = await User.findById(mockData.testUser._id);
+        expect(result.rating).toEqual(5);
+        expect(result.usersWhoRated.length).toEqual(1);
       });
 
       test("Rating a user twice with different inputs", async() => {
+        const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
+        const req2 = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 3);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.rate(req, res, next);
+        await userController.rate(req2, res, next);
+        let result = await User.findById(mockData.testUser._id);
+        expect(result.rating).toEqual(3);
+        expect(result.usersWhoRated.length).toEqual(1);
+      });
+
+      test("Rating a user with 2 different users", async () => {
+        const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
+        const req2 = mockRatingRequest(mockData.testUser._id, mockData.testUser3._id, 3);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        const user3 = new User(mockData.testUser3);
+        await user.save();
+        await user2.save();
+        await user3.save();
+
+        await userController.rate(req, res, next);
+        await userController.rate(req2, res, next);
+        let result = await User.findById(mockData.testUser._id);
+        expect(result.rating).toEqual(4);
+        expect(result.usersWhoRated.length).toEqual(2);
       });
 
   }); 
 
   describe("Testing Report",  () => {
-      test("Reporting With Correct Inputs", async () => {
 
+      const mockReportRequest = (mockUserId, mockUserReportingId) => {
+        const req = {
+          body : {
+            userId : mockUserId,
+          }, 
+          params : {
+            ratingUserId : mockUserReportingId
+          }
+        }
+        
+        return req;
+      };
+
+      test("Reporting With Correct Inputs", async () => {
+        const req = mockReportRequest(mockData.testUser._id, mockData.testUser2._id);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
+
+        await userController.report(req, res, next);
       });
 
       test("Reporting a user that does not exist", async() => {
+        const req = mockReportRequest(mongoose.Types.ObjectId(), mockData.testUser2._id);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.report(req, res, next);
       });
 
       test("Reporting a user with a user that does not exist", async() => {
+        const req = mockReportRequest(mockData.testUser2._id, mongoose.Types.ObjectId);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        await user.save();
+        await user2.save();
 
+        await userController.report(req, res, next);
       });
 
-      test("Reporting a user twice", async () => {
+      test("Reporting a user twice with same user", async () => {
+        const req = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
+        const req2 = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        const user3 = new User(mockData.testUser3.data);
 
+        await user.save();
+        await user2.save();
+        await user3.save();
+
+        await userController.report(req, res, next);
+        await userController.report(req2, res, next);
+      });
+
+      test("Reportina a user multiple times with different users", async () => {
+        const req = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
+        const req2 = mockReportRequest(mockData.testUser2._id, mockData.testUser3._id);
+        const res = mockResponse(); 
+        const user = new User(mockData.testUser);
+        const user2 = new User(mockData.testUser2);
+        const user3 = new User(mockData.testUser3.data);
+
+        await user.save();
+        await user2.save();
+        await user3.save();
+
+        await userController.report(req, res, next);
+        await userController.report(req2, res, next);
       });
   });
 
   describe("Testing GetUser", () => {
-    test("Get existing User", async () => {
+    const mockGetUserRequest = (id) => {
+      return {
+        params : {
+          userId: id
+        }
+      }
+    };
 
+    test("Get existing User", async () => {
+      
     });
 
     test("Get non-exisiting User", async () => {
@@ -200,6 +332,12 @@ describe("User Route Test Suite", () => {
   });
 
   describe("Testing Update User", () => {
+    const mockUpdateUserRequest = () => {
+      return {
+
+      }
+    };
+
     test("Updating existing User", async () => {
 
     });
