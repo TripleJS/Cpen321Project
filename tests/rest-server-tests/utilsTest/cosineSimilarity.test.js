@@ -1,4 +1,4 @@
-const cosineSimilarity = require("../../rest-server/utils/suggestions/cosineSimilarity");
+const cosineSimilarity = require("../../../rest-server/utils/suggestions/cosineSimilarity");
 
 
 describe("Cosine Simlarity Test", () => {
