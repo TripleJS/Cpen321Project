@@ -39,9 +39,9 @@ public class PublicUserViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    private void report(String userId, String token) {
+    public void getPublicUser(String userId, String token) {
         setupRetrofit(token);
-        mBackEndService.reportUser(userId).enqueue(new Callback<User>() {
+        mBackEndService.getPublicUser(userId).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
@@ -62,16 +62,9 @@ public class PublicUserViewModel extends ViewModel {
         });
     }
 
-    public MutableLiveData<User> userReport(String userId,String token) {
-
-        report(userId, token);
-
-        return publicUser;
-    }
-
-    private void rate(String userId, String token) {
+    public void report(String userId, String token, User user) {
         setupRetrofit(token);
-        mBackEndService.reteUser(userId).enqueue(new Callback<User>() {
+        mBackEndService.reportUser(userId,user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
@@ -92,10 +85,30 @@ public class PublicUserViewModel extends ViewModel {
         });
     }
 
-    public MutableLiveData<User> userRate(String userId, String token) {
+    public void rate(String userId, String token, User user) {
+        setupRetrofit(token);
+        mBackEndService.reteUser(userId,user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    return;
+                }
 
-        rate(userId, token);
+                if (response.body() == null)
+                    return;
 
+                publicUser.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+            }
+        });
+    }
+
+    public MutableLiveData<User> getPublicUserObserve() {
         return publicUser;
     }
 

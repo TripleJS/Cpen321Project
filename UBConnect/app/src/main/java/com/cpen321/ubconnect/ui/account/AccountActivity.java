@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
+import com.cpen321.ubconnect.model.HelperUtils;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
@@ -39,10 +41,13 @@ import com.cpen321.ubconnect.ui.search.SearchViewModel;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AccountActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,9 +64,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private RecyclerView recyclerView;
     private List<Question> questions;
 
-    private String oldEmail;
-    private String oldUsername;
-    private String oldCourses;
+    private String noEmail;
+    private String noUsername;
+    private String noCourses;
 
     private AlertDialog dialog;
     private boolean isKeyboardShowing = false;
@@ -89,6 +94,32 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                HelperUtils.hideKeyboard(AccountActivity.this);
+                emailNameET.setCursorVisible(false);
+                coursesNameET.setCursorVisible(false);
+                userNameET.setCursorVisible(false);
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                emailNameET.setCursorVisible(true);
+                coursesNameET.setCursorVisible(true);
+                userNameET.setCursorVisible(true);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -96,17 +127,19 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
         //josh
 
+        errorHandlingUtils = new ErrorHandlingUtils();
+
         userNameET = findViewById(R.id.usernameET);
         emailNameET = findViewById(R.id.emailET);
         coursesNameET = findViewById(R.id.coursesET);
 
-        oldCourses = "Update your courses";
-        oldUsername = "Update your username";
-        oldEmail = "Update your email";
+        noCourses = "Update your courses";
+        noUsername = "Update your username";
+        noEmail = "Update your email";
 
-        userNameET.setText(oldUsername);
-        emailNameET.setText(oldEmail);
-        coursesNameET.setText(oldCourses);
+        userNameET.setText(noUsername);
+        emailNameET.setText(noEmail);
+        coursesNameET.setText(noCourses);
 
         contentView = this.findViewById(android.R.id.content).getRootView();
 
@@ -230,6 +263,15 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         View.OnClickListener applyOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(notValid()){
+                    Toast.makeText(getApplicationContext(),"Email and Username cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (! checkEmailFormat(emailNameET.getText().toString())) {
+                    Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 userNameET.setFocusableInTouchMode(false);
                 emailNameET.setFocusableInTouchMode(false);
@@ -271,7 +313,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
     public void onError(String err){
         findViewById(R.id.accountLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(AccountActivity.this,err, retryOnClickListener, "Retry");
+        errorHandlingUtils.showError(AccountActivity.this,err, retryOnClickListener, "Retry", Snackbar.LENGTH_INDEFINITE);
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -279,7 +321,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         public void onClick(View v) {
             errorHandlingUtils.hideError();
             findViewById(R.id.accountLayout).setVisibility(View.VISIBLE);
-
+            accountViewModel.getUserInfo(token,userId);
         }
     };
 
@@ -288,16 +330,38 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
             Toast.makeText(getApplicationContext(),"Applied", Toast.LENGTH_SHORT).show();
             applied = false;
         }
-        userNameET.setText(user.getUserName());
-        emailNameET.setText(user.getEmail());
-        coursesNameET.setText(updateCourses(user.getCourses()));
+
+        if(!user.getUserName().equals("")){
+            userNameET.setText(user.getUserName());
+        }
+        else {
+            userNameET.setText(noUsername);
+        }
+
+        if(!user.getEmail().equals("")){
+            emailNameET.setText(user.getEmail());
+        }
+        else {
+            emailNameET.setText(noEmail);
+        }
+
+        if(!updateCourses(user.getCourses()).equals("")){
+            coursesNameET.setText(updateCourses(user.getCourses()));
+        }
+        else {
+            coursesNameET.setText(noCourses);
+        }
+
         this.questions.clear();
-        this.questions.addAll(user.getQuestions());
+        if(user.getQuestions() != null){
+            this.questions.addAll(user.getQuestions());
+        }
+
         RecyclerView.Adapter adapter = new SearchQuestionAdapter(questions);
         recyclerView.setAdapter(adapter);
-        oldEmail = user.getEmail();
-        oldUsername = user.getUserName();
-        oldCourses = updateCourses(user.getCourses());
+        noEmail = user.getEmail();
+        noUsername = user.getUserName();
+        noCourses = updateCourses(user.getCourses());
     }
 
 
@@ -334,18 +398,25 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
     void checkEditTexts(){
         if(coursesNameET.getText().toString().equals("")){
-            coursesNameET.setText(oldCourses);
+            coursesNameET.setText(noCourses);
         }
         if(emailNameET.getText().toString().equals("")){
-            emailNameET.setText(oldEmail);
+            emailNameET.setText(noEmail);
         }
         if(userNameET.getText().toString().equals("")){
-            userNameET.setText(oldUsername);
+            userNameET.setText(noUsername);
         }
     }
 
     private boolean notValid() {
-        return ((userNameET.getText().toString().length() == 0) || (emailNameET.getText().toString().length() == 0) || (coursesNameET.getText().toString().length() == 0));
+        return ((userNameET.getText().toString().length() == 0) || (emailNameET.getText().toString().length() == 0));
+    }
+
+    public boolean checkEmailFormat(String email){
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @Override
@@ -421,7 +492,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
         }
 
-
+        AccountActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

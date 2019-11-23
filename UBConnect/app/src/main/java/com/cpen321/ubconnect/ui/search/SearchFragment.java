@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
     }
 
     protected void observeViewModel() {
-        searchViewModel.getQuestions(token).observe(this, this::onChangedResult);
+//        searchViewModel.getQuestions(token).observe(this, this::onChangedResult);
     }
 
     public void onChangedResult(List<Question> questions){

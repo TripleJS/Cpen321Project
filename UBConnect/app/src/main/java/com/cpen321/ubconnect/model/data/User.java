@@ -9,10 +9,13 @@ public class User {
     private String userId;
     private String jwt;
     private String email;
-    private String encryptedPassword;
+    private String password;
     private List<String> courses;
     private String userName;
     private List<Question> questions;
+    private float rating;
+    private List<UserReportRate> usersWhoRated;
+    private List<String> usersWhoReported;
 
     public String getUserId() {
         return userId;
@@ -38,12 +41,12 @@ public class User {
         this.email = email;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<String> getCourses() {
@@ -68,5 +71,29 @@ public class User {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public List<UserReportRate> getUsersWhoRated() {
+        return usersWhoRated;
+    }
+
+    public void setUsersWhoRated(List<UserReportRate> usersWhoRated) {
+        this.usersWhoRated = usersWhoRated;
+    }
+
+    public List<String> getUsersWhoReported() {
+        return usersWhoReported;
+    }
+
+    public void setUsersWhoReported(List<String> usersWhoReported) {
+        this.usersWhoReported = usersWhoReported;
     }
 }

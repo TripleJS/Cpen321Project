@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
+import com.cpen321.ubconnect.model.HelperUtils;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
@@ -28,6 +30,7 @@ import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class PostQuestionActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +64,35 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                HelperUtils.hideKeyboard(PostQuestionActivity.this);
+                title.setCursorVisible(false);
+                question.setCursorVisible(false);
+                course.setCursorVisible(false);
+                topic.setCursorVisible(false);
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                title.setCursorVisible(true);
+                question.setCursorVisible(true);
+                course.setCursorVisible(true);
+                topic.setCursorVisible(true);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -121,7 +153,7 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
 
     public void onError(String err){
         findViewById(R.id.postquestionLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(PostQuestionActivity.this,err, retryOnClickListener, "Retry");
+        errorHandlingUtils.showError(PostQuestionActivity.this,err, retryOnClickListener, "Retry", Snackbar.LENGTH_INDEFINITE);
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -207,7 +239,7 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
 
         }
 
-
+        PostQuestionActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

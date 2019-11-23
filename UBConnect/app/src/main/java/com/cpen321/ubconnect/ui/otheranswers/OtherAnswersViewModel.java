@@ -61,6 +61,33 @@ public class OtherAnswersViewModel extends ViewModel {
         });
     }
 
+    public void getRecentQuestionToAnswerId(String token, String userId) {
+
+        setupRetrofit(token);
+        mBackEndService.getRecentQuestionToAnswerId(userId).enqueue(new Callback<Question>() {
+            @Override
+            public void onResponse(Call<Question> call, Response<Question> response) {
+                if (!response.isSuccessful()) {
+                    // ErrorHandlingUtils.errorHandling("dummy");
+                }
+
+                if (response.body() == null) {
+                    return;
+                }
+
+
+                question.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Question> call, Throwable t) {
+                // to do
+            }
+        });
+
+    }
+
+
     public MutableLiveData<Question> getQuestionData() {
         return question;
     }

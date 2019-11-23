@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
-import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.SearchResult;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchViewModel extends ViewModel {
-    private MutableLiveData<List<Question>> questions = new MutableLiveData<>();
+    private MutableLiveData<SearchResult> searchResult = new MutableLiveData<>();
     private MutableLiveData<String> error = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
@@ -45,11 +45,11 @@ public class SearchViewModel extends ViewModel {
         mBackEndService = retrofit.create(IBackEndService.class);
     }
 
-    public void getResults(String token) {
+    public void getResults(String token, String question) {
         setupRetrofit(token);
-        mBackEndService.getSearchResult().enqueue(new Callback<List<Question>>() {
+        mBackEndService.getSearchResult(question).enqueue(new Callback<SearchResult>() {
             @Override
-            public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
+            public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
                 if (!response.isSuccessful()) {
                     error.postValue(NetworkUtil.onServerResponseError(response));
                     return;
@@ -58,18 +58,18 @@ public class SearchViewModel extends ViewModel {
                 if (response.body() == null)
                     return;
 
-                questions.postValue(response.body());
+                searchResult.postValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Question>> call, Throwable t) {
+            public void onFailure(Call<SearchResult> call, Throwable t) {
                 error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
             }
         });
     }
 
-    public MutableLiveData<List<Question>> getQuestions(String token) {
-        return questions;
+    public MutableLiveData<SearchResult> getQuestions() {
+        return searchResult;
     }
 
     void setupRetrofit(String token){

@@ -17,17 +17,17 @@ public class ErrorHandlingUtils {
         }
     }
 
-    public void showError(final Activity activity, final String err, View.OnClickListener onClickListener, String action) {
+    public void showError(final Activity activity, final String err, View.OnClickListener onClickListener, String action, int snackBarLen) {
         try {
             Thread.sleep(100);
 
-            mSnackBar = Snackbar.make(activity.findViewById(android.R.id.content) , err, Snackbar.LENGTH_INDEFINITE)
+            mSnackBar = Snackbar.make(activity.findViewById(android.R.id.content) , err, snackBarLen)
                     .setAction(action, onClickListener);
 
             View snackbarView = mSnackBar.getView();
             TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
 
-            snackTextView.setMaxLines(2);
+            snackTextView.setMaxLines(10);
 
             mSnackBar.show();
         }catch (Exception e){};

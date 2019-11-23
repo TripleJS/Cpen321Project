@@ -162,7 +162,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void onError(String err){
         findViewById(R.id.homeLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(HomeActivity.this,err, retryOnClickListener, "Retry");
+        errorHandlingUtils.showError(HomeActivity.this,err, retryOnClickListener, "Retry",Snackbar.LENGTH_INDEFINITE);
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -246,6 +246,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
         }
+
+        HomeActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
