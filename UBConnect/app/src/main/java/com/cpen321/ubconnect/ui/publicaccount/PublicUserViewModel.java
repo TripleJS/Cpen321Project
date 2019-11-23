@@ -1,13 +1,10 @@
 package com.cpen321.ubconnect.ui.publicaccount;
 
-import android.view.View;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
-import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.User;
@@ -112,7 +109,7 @@ public class PublicUserViewModel extends ViewModel {
         return publicUser;
     }
 
-    void setupRetrofit(String token){
+    private void setupRetrofit(String token){
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();

@@ -11,10 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.publicaccount.PublicUserActivity;
-import com.cpen321.ubconnect.ui.question.QuestionFragment;
 
 import java.util.List;
 

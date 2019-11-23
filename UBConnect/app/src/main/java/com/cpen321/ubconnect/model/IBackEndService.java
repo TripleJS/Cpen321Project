@@ -2,7 +2,6 @@ package com.cpen321.ubconnect.model;
 
 import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.FCMToken;
-import com.cpen321.ubconnect.model.data.PublicUser;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.SearchResult;
 import com.cpen321.ubconnect.model.data.Swiped;

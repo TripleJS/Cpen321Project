@@ -3,8 +3,8 @@ package com.cpen321.ubconnect.model.data;
 import java.util.List;
 
 public class SearchItem<T> {
-    List<T> searchItem;
-    String type;
+    private List<T> searchItem;
+    private String type;
 
     public List<T> getSearchItem() {
         return searchItem;

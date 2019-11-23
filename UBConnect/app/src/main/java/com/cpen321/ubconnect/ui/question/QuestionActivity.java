@@ -20,7 +20,6 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
