@@ -241,6 +241,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent t= new Intent(HomeActivity.this, ViewOnlyOthersAnswerActivity.class);
                 startActivity(t);
                 break;
+            default:
+                break;
 
         }
 

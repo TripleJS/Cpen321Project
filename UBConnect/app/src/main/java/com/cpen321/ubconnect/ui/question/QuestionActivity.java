@@ -40,12 +40,6 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     private String token;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
-
     private ErrorHandlingUtils errorHandlingUtils;
 
     @Override
@@ -53,15 +47,15 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -187,6 +181,8 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_continue_answering:
                 Intent t= new Intent(QuestionActivity.this, ViewOnlyOthersAnswerActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

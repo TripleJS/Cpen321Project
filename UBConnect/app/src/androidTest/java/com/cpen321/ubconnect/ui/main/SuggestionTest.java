@@ -167,10 +167,6 @@ public class SuggestionTest {
         takeScreenshots("afterswiperight");
     }
 
-    private int getRVcount(RecyclerView recyclerView){
-        return recyclerView.getAdapter().getItemCount();
-    }
-
     public void takeScreenshots(String description){
         // Save to external storage (usually /sdcard/screenshots)
         File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
