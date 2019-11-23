@@ -50,7 +50,9 @@ public class NoQuestionActivity extends AppCompatActivity implements NavigationV
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(NoQuestionActivity.this, HomeActivity.class);
+            startActivity(intent);
+            NoQuestionActivity.this.finish();
         }
     }
 
@@ -111,7 +113,7 @@ public class NoQuestionActivity extends AppCompatActivity implements NavigationV
 
         }
 
-
+        NoQuestionActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

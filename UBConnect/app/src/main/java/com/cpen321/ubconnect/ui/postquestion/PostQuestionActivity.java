@@ -172,7 +172,9 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(PostQuestionActivity.this, HomeActivity.class);
+            startActivity(intent);
+            PostQuestionActivity.this.finish();
         }
     }
 

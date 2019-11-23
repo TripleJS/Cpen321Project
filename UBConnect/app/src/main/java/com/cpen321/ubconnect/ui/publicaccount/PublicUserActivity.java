@@ -176,7 +176,9 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(PublicUserActivity.this, HomeActivity.class);
+            startActivity(intent);
+            PublicUserActivity.this.finish();
         }
     }
 

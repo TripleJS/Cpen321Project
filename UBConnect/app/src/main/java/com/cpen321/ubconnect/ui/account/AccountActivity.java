@@ -413,7 +413,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(AccountActivity.this, HomeActivity.class);
+            startActivity(intent);
+            AccountActivity.this.finish();
         }
     }
 

@@ -16,7 +16,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.fcmservice.MessagingService;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
@@ -202,7 +201,9 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(ViewOnlyOthersAnswerActivity.this, HomeActivity.class);
+            startActivity(intent);
+            ViewOnlyOthersAnswerActivity.this.finish();
         }
     }
 
@@ -263,7 +264,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 
         }
 
-
+        ViewOnlyOthersAnswerActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

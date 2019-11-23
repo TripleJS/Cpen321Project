@@ -172,7 +172,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(SearchActivity.this, HomeActivity.class);
+            startActivity(intent);
+            SearchActivity.this.finish();
         }
     }
 

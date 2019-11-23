@@ -124,7 +124,9 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(QuestionActivity.this, HomeActivity.class);
+            startActivity(intent);
+            QuestionActivity.this.finish();
         }
     }
 

@@ -50,7 +50,9 @@ public class NoAnswerActivity extends AppCompatActivity implements NavigationVie
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(NoAnswerActivity.this, HomeActivity.class);
+            startActivity(intent);
+            NoAnswerActivity.this.finish();
         }
     }
 
@@ -111,7 +113,7 @@ public class NoAnswerActivity extends AppCompatActivity implements NavigationVie
 
         }
 
-
+        NoAnswerActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

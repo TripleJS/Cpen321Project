@@ -361,7 +361,9 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
+            startActivity(intent);
+            OtherAnswersActivity.this.finish();
         }
     }
 
@@ -422,7 +424,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
         }
 
-
+        OtherAnswersActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
