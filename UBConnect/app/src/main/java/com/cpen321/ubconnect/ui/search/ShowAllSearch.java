@@ -20,7 +20,6 @@ import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.SearchUserAdapter;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
-import com.cpen321.ubconnect.model.data.SearchItem;
 import com.cpen321.ubconnect.model.data.SearchResult;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
@@ -29,9 +28,6 @@ import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShowAllSearch extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SearchViewModel searchViewModel;

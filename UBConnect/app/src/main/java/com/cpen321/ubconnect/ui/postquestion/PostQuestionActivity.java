@@ -61,7 +61,7 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                return;
+                // nothing to do
             }
 
             @Override
@@ -83,7 +83,7 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                return;
+                // nothing to do
             }
         });
 

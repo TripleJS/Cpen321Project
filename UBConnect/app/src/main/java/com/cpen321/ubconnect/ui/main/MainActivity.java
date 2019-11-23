@@ -34,8 +34,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import org.json.JSONObject;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private EditText username;
 
-    private TextView emailTV;
-    private TextView passwordTV;
     private TextView usernameTV;
 
 
@@ -90,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         loginSignup = findViewById(R.id.Login2);
 
         usernameTV = findViewById(R.id.usernameTV);
-        emailTV = findViewById(R.id.emailTV);
-        passwordTV = findViewById(R.id.passwordTV);
 
         appLoginButton.setOnClickListener(pageOnClickListener);
         signupButton.setOnClickListener(pageOnClickListener);

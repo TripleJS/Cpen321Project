@@ -71,7 +71,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                return;
+                // nothing to do
             }
 
             @Override
@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                return;
+                // nothing to do
             }
         });
 
@@ -112,69 +112,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         observeViewModel();
-//        updatejljl();
-//        RecyclerView.Adapter adapter = new SearchAdapter(searchItems);
-//        recyclerView.setAdapter(adapter);
-    }
-
-    public void updatejljl(){
-        // begin
-        SearchItem<Question> questionSearchItem = new SearchItem<>();
-        List<Question> questions = new ArrayList<>();
-        Question q1 = new Question();
-        q1.setQuestionTitle("q1");
-        Date d1 = new Date();
-        q1.setDate(d1);
-        q1.setOwner("gg");
-        q1.setQuestion("joojpp");
-        q1.setId("qqqqqqqqqqqqqqqq");
-        questions.add(q1);
-        Question q2 = new Question();
-        q2.setQuestionTitle("q2");
-        Date d2 = new Date();
-        q2.setDate(d2);
-        q2.setOwner("gg222222");
-        q2.setQuestion("joojpp22222222");
-        q2.setId("wwwwwwwwwwwwwwwwwwww");
-        questions.add(q2);
-        Question q3 = new Question();
-        q3.setQuestionTitle("q3");
-        Date d3 = new Date();
-        q3.setDate(d3);
-        q3.setOwner("gg3333333");
-        q3.setQuestion("joojpp33333333");
-        q3.setId("eeeeeeeeeeeeeeeee");
-        questions.add(q3);
-        questionSearchItem.setSearchItem(questions);
-        questionSearchItem.setType("Question");
-        searchItems.add(questionSearchItem);
-
-        SearchItem<User> userSearchItem = new SearchItem<>();
-        List<User> users = new ArrayList<>();
-        User u1 = new User();
-        List<String> c1 = new ArrayList<>();
-        c1.add("cpen221");
-        c1.add("cpen211");
-        u1.setCourses(c1);
-        u1.setUserName("fuck");
-        users.add(u1);
-        User u2 = new User();
-        List<String> c2 = new ArrayList<>();
-        c2.add("cpen221");
-        c2.add("cpen211");
-        u2.setCourses(c2);
-        u2.setUserName("fuck2");
-        users.add(u2);
-        User u3 = new User();
-        List<String> c3 = new ArrayList<>();
-        c3.add("cpen221");
-        c3.add("cpen211");
-        u3.setCourses(c3);
-        u3.setUserName("fuck");
-        users.add(u3);
-        userSearchItem.setSearchItem(users);
-        userSearchItem.setType("User");
-        searchItems.add(userSearchItem);
     }
 
     protected void observeViewModel() {
