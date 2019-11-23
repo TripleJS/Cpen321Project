@@ -21,12 +21,11 @@ import com.cpen321.ubconnect.SearchUserAdapter;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.SearchResult;
-import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -173,7 +172,7 @@ public class ShowAllSearch extends AppCompatActivity implements NavigationView.O
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(ShowAllSearch.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(ShowAllSearch.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
             default:

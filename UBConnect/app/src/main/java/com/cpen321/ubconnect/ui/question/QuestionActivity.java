@@ -25,7 +25,6 @@ import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -181,7 +180,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(QuestionActivity.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(QuestionActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
             default:
