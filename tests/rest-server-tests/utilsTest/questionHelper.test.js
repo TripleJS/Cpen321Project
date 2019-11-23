@@ -28,7 +28,7 @@ describe("Question Helper Test Quite", () => {
     });
 
     afterEach(async () => {
-    await mongoose.connection.dropDatabase();
+        await mongoose.connection.dropDatabase();
     })
 
     describe("Get Questions By User Helper", () => {

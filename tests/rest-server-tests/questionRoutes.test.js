@@ -1,6 +1,5 @@
 const questionController = require("../../rest-server/controller/question");
 const mongoose = require('mongoose');
-const keywords = require("../../rest-server/utils/lg");
 const User = require("../../rest-server/schema/user");
 const Question = require("../../rest-server/schema/questions");
 const mockData = require("../mongoose-mock-data");
@@ -10,11 +9,10 @@ jest.mock("../../rest-server/utils/errorHandler", () => ({
   errorThrow : jest.fn()
 }));
 
-jest.mock("../../rest-server/utils/lg", () => ({
-  keywords : jest.fn()
-}));
+jest.mock("../../rest-server/utils/lg");
 
 const mockErrorHandler = require("../../rest-server/utils/errorHandler");
+const mockKeywords = require("../../rest-server/utils/lg");
 
 const mockResponse = () => {
   const res = {};
@@ -25,14 +23,15 @@ const mockResponse = () => {
 
 const next = () => {};
 
-describe("User Route Test Suite", () => {
+describe("Question Route Test Suite", () => {
   let db;
 
   beforeAll(async () => {
     try {
       db = await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify : false
       });
     } catch (error) {
       process.exit();
@@ -101,6 +100,7 @@ describe("User Route Test Suite", () => {
 
       await questionController.postQuestion(req, res, next);
       expect(res.status).toHaveBeenCalledWith(203);
+      expect(mockKeywords).toHaveBeenCalled();
     });
 
     test("Posting a new question with invalid user", async () => {

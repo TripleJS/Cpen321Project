@@ -41,7 +41,7 @@ const testUser3 = {
 };
 
 const testFacebookUser = {
-    _id : USER_ID,
+    _id : mongoose.Types.ObjectId(),
     method : "facebook",
     email : "fbemail@email.com",
     facebook : {
