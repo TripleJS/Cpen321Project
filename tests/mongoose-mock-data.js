@@ -105,6 +105,26 @@ const testQuestion6 = {
     date : new Date()
 };
 
+const testAnswer = {
+
+};
+
+const testAnswer2 = {
+
+};
+
+const testAnswer3 = {
+
+};
+
+const testAnswer4 = {
+
+};
+
+const testQuestionArray = [testQuestion, testQuestion2, testQuestion3, testQuestion4, testQuestion5, testQuestion6];
+const testUserArray = [testUser, testUser2, testUser3, testFacebookUser];
+const testAnswerArray= [testAnswer, testAnswer2, testAnswer3, testAnswer4];
+
 const testJwt = jwt.sign({
     user: USER_ID
 },
@@ -113,28 +133,15 @@ const testJwt = jwt.sign({
 );
 
 const initializeDatabase =  async () => {
-    let question, question2, question3, question4, question5, question6;
-    let user, user2, user3;
+    for (var i = 0; i < testUserArray.length; i++) {
+        let user = new User(testUserArray[parseInt(i)]);
+        await user.save();
+    }
 
-    question = new Question(testQuestion);
-    question2 = new Question(testQuestion2);
-    question3 = new Question(testQuestion3);
-    question4 = new Question(testQuestion4);
-    question5 = new Question(testQuestion5);
-    question6 = new Question(testQuestion6);
-    user = new User(testUser);
-    user2 = new User(testUser2);
-    user3 = new User(testUser3);
-
-    await question.save();
-    await question2.save();
-    await question3.save();
-    await question4.save();
-    await question5.save();
-    await question6.save();
-    await user.save();
-    await user2.save();
-    await user3.save();
+    for (var i = 0; i < testQuestionArray.length; i++) {
+        let question = new Question(testQuestionArray[parseInt(i)]);
+        await question.save();
+    }
 };
 
 module.exports = {
@@ -142,6 +149,8 @@ module.exports = {
     testUser2,
     testUser3,
     testQuestion,
+    testUserArray,
+    testQuestionArray,
     testJwt,
     testFacebookUser,
     initializeDatabase

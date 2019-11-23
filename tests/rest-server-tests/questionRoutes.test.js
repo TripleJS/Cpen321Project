@@ -1,6 +1,6 @@
 const questionController = require("../../rest-server/controller/question");
 const mongoose = require('mongoose');
-const userController = require("../../rest-server/controller/user");
+const keywords = require("../../rest-server/utils/lg");
 const User = require("../../rest-server/schema/user");
 const Question = require("../../rest-server/schema/questions");
 const mockData = require("../mongoose-mock-data");
@@ -8,6 +8,10 @@ const mockData = require("../mongoose-mock-data");
 jest.mock("../../rest-server/utils/errorHandler", () => ({
   errorCatch : jest.fn(),
   errorThrow : jest.fn()
+}));
+
+jest.mock("../../rest-server/utils/lg", () => ({
+  keywords : jest.fn()
 }));
 
 const mockErrorHandler = require("../../rest-server/utils/errorHandler");
@@ -80,7 +84,26 @@ describe("User Route Test Suite", () => {
   });
 
   describe("Post Question Tests", () => {
-    test("Posting a new Question", async () => {
+    const mockPostQuestionRequest = (mockTitle, mockQuestion, mockOwner, mockCourse) => {
+      return {
+        body : {
+          title : mockTitle,
+          question : mockQuestion,
+          owner : mockOwner,
+          course : mockCourse
+        }
+      }
+    }
+
+    test("Posting a new question", async () => {
+      const req = mockPostQuestionRequest("new database entry", "some question test", mockData.testUserArray[1]._id, "Cpen 311");
+      const res = mockResponse();
+
+      await questionController.postQuestion(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(203);
+    });
+
+    test("Posting a new question with invalid user", async () => {
 
     });
 
