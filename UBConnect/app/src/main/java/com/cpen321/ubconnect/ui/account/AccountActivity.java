@@ -34,6 +34,7 @@ import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.main.MainActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
@@ -59,7 +60,6 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private String userId;
 
     private AccountViewModel accountViewModel;
-    private SearchViewModel searchViewModel;
 
     private RecyclerView recyclerView;
     private List<Question> questions;
@@ -68,15 +68,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private String noUsername;
     private String noCourses;
 
-    private AlertDialog dialog;
     private boolean isKeyboardShowing = false;
     private View contentView;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
     private boolean applied = false;
 
     private ErrorHandlingUtils errorHandlingUtils;
@@ -88,16 +82,16 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_account);
 
         //josh
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
+                return;
             }
 
             @Override
@@ -117,12 +111,12 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
+                return;
             }
         });
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
         //josh
@@ -293,7 +287,6 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
 
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
         questions = new ArrayList<>();
         recyclerView = findViewById(R.id.accountRecycle);
@@ -486,8 +479,10 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(AccountActivity.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(AccountActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

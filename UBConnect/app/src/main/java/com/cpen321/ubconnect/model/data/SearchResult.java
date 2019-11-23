@@ -3,8 +3,8 @@ package com.cpen321.ubconnect.model.data;
 import java.util.List;
 
 public class SearchResult {
-    List<User> users;
-    List<Question> questions;
+    private List<User> users;
+    private List<Question> questions;
 
     public List<User> getUsers() {
         return users;

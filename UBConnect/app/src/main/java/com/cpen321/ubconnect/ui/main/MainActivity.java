@@ -204,16 +204,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bundleHandling(Bundle bundle) {
-        if (bundle != null && bundle.get("message") != null) {
+        if (bundle != null && bundle.get("questionId") != null && bundle.get("userId") != null) {
             //here can get notification message
             Intent intent = new Intent(MainActivity.this, ViewOnlyOthersAnswerActivity.class);
-            JSONObject jsonObject = (JSONObject) bundle.get("message");
-            try {
-                intent.putExtra("qid", jsonObject.getString("qid"));
-                Log.d("checkcheck", "bundleHandling: " + jsonObject.getString("qid"));
-                startActivity(intent);
-                MainActivity.this.finish();
-            }catch (Exception e){}
+            intent.putExtra("questionId", (bundle.get("questionId")).toString());
+            intent.putExtra("userId", (bundle.get("userId")).toString());
+            startActivity(intent);
+            MainActivity.this.finish();
+
         }
     }
 

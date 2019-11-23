@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -48,13 +47,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private List<SearchItem> searchItems;
     private String token;
     private EditText search;
-    private Button searchButton;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
 
     private ErrorHandlingUtils errorHandlingUtils;
     private String question;
@@ -62,7 +55,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private RecyclerView.Adapter adapter;
 
     private long start;
-    private long end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +62,16 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
+                return;
             }
 
             @Override
@@ -95,7 +87,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
+                return;
             }
         });
 
@@ -103,12 +95,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         errorHandlingUtils = new ErrorHandlingUtils();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
         search = findViewById(R.id.searchViewView);
-        searchButton = findViewById(R.id.searchButton);
+        Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(searchOnClickListener);
         search.setText("");
 
@@ -209,45 +201,19 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         questionSearchItem.setSearchItem(searchResult.getQuestions());
         questionSearchItem.setType("Question");
         searchItems.add(questionSearchItem);
-        setupListener("Question");
 
         SearchItem<User> userSearchItem = new SearchItem<>();
         userSearchItem.setSearchItem(searchResult.getUsers());
         userSearchItem.setType("User");
         searchItems.add(userSearchItem);
-        setupListener("User");
 
         adapter = new SearchAdapter(searchItems, question);
         recyclerView.setAdapter(adapter);
 
-        end = System.currentTimeMillis()/1000;
+        long end = System.currentTimeMillis()/1000;
         Log.d("Search", "onSearchResult: " + end);
         Log.d("Search", "time took: " + (end - start));
     }
-
-    private void setupListener(String searchItem){
-        Button showAll = findViewById(R.id.searchitemShowAll);
-        if(searchItem.equals("Question")){
-
-        }
-        else if(searchItem.equals("User")){
-
-        }
-    }
-
-    private View.OnClickListener searchItemOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
-    private View.OnClickListener showAllOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         @Override
@@ -327,6 +293,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_continue_answering:
                 Intent t= new Intent(SearchActivity.this, ViewOnlyOthersAnswerActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }
