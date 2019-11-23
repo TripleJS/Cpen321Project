@@ -33,12 +33,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest2 {
+public class FacebookAPITest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -64,7 +65,7 @@ public class MainActivityTest2 {
 
 
     @Test
-    public void mainActivityTest() {
+    public void facebookAPITest() {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -145,7 +146,7 @@ public class MainActivityTest2 {
 
         takeScreenshots("endresult");
 
-        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+        assertNotNull(onView(withId(R.id.login_button)).check(matches(isDisplayed())));
     }
 
     private static Matcher<View> childAtPosition(
