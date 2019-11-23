@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1574544308920" clover="3.2.0">
-  <project timestamp="1574544308920" name="All files">
-    <metrics statements="381" coveredstatements="270" conditionals="56" coveredconditionals="35" methods="34" coveredmethods="19" elements="471" coveredelements="324" complexity="0" loc="381" ncloc="381" packages="6" files="11" classes="11"/>
+<coverage generated="1574544936008" clover="3.2.0">
+  <project timestamp="1574544936008" name="All files">
+    <metrics statements="380" coveredstatements="269" conditionals="56" coveredconditionals="35" methods="34" coveredmethods="19" elements="470" coveredelements="323" complexity="0" loc="380" ncloc="380" packages="6" files="11" classes="11"/>
     <package name="Cpen321Project">
       <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="config.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/config.js">
@@ -395,43 +395,42 @@
       </file>
     </package>
     <package name="Cpen321Project.tests">
-      <metrics statements="34" coveredstatements="34" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="33" coveredstatements="33" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="mongoose-mock-data.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/tests/mongoose-mock-data.js">
-        <metrics statements="34" coveredstatements="34" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="33" coveredstatements="33" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
         <line num="5" count="3" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
-        <line num="7" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="43" count="3" type="stmt"/>
-        <line num="54" count="3" type="stmt"/>
-        <line num="63" count="3" type="stmt"/>
-        <line num="72" count="3" type="stmt"/>
-        <line num="81" count="3" type="stmt"/>
-        <line num="90" count="3" type="stmt"/>
-        <line num="99" count="3" type="stmt"/>
-        <line num="108" count="3" type="stmt"/>
-        <line num="112" count="3" type="stmt"/>
-        <line num="116" count="3" type="stmt"/>
-        <line num="120" count="3" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="52" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="70" count="3" type="stmt"/>
+        <line num="79" count="3" type="stmt"/>
+        <line num="88" count="3" type="stmt"/>
+        <line num="97" count="3" type="stmt"/>
+        <line num="106" count="3" type="stmt"/>
+        <line num="110" count="3" type="stmt"/>
+        <line num="114" count="3" type="stmt"/>
+        <line num="118" count="3" type="stmt"/>
+        <line num="122" count="3" type="stmt"/>
+        <line num="123" count="3" type="stmt"/>
         <line num="124" count="3" type="stmt"/>
-        <line num="125" count="3" type="stmt"/>
         <line num="126" count="3" type="stmt"/>
-        <line num="128" count="3" type="stmt"/>
-        <line num="135" count="3" type="stmt"/>
-        <line num="136" count="46" type="stmt"/>
-        <line num="137" count="184" type="stmt"/>
-        <line num="138" count="184" type="stmt"/>
+        <line num="133" count="3" type="stmt"/>
+        <line num="140" count="3" type="stmt"/>
         <line num="141" count="46" type="stmt"/>
-        <line num="142" count="276" type="stmt"/>
-        <line num="143" count="276" type="stmt"/>
-        <line num="147" count="3" type="stmt"/>
+        <line num="142" count="184" type="stmt"/>
+        <line num="143" count="184" type="stmt"/>
+        <line num="146" count="46" type="stmt"/>
+        <line num="147" count="276" type="stmt"/>
+        <line num="148" count="276" type="stmt"/>
+        <line num="152" count="3" type="stmt"/>
       </file>
     </package>
   </project>

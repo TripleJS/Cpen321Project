@@ -1,14 +1,12 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const {secretKey} = require("../config");
-const USER_ID = mongoose.Types.ObjectId();
-const QUESTION_ID = mongoose.Types.ObjectId();
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
 const Answer = require("../rest-server/schema/answers");
 
 const testUser = {
-    _id : USER_ID,
+    _id : mongoose.Types.ObjectId(),
     method : "local",
     email : "testemail@email.com",
     local : {
@@ -126,7 +124,14 @@ const testUserArray = [testUser, testUser2, testUser3, testFacebookUser];
 const testAnswerArray= [testAnswer, testAnswer2, testAnswer3, testAnswer4];
 
 const testJwt = jwt.sign({
-    user: USER_ID
+    user: testUser._id
+},
+    secretKey, 
+    { expiresIn: "24h" },
+);
+
+const testFbJwt = jwt.sign({
+    user: testFacebookUser._id
 },
     secretKey, 
     { expiresIn: "24h" },
@@ -152,6 +157,7 @@ module.exports = {
     testUserArray,
     testQuestionArray,
     testJwt,
+    testFbJwt,
     testFacebookUser,
     initializeDatabase
 };
