@@ -55,6 +55,7 @@ const oAuthLogin = (method) => {
             }
                 
             logger.info(profile);
+            console.log(profile);
             
             if (!user) {
                 user = createNewUser(profile, method);

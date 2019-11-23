@@ -1,5 +1,6 @@
 const User = require("../schema/user");
 const bcrypt = require("bcryptjs");
+const aesjs = require("aes-js");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
@@ -7,46 +8,78 @@ const jwt = require("jsonwebtoken");
 const {logger} = require("../../logger");
 const {getQuestionsByUser, MAX_RETRIEVED_QUESTIONS} = require("../utils/suggestions/questionHelper");
 
+const signTokenAndSignIn = (id, res) => {
+    const token = jwt.sign({
+        user: id
+    },
+        secretKey, 
+        { expiresIn: "24h" },
+    );
+
+    logger.info("JWT TOKEN: " + token);
+
+    res.status(201).json({
+            userId : id, 
+            jwt : token
+        }
+    );   
+};
+
 // Controllers for creating new users and getting users 
 const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
-    const userName = newUserData.userName;
-    const newUserName = newUserData.name;
     const userEmail = newUserData.email;
     const password = newUserData.password;    
+    const newUserName = newUserData.userName;
     
-    const errors = validationResult(req);
-
     try {
-        errorThrow(errors, "Validation Failed", 403);
-        let hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = new User({
-            method: "local",
-            local: 
-            {
-                name: newUserName, 
-                email: userEmail, 
-                passwordHash: hashedPassword
-            },
-            userName: newUserName,
-        });
-    
-        let result = await newUser.save();
+        let curUser = await User.findOne({email : userEmail});
 
-        res.status(201).json(
-            {
-                message: "Added User",
-                user : result 
-            }
-        );   
-    }
-    catch (err)
-    {
+        if (!curUser) {
+            curUser = new User({
+                method: "local",
+                local: { 
+                    email: userEmail, 
+                    password: password
+                },
+                userName: newUserName,
+                email : userEmail
+            });
+
+            await curUser.save();
+        } else {
+            errorThrow({}, "User already Exists", 403);
+        }
+        
+        signTokenAndSignIn(curUser._id, res);
+    } catch (err) {
         errorCatch(err, next);
     }
 };
+
+const loginUser = async (req, res, next) => {
+    const userEmail = req.body.email;
+    const userPassword = req.body.password; 
+    
+    try {
+        let curUser = await User.findOne({email : userEmail});
+
+        if (!curUser) {
+            errorThrow({}, "User does not exist", 404);
+        }
+
+        if (curUser.local.password !== userPassword) {
+            errorThrow({}, "Incorrect Password", 403);
+        }
+
+        signTokenAndSignIn(curUser._id, res);
+
+    } catch (error) {
+        errorCatch(error, next);
+    }
+}
 
 const getUser = async (req, res, next) => {
     try {
@@ -63,6 +96,7 @@ const getUser = async (req, res, next) => {
         let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
         let newUser = user.toObject();
         newUser.questions = userQuestions;
+        newUser.userId = user._id;
         
         logger.info(newUser);
 
@@ -72,6 +106,8 @@ const getUser = async (req, res, next) => {
         errorCatch(error, next);
     }
 };
+
+
 
 const updateUser = async (req, res, next) => {
 
@@ -93,19 +129,16 @@ const updateUser = async (req, res, next) => {
 
         user.userName = newUserName;
         user.email = newUserEmail;
-        
-        for (var i = 0; i < newCourses.length; i++) {
-            user.courses.push(newCourses[parseInt(i)]);
-        }
+        user.courses = newCourses;
 
         let result = await user.save();
-        let userQuestions = await getQuestionsByUser(id, MAX_RETRIEVED_QUESTIONS);
-        result.toObject();
-        result.questions = userQuestions;
+        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
+        const newResult = result.toObject();
+        newResult.questions = userQuestions;
         
-        logger.info(result);
+        logger.info(newResult);
 
-        res.status(200).json(result);
+        res.status(200).json(newResult);
 
     } catch (error) {
         errorCatch(error, next);
@@ -113,32 +146,19 @@ const updateUser = async (req, res, next) => {
 }
 
 const oAuthLogin = async (req, res, next) => {
-    const select = ({_id, userName}) => ({_id, userName});
-    const user = select(req.user);
-
     logger.info(req.user);
 
     const userFcmAccessToken = req.body.fcmAccessToken;
+    logger.info("FCM TOKEN: " + userFcmAccessToken);
 
-    req.user.set({fcmAccessToken : userFcmAccessToken});
-
-    const token = jwt.sign({
-            user: user._id 
-        },
-            secretKey, 
-            { expiresIn: "24h" },
-    );
-
-    logger.info("JWT TOKEN: " + token);
 
     try {
+        req.user.fcmAccessToken = userFcmAccessToken;
         let result = await req.user.save();
-        logger.info("User Info: " + result);
 
-        res.status(200).json({
-            userId : user._id,
-            jwt : token
-        });
+        logger.info(result);
+
+        signTokenAndSignIn(result._id, res);
 
     } catch (error) {
         errorCatch(error, next);
@@ -146,10 +166,95 @@ const oAuthLogin = async (req, res, next) => {
 
 };
 
+const rate = async (req, res, next) => {
+    const ratingUserId = req.params.ratingUserId;
+    const userId = req.body.userId;
+    const rating = req.body.rating; 
 
-module.exports = {
+    console.log(ratingUserId);
+    console.log(userId);
+
+    try {
+        const ratingUser = await User.findById(ratingUserId)
+        const ratedUser = await User.findById(userId);
+        
+        if (ratingUser == null || ratedUser == null) {
+            errorThrow({}, "User doesn't Exist", 404);
+        }
+
+        let result = await User.findOneAndUpdate(
+            {_id : userId, "usersWhoRated.id" : ratingUserId}, 
+            {$set: {"usersWhoRated.$.rating" : rating}
+        }, {new : true});
+
+        
+        if (!result) {
+            console.log("pushing new value into database");
+            // Push new value onto array if not yet rated
+            result = await User.findByIdAndUpdate(userId, {$push : 
+                {usersWhoRated : {id : ratingUserId, rating : rating}}}, 
+                {new : true});
+        }
+
+        let totalRating = result.usersWhoRated.reduce((a, b) => {
+            return {rating : a.rating + b.rating};
+        }, {rating : 0});
+
+        totalRating = totalRating.rating;
+
+        const avgRating = totalRating / result.usersWhoRated.length;
+        result.rating = avgRating;
+
+        await result.save();
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        errorCatch(error, next);
+    }
+};
+
+const report = async (req, res, next) => {
+    const reportingUserId = req.params.reportingUserId;
+    const userId = req.body.userId;
+
+    console.log("reporting userid: " + reportingUserId);
+    console.log("reported userid: " + userId);
+    
+    try {
+        const reportingUser = await User.findById(reportingUserId);
+        const reportedUser = await User.findById(userId);
+
+        if (reportingUser == null || reportedUser == null) {
+            errorThrow({}, "User doesn't Exist", 404);
+        }
+
+        let result = await User.findOneAndUpdate(
+            {_id : userId, usersWhoReported: reportingUserId}, 
+            {$set: {"usersWhoReported.$" : reportingUserId}
+        }, {new : true});
+
+        if (!result) {
+            result = await User.findByIdAndUpdate(userId, {$push : {usersWhoReported : reportingUserId}}, {new : true});
+        }
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        errorCatch(error, next);
+    }
+
+};
+
+const exportFunctions = {
     addUser,
     oAuthLogin,
     getUser,
-    updateUser
+    updateUser,
+    loginUser,
+    rate,
+    report,
+    signTokenAndSignIn
 };
+
+module.exports = exportFunctions;

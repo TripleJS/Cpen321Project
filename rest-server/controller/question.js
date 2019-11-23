@@ -1,27 +1,37 @@
 const Question = require("../schema/questions");
-const errorHandler = require("../utils/errorHandler");
+const User = require("../schema/user");
+const keywords = require("../utils/lg");
+const {errorCatch, errorThrow, errorThrowValidator} = require("../utils/errorHandler");
 const {validationResult} = require("express-validator");
 const {isEmpty} = require("lodash");
-const getKeywords = require("../utils/suggestions/keywordExtractor");
-const getBagOfQuestions = require("../utils/suggestions/cosineSimilarity");
 const {logger} = require("../../logger");
+const { getQuestionsByUser, 
+        getKeywordFrequency,
+        matchKeywords,
+        MAX_RETRIEVED_QUESTIONS,
+        getBagOfQuestions,
+        MAX_KEYWORDS } = require('../utils/suggestions/questionHelper');
+
+
+
+
 
 const getQuestion = async (req, res, next) => {
     const questionID = req.params.questionId; 
 
-    logger.info("current question id" + questionID);
+    logger.info("current question id " + questionID);
     try {
         
         let question = await Question.findById(questionID);
         
         if (question == null) {
-            errorHandler.errorThrow({}, "Could not find Question", 403);
+            errorThrow({}, "Could not find Question", 403);
         }
 
         res.status(200).json(question);
 
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }  
 };
 
@@ -36,12 +46,14 @@ const postQuestion = async (req, res, next) => {
     const creator = req.body.owner; 
     const course = req.body.course;
 
-    const errors = validationResult(req);
 
     try {
-        if (!isEmpty(errors)) {
-            errorHandler.errorThrowValidator(errors, "Couldn't Find User", 403);
+        const curUser = await User.findById(creator);
+
+        if (curUser == null) {
+            errorThrow({}, "Could not find User", 403);
         }
+
         const question = new Question({
             title : title,
             question: questionString,
@@ -51,18 +63,14 @@ const postQuestion = async (req, res, next) => {
         });
 
         res.status(203).json(question);
-        const document = {documents:[
-            {language:"en", id:"1", text: questionString}
-        ]};
 
-        let keywords = await getKeywords(document);
+        const questionKeywords = keywords(lowerCaseString);
+        question.keywords = questionKeywords;
 
-        question.set("keywords", keywords);
-
-        question.save();
+        await question.save();
 
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }
 };
 
@@ -72,65 +80,100 @@ const suggestedQuestions = async (req, res, next) => {
     logger.info(req.params.userId);
 
     try {
-        let question = await Question.findOne();
-
         let questionList = await Question.find({}).limit(5);
-
-        let returnedQuestions = getBagOfQuestions(questionList, question);
 
         res.status(200).json(
             questionList
         );    
     } catch (error) {
-        errorHandler.errorCatch(error);
+        errorCatch(error, next);
     }
 };
 
 const suggestedQuestionsV2 = async (req, res, next) => {
     try {
-        let randomQuestion = await Question.findOne();
+        
+        const userId = req.params.userId; 
+        // Array of Question Objects
+        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
+        
+        const curUser = await User.findById(userId);
+        const {courses} = curUser;
 
-        let questionList = await Question.find({}).limit(5);
-        let resultingQuestions = [randomQuestion];
+        // Array of all the keywords from all user questions
+        let userQuestionKeywords = [];
 
-        for (i of questionList) {
-            if (randomQuestion.course == questionList[i].course) {
-                resultingQuestions.push(questionList[i]);
+        for (var i = 0; i < userQuestions.length; i++) {
+            userQuestionKeywords.pushValues(userQuestions[parseInt(i)].keywords);
+        }
+
+        // Keywords and their frequency 
+        const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
+        logger.info("User Keyword Frequency:");
+        logger.info(userKeywordFrequency);
+        try {
+            // Question Objects for the User 
+            let questionsForUser;
+
+            /**
+             * Question Objects for the User with the updated keywords including
+             * their frequency 
+             */
+            let questionsWithUpdatedFreq = [];
+
+            if (courses.isEmpty()) {
+                questionsForUser = await Question.bySwipedUser(userId);
+            } else {
+                questionsForUser = await Question.byCourseTag(courses, userId);
             }
+
+            for (var i = 0; i < questionsForUser.length; i++) {
+                const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
+            }
+            
+            const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
+
+            res.status(200).json(questionsToReturn);
+        } catch (error) {
+            
         }
 
         res.status(203).json(
             resultingQuestions
-        )
+        );
     } catch (error) {
-        errorHandler.errorCatch(error, next);
+        errorCatch(error, next);
     }
 };
 
 const searchQuestion = async (req, res, next) => {
+    logger.info("In search question");
+    logger.info(req.query);
 
-    const date1 = new Date();
-    const date2 = new Date();
+    try {
+        const questions = await Question.find({}).limit(5);
+        const users = await User.find().limit(2);
+        const newUsers = [];
 
-    res.status(200).json({
-        questions : [
-            {
-                questionTitle: "FUCK",
-                question: "CPEN321",
-                date: date1,
-                owner: "John"
-            },
-            {
-                questionTitle: "FUCK",
-                question: "CPEN331",
-                date: date2,
-                owner: "DJFASKDFJSAF"
-            }
-        ]
-    });
+        for (var i = 0 ; i < users.length; i++) {
+            const currentUser = users[parseInt(i)].toObject();
+            currentUser.userId = currentUser._id;
+            newUsers.push(currentUser);
+        }
+
+        res.status(200).json({
+            questions : questions,
+            users : newUsers
+        });
+        
+    } catch (error) {
+        errorCatch(error, next);
+    }
+    
 };
 
-const swipedQuestion = (req, res, next) => {
+const swipedQuestion = async (req, res, next) => {
     const questionId = req.body.questionId;
     const userId = req.body.userId;
     const direction = req.body.direction; 
@@ -139,10 +182,44 @@ const swipedQuestion = (req, res, next) => {
     logger.info(userId);
     logger.info(direction);
 
-    res.status(200).json({
-        user: userId,
-        direction : direction
-    });
+    try {
+        let result = await Question.findById(questionId);
+
+        if (result === null) {
+            errorThrow({}, "Question Not Found", 403);
+        }
+
+        result = await Question.findOneAndUpdate({_id : questionId, swipedUsers : userId}, {$set : {"swipedUsers.$" : userId}},
+                    {new : true});
+
+        if (!result) {
+            result = await Question.findByIdAndUpdate(questionId, {$push: {swipedUsers : userId}});
+        }
+
+        res.status(200).json({
+            user: userId,
+            direction : direction
+        });
+
+    } catch (error) {
+        errorCatch(error, next);
+    }
+};
+
+const getMostRecentQuestion = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+        const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});
+
+        if (latestQuestion == null) {
+            errorThrow({}, "Could not find any questions", 403);
+        }
+
+        res.status(200).json(latestQuestion);
+    } catch (error) {
+        errorCatch(error, next);
+    }
 };
 
 
@@ -152,7 +229,8 @@ module.exports = {
     suggestedQuestions,
     searchQuestion,
     swipedQuestion,
-    suggestedQuestionsV2
+    suggestedQuestionsV2,
+    getMostRecentQuestion
 };
 
 

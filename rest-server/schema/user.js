@@ -9,23 +9,15 @@ const userSchema = new Schema({
         },
         email: {
             type : String, 
-            required : true
         },
         local : {
-            type: {
-                passwordHash: {
-                    type: String,
-                    required: true,
-                    select: false
-                }, 
-                resetToken : String,
-                resetExpirationDate: Date,
-                email: {
-                    type: String,
-                    required: true
-                },
-            },
-            required: false
+            password: {
+                type: String,
+                select: false
+            }, 
+            resetToken : String,
+            resetExpirationDate: Date,
+            email: String
         }, 
         google: {
             id : {
@@ -77,6 +69,18 @@ const userSchema = new Schema({
         },
         fcmAccessToken : {
             type : String
+        },
+        usersWhoReported : {
+            type : [mongoose.Schema.Types.ObjectId],
+            ref : "User",
+            required : true,
+            default : []
+        },
+        usersWhoRated : {
+            type : [{id : mongoose.Schema.Types.ObjectId, rating : Number}],
+            ref : "User",
+            required : true,
+            default : []
         }
     }
 );

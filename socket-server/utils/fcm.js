@@ -7,19 +7,22 @@ admin.initializeApp({
     databaseURL: "https://ubconnect-ec25e.firebaseio.com" // TODO: Add to constants later 
   });
 
-const sendNotification = (topic, notification) => {
+const sendNotification = (topic, notification, inputData) => {
 
     const message = {
+        data : inputData,
         topic, 
         notification
     };
+
+    logger.info("Message is: " + message);
 
     return new Promise((resolve, reject) => {
         admin.messaging().send(message)
         .then((response) => {
           // Response is a message ID string.
-          logger.info("Successfully sent message:", response);
-          resolve("Successfully sent message:" + response);
+          logger.info("Successfully sent message: " + response);
+          resolve("Successfully sent message: " + response);
         })
         .catch((err) => {
           logger.error("Error sending message:" + error);
@@ -31,6 +34,9 @@ const sendNotification = (topic, notification) => {
 
 const subscribeToTopic = (topic, token) => {
     return new Promise((resolve, reject) => {
+        logger.info("Subcribe To Topic: ");
+        logger.info(topic);
+        logger.info(token);
 
         admin.messaging().subscribeToTopic(token, topic)
             .then((res) => {

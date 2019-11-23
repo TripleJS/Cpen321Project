@@ -1,7 +1,9 @@
 const io = require('socket.io');
 const {onJoin} = require('./socketListenerFunctions');
 const Question = require('../rest-server/schema/questions');
+const Answer = require("../rest-server/schema/answers");
 const User = require('../rest-server/schema/user');
+const {logger} = require("../logger");
 /**
  * 
  * @param {SocketIO} io 
@@ -9,32 +11,94 @@ const User = require('../rest-server/schema/user');
  */
 const questionHandler = (io, socket, redisClient) => {
 
-    socket.on("join_question", async (userId, questionId) => {
-        socket.join("question_" + questionId + "_" + userId);
+    socket.on("joinQuestion", async (data) => {
+
+        const {questionId, userId} = data;
+        const roomId = "room_" + questionId + "_" + userId
+        console.log("question id: " + questionId);
+        console.log("userid: " + userId);
+        socket.join(roomId);
+        const answerKey = `${questionId}-${userId}`;
+        console.log("answer key is: " + answerKey);
 
         try {
+            const condition = {
+                _id : questionId,
+                answerers : {$ne : userId}
+            };
+
+            const curQuestion = await Question.findByIdAndUpdate(condition, {$push : {answerers : userId}});
+            let curAnswer = await Answer.findOne({key : answerKey});
+            console.log("cur answer is: " + curAnswer);
+
+            if (curAnswer == null) {
+                logger.info("No answer exists, creating new answer");
+                curAnswer = new Answer({
+                    questionRef : questionId,
+                    userAnswerId : userId,
+                    date : Date.now(),
+                    key : answerKey
+                });
+
+                await curAnswer.save();
+            }
+
             await onJoin(userId, questionId);
-            // socket.broadcast.emit('userjoinedthechat', userId + " has joined the chat");
+            await curQuestion.save();
+
+            redisClient.getAsync(answerKey).then((result) => {
+
+                if (result === null) {
+                    logger.info("value was not cached");
+                    const curSequence = curAnswer.answer;
+                    io.to(roomId).emit("create", {answer : curSequence});
+                } else {
+                    logger.info("cached");
+                    logger.info(result);
+                    io.to(roomId).emit("create", {answer : result});
+                }
+                
+            }).catch((err) => {
+                logger.error(err);
+                io.to(roomId).emit("create", {answer : ""});
+            });
+
         } catch (error) {
+            logger.error("error in joinQuestion");
             logger.error(error);
         }
 
-    
-        
-        io.to("question_" + questionId).emit("create", )
     });
 
-    socket.on("message", (questionId, answerId, message) => {
+    socket.on("messagedetection", async (data) => {
 
-        const key = `${questionId}-${answerId}`;
+        const {questionId, userId, currentSequence} = data; 
+
+        const answerKey = `${questionId}-${userId}`;
+        logger.info("answer key is: " +  answerKey);
+        logger.info(currentSequence);
 
         // Save the sent message to the redis cache
-        redisClient.setex(key, 20000, message);
+        redisClient.setex(answerKey, 36000000, currentSequence);
 
-        io.broadcast.to(`question_${questionId}`).emit('send-message', message);
+        io.to(`room_${questionId}_${userId}`).emit("message", {message : currentSequence});
+
+        try {
+            const curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
+            
+            if (curAnswer === null) {
+                // TODO: fill this later 
+            }
+        } catch (error) {
+            logger.error("error in message detection");
+            logger.error(error);
+        }
     });
 
-    
+    socket.on("", (data) => {
+
+    });
+
 };
 
 module.exports = questionHandler; 

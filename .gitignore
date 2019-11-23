@@ -1,9 +1,6 @@
 /node_modules
 /.vscode
 
-!/rest-server/controller
-!/rest-server/routes
-!/rest-server/utils
-!/rest-server/middlware
+test1.js
 combined.log
 error.log

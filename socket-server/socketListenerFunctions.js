@@ -1,17 +1,14 @@
-const admin = require("firebase-admin");
-const serviceAccount = require("../fcm/ubconnect-ec25e-firebase-adminsdk-4zww0-0d250bdc3b.json");
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
-const logger = require("../logger");
+const {logger} = require("../logger");
 const {sendNotification, subscribeToTopic, createNotificationMessage} = require("./utils/fcm");
 
 const onJoin = async (userId, questionId) => {
-    logger.info(userId + ": joined chat and current question id is " + questionId);
-    
     let fcmAccessToken;
     let questionData;
 
     try {
+        logger.info(userId);
         questionData = await Question.findById(questionId);
         logger.info("Question Data: " + questionData);
 
@@ -21,15 +18,27 @@ const onJoin = async (userId, questionId) => {
 
         fcmAccessToken = user.fcmAccessToken;
 
-        subscribeToTopic(questionId, fcmAccessToken);
+        await subscribeToTopic(questionId, fcmAccessToken);
 
         const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
+        const inputData = {
+            questionId : questionId,
+            userId : userId
+        };
 
-        await sendNotification(questionId, notification);
+        // {
+        //     data : {
+        //         questionId: SVGAnimatedTransformList,
+        //         userId: dfa;lsdfjlas;
+        //     },
+        //     topic : top,
+        //     notif : defaultksjf,
+        // }
 
-        return new Promise.resolve(userId);
+        await sendNotification(questionId, notification, inputData);
         
     } catch (error) {
+        logger.error("error in onJOin");
         logger.error(error);
         return new Promise.reject(error);
     }

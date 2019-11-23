@@ -8,10 +8,11 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const apiRoute = require("./routes/createRouter");
 const error = require("./controller/error");
-const server = http.createServer(app);
 const printBody = require("./middleware/printBody");
 const {logger} = require("../logger");
+
 const app = express();
+const server = http.createServer(app);
 
 
 app.use(passport.initialize());

@@ -4,18 +4,27 @@ const Schema = mongoose.Schema;
 const answerSchema = new Schema({
     answer : {
         type : String,
-        required : true
+        required : true,
+        default : " "
     }, 
     questionRef : {
         type : mongoose.Schema.Types.ObjectId,
         required: true
     },
-    userAnswerID : {
+    userAnswerId : {
         type : mongoose.Schema.Types.ObjectId,
         required: true
     },
-    rate : {
+    rating : {
         type : Number
+    },
+    date : {
+        type : Date,
+        required : true
+    },
+    key : {
+        type : String,
+        required : true
     }
 });
 
