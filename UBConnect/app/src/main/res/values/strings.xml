@@ -26,6 +26,11 @@
 
     <string name="menu_question">Question</string>
     <string name="menu_answer">Answer</string>
+    <string name="menu_showall">Search</string>
 
     <string name="authorization">Auth</string>
+
+    <string name="linear_layout">Linear Layout</string>
+    <string name="title_activity_no_answer">NoAnswerActivity</string>
+    <string name="title_activity_no_question">NoQuestionActivity</string>
 </resources>

@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,7 +21,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
+import com.cpen321.ubconnect.model.data.PublicUser;
 import com.cpen321.ubconnect.model.data.User;
+import com.cpen321.ubconnect.model.data.UserReportRate;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
@@ -26,16 +31,29 @@ import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class PublicUserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private PublicUserViewModel publicUserViewModel;
     private String token;
+    private String userId;
+    private String publicUserId;
+
+    private String state;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    private RatingBar stars;
+    private TextView publicUN;
+    private TextView publicUInf;
+
+    private Button report;
+
+
 
     private ErrorHandlingUtils errorHandlingUtils;
 
@@ -49,48 +67,72 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
+        errorHandlingUtils = new ErrorHandlingUtils();
+
+        stars = findViewById(R.id.publicStar);
+        publicUN = findViewById(R.id.publicUserName);
+        publicUInf = findViewById(R.id.publicUserInfo);
+        state = "NA";
+
+
+
         Button rate = findViewById(R.id.publicRate);
-        Button report = findViewById(R.id.publicReport);
+        report = findViewById(R.id.publicReport);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
+        userId = ((GlobalVariables) this.getApplication()).getUserID();
+        publicUserId = getIntent().getExtras().getString("publicUser");
 
         publicUserViewModel = ViewModelProviders.of(this).get(PublicUserViewModel.class);
 
         View.OnClickListener rateOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //observeViewModelRate();
+                stars.getRating();
+                state = "rated";
+                User user = new User();
+                user.setUserId(publicUserId);
+                user.setRating(stars.getRating());
+                publicUserViewModel.rate(userId,token,user);
             }
         };
 
         View.OnClickListener reportOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // observeViewModelReport();
+                state = "reported";
+                User user = new User();
+                user.setUserId(publicUserId);
+                publicUserViewModel.report(userId,token,user);
+//                User user = new User();
+//                user.setUserId(userId);
+//                publicUserViewModel.report(publicUserId,token,user);
             }
         };
 
         rate.setOnClickListener(rateOnClickListener);
         report.setOnClickListener(reportOnClickListener);
+        observeViewModel();
+
+        publicUserViewModel.getPublicUser(publicUserId,token);
 
     }
 
-    protected void observeViewModel(String userId) {
-        publicUserViewModel.userRate(userId, token).observe(this, this::onChangeUser);
+    protected void observeViewModel() {
+        publicUserViewModel.getPublicUserObserve().observe(this, this::onChangeUser);
         publicUserViewModel.getError().observe(this,this::onError);
     }
 
     public void onError(String err){
         findViewById(R.id.publicuserLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(PublicUserActivity.this,err, retryOnClickListener, "Retry");
+        errorHandlingUtils.showError(PublicUserActivity.this,err, retryOnClickListener, "Retry", Snackbar.LENGTH_INDEFINITE);
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -98,10 +140,39 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
         public void onClick(View v) {
             errorHandlingUtils.hideError();
             findViewById(R.id.publicuserLayout).setVisibility(View.VISIBLE);
+            publicUserViewModel.getPublicUser(publicUserId,token);
+
         }
     };
 
     private void onChangeUser(User user){
+        publicUN.setText(user.getUserName());
+        publicUInf.setText("Courses: " + user.getCourses().toString() + "\n" + "Rating: " + user.getRating());
+
+        for(UserReportRate ruser : user.getUsersWhoRated()){
+            if(ruser.getId().equals(userId)){
+                stars.setRating(ruser.getRating());
+            }
+        }
+
+        if(report.getText().toString().equals("Reported")){
+            report.setEnabled(false);
+        }
+
+        for(String puserId : user.getUsersWhoReported()){
+            if(puserId.equals(userId)){
+                report.setText("Reported");
+                report.setEnabled(false);
+            }
+        }
+
+        if(state.equals("rated")){
+            Toast.makeText(getApplicationContext(),"rated", Toast.LENGTH_SHORT).show();
+        }
+        else if (state.equals("reported")){
+            Toast.makeText(getApplicationContext(),"reported", Toast.LENGTH_SHORT).show();
+        }
+        state = "NA";
 
     }
 
@@ -173,7 +244,7 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
 
         }
 
-
+        PublicUserActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

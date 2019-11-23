@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/contentotheranswersLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <TextView
@@ -12,18 +10,15 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
+    <TextView android:id="@+id/textView1" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:paddingBottom="20dp"
         android:text="@string/your_answer"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/myTextBox"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="444dp"
         android:ems="10"
         android:gravity="top|left"
         android:inputType="textMultiLine"
@@ -36,12 +31,24 @@
         <requestFocus />
     </EditText>
 
+<!--    <Button-->
+<!--        android:id="@+id/saveChanges"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Save Changes" />-->
+
+    <Button
+        android:id="@+id/submitAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Answer" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="right|bottom"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
@@ -51,6 +58,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_input_add" />
+
 
     </LinearLayout>
 

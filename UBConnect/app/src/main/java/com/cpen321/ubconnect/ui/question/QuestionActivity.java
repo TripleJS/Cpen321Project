@@ -28,6 +28,7 @@ import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class QuestionActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView title;
@@ -58,7 +59,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -101,7 +102,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     public void onError(String err){
         findViewById(R.id.questionLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(QuestionActivity.this,err, retryOnClickListener, "Retry");
+        errorHandlingUtils.showError(QuestionActivity.this,err, retryOnClickListener, "Retry", Snackbar.LENGTH_INDEFINITE);
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -191,7 +192,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
         }
 
-
+        QuestionActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,13 +1,13 @@
 package com.cpen321.ubconnect.ui.main;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,12 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.model.AESCrypt;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,8 +30,11 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,10 +51,20 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
+    private EditText username;
+
+    private TextView emailTV;
+    private TextView passwordTV;
+    private TextView usernameTV;
+
 
     private String fcmtoken;
 
     private ErrorHandlingUtils errorHandlingUtils;
+
+    private Button loginSignup;
+    private Button appLoginButton;
+    private Button signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +82,26 @@ public class MainActivity extends AppCompatActivity {
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
-        Button appLoginButton = findViewById(R.id.loginButton);
-        Button signupButton = findViewById(R.id.signUpButton);
+        appLoginButton = findViewById(R.id.loginButton);
+        signupButton = findViewById(R.id.signUpButton);
         email = findViewById(R.id.emailText);
         password = findViewById(R.id.passwordText);
+        username = findViewById(R.id.username);
+        loginSignup = findViewById(R.id.Login2);
 
-        appLoginButton.setOnClickListener(loginOnClickListener);
-        signupButton.setOnClickListener(signupOnClickListener);
+        usernameTV = findViewById(R.id.usernameTV);
+        emailTV = findViewById(R.id.emailTV);
+        passwordTV = findViewById(R.id.passwordTV);
+
+        appLoginButton.setOnClickListener(pageOnClickListener);
+        signupButton.setOnClickListener(pageOnClickListener);
+        loginSignup.setOnClickListener(loginSignupOnClickListener);
+
+        appLoginButton.setBackground(appLoginButton.getContext().getDrawable(R.drawable.border));
+        signupButton.setBackground(signupButton.getContext().getDrawable(R.drawable.border2));
+
+        username.setVisibility(View.GONE);
+        usernameTV.setVisibility(View.GONE);
 
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -109,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                         // Get new Instance ID token
                         fcmtoken = task.getResult().getToken();
+                        AccessToken token = AccessToken.getCurrentAccessToken();
+                        if (token != null) {
+                            AccessTokens accessTokenFB = new AccessTokens();
+                            accessTokenFB.setAccessToken(token.getToken());
+                            accessTokenFB.setFcmAccessToken(fcmtoken);
+                            mainViewModel.getAppUserByFB(accessTokenFB);
+                        }
                     }
                 });
 
@@ -120,28 +153,20 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-
-        AccessToken token = AccessToken.getCurrentAccessToken();
-        if (token != null) {
-            AccessTokens accessTokenFB = new AccessTokens();
-            accessTokenFB.setAccessToken(token.getToken());
-            accessTokenFB.setFcmAccessToken(fcmtoken);
-            mainViewModel.getAppUserByFB(accessTokenFB);
-        }
-    }
 
     protected void observeViewModelGetByFB() {
         mainViewModel.getCurrentUserByFB().observe(this,this::onChangedUserIdByFB);
         mainViewModel.getError().observe(this,this::onError);
     }
 
-    public void onError(String err){
-        findViewById(R.id.mainLayoutLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(MainActivity.this,err, retryOnClickListener, "Retry");
+    public void onError(Pair<Integer,String> err){
+        if(!(err.first == 403 || err.first == 404)){
+            findViewById(R.id.mainLayoutLayout).setVisibility(View.GONE);
+            errorHandlingUtils.showError(MainActivity.this,err.second, retryOnClickListener, "Retry", Snackbar.LENGTH_INDEFINITE);
+        }
+
+        errorHandlingUtils.showError(MainActivity.this,err.second, null, "Retry", Snackbar.LENGTH_LONG);
+
     }
 
     private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
@@ -150,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
             errorHandlingUtils.hideError();
             LoginManager.getInstance().logOut();
             findViewById(R.id.mainLayoutLayout).setVisibility(View.VISIBLE);
+            email.setText("");
+            password.setText("");
         }
     };
 
@@ -169,55 +196,89 @@ public class MainActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
+    public boolean checkPassword(String password) {
+        String expression = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
     private void bundleHandling(Bundle bundle) {
-        if (bundle != null && bundle.get("qid")!= null) {
+        if (bundle != null && bundle.get("message") != null) {
             //here can get notification message
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            intent.putExtra("qid", bundle.get("qid").toString());
-            startActivity(intent);
-            MainActivity.this.finish();
+            Intent intent = new Intent(MainActivity.this, ViewOnlyOthersAnswerActivity.class);
+            JSONObject jsonObject = (JSONObject) bundle.get("message");
+            try {
+                intent.putExtra("qid", jsonObject.getString("qid"));
+                Log.d("checkcheck", "bundleHandling: " + jsonObject.getString("qid"));
+                startActivity(intent);
+                MainActivity.this.finish();
+            }catch (Exception e){}
         }
     }
 
-    private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
+
+    private View.OnClickListener pageOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Button button = (Button) v;
+            if(button.getText().toString().equals("Login")){
+                appLoginButton.setBackground(appLoginButton.getContext().getDrawable(R.drawable.border));
+                signupButton.setBackground(signupButton.getContext().getDrawable(R.drawable.border2));
+                loginSignup.setText("Login");
+                username.setVisibility(View.GONE);
+                usernameTV.setVisibility(View.GONE);
+            }
+            else {
+                loginSignup.setText("Sign Up");
+                appLoginButton.setBackground(appLoginButton.getContext().getDrawable(R.drawable.border2));
+                signupButton.setBackground(signupButton.getContext().getDrawable(R.drawable.border));
+                username.setVisibility(View.VISIBLE);
+                usernameTV.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
+
+    private View.OnClickListener loginSignupOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(notValid() && !loginSignup.getText().equals("Login")){
+                Toast.makeText(getApplicationContext(),"Please Complete All The Fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (! checkEmailFormat(email.getText().toString())) {
                 Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            if (! checkPassword(password.getText().toString())) {
+                Toast.makeText(getApplicationContext(),"Password must contain at least:\n8 characters, a digit, no spaces and both lower and upper case letters", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+
             try {
-                String encrypted = AESCrypt.encrypt(password.getText().toString());
+                //String encrypted = AESCrypt.encrypt(password.getText().toString());
                 User user = new User();
                 user.setEmail(email.getText().toString());
-                user.setEncryptedPassword(encrypted);
-                mainViewModel.getAppUser(user);
+                user.setUserName(username.getText().toString());
+                user.setPassword(password.getText().toString());
+                if(loginSignup.getText().toString().equals("Login")){
+                    mainViewModel.getAppUser(user);
+                }
+                else {
+                    mainViewModel.setAppUser(user);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     };
 
-    private View.OnClickListener signupOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (! checkEmailFormat(email.getText().toString())) {
-                Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                String encrypted = AESCrypt.encrypt(password.getText().toString());
-                User user = new User();
-                user.setEmail(email.getText().toString());
-                user.setEncryptedPassword(encrypted);
-                mainViewModel.setAppUser(user);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
+    private boolean notValid(){
+        return username.getText().toString().equals("") || password.getText().toString().equals("") || email.getText().toString().equals("");
+    }
 
 }

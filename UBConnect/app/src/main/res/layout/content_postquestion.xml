@@ -10,7 +10,7 @@
         android:id="@+id/titlePQ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
@@ -20,15 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/contentPQ"
-        android:layout_width="211dp"
-        android:layout_height="150dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/titlePQ"
-        app:layout_constraintTop_toBottomOf="@+id/titlePQ" />
 
     <EditText
         android:id="@+id/topicPQ2"
@@ -55,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="Question"
         app:layout_constraintStart_toStartOf="@+id/questionPQTitle"
-        app:layout_constraintTop_toTopOf="@+id/contentPQ" />
+        app:layout_constraintTop_toBottomOf="@+id/titlePQ" />
 
     <TextView
         android:id="@+id/coursePQ"
@@ -92,4 +83,14 @@
         app:layout_constraintEnd_toEndOf="@+id/topicPQ2"
         app:layout_constraintTop_toBottomOf="@+id/topicPQ2"
         app:layout_constraintVertical_bias="0.13999999" />
+
+    <EditText
+        android:id="@+id/contentPQ"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="@+id/titlePQ"
+        app:layout_constraintTop_toBottomOf="@+id/titlePQ" />
 </androidx.constraintlayout.widget.ConstraintLayout>

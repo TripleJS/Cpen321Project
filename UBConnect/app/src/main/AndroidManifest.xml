@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".model.GlobalVariables"
         android:allowBackup="true"
@@ -23,6 +25,10 @@
         </activity>
 
         <activity
+            android:name=".ui.search.ShowAllSearch"
+            android:label="@string/menu_showall"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".ui.search.SearchActivity"
             android:label="@string/menu_search"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -41,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.otheranswers.OtherAnswersActivity"
-            android:label="@string/menu_continue_answering"
+            android:label="Type Your Answer"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.question.QuestionActivity"

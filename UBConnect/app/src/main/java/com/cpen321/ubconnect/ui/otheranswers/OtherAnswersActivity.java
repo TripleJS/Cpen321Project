@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,21 +23,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.OtherAnswersAdapter;
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Message;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.User;
+import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
+import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
+import com.cpen321.ubconnect.ui.question.QuestionViewModel;
+import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -45,6 +51,12 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     private Socket socket;
     private String questionId;
     private String userId;
+    private Question questionClass;
+    //josh
+//    private String roomId;
+    private String answer;
+//    private String answerId = null;
+//josh
 
     public RecyclerView myRecyclerView;
     public List<Message> MessageList = new ArrayList<Message>();
@@ -53,6 +65,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     //    public  Button send ;
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
+    private QuestionViewModel questionViewModel;
     private String token;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -60,7 +73,10 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    private ErrorHandlingUtils errorHandlingUtils;
+    private JSONObject textWatcherJSONObject = new JSONObject();
+    private JSONObject joinQuestionJSONObject = new JSONObject();
+    private JSONObject submitAnswerJSONObject = new JSONObject();
+    private JSONObject saveAnswerJSONObject = new JSONObject();
 
     @Override
     protected
@@ -68,25 +84,26 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_answers);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        drawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        errorHandlingUtils = new ErrorHandlingUtils();
-
 
         messagetxt = (EditText) findViewById(R.id.myTextBox) ;
 
-        questionId = getIntent().getExtras().getString("arg");
+//        Button saveAnswer = findViewById(R.id.saveChanges);
+//        saveAnswer.setOnClickListener(saveAnswerOnClickListener);
+        Button submitAnswer = findViewById(R.id.submitAnswer);
+        submitAnswer.setOnClickListener(submitAnswerOnClickListener);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(floatingActionButtonOnClickListener);
@@ -94,69 +111,175 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
+        userId = ((GlobalVariables) this.getApplication()).getUserID();
         //connect you socket client to the server
         question = findViewById(R.id.QuestioToAnswer);
-        userId = ((GlobalVariables) this.getApplication()).getUserID();
-
-        try {
-            //if you are using a phone device you should connect to same local
-            //network as your laptop and disable your pubic firewall as well
-            socket = IO.socket("https://ubconnect.azurewebsites.net");
-
-            //create connection
-            socket.connect();
-
-            // emit the event join along side with the nickname
-            socket.emit("join", userId, questionId);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        messagetxt.addTextChangedListener(textWatcher);
 
 
-        socket.on("typing", onTyping);
-
-        socket.on("message", onMessage);
-
-        socket.on("userdisconnect", onUserDisconnect);
+        //josh
 
         observeViewModel();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            questionId = bundle.getString("arg");
+            socketStuff();
+        }
+        else {
+            otherAnswersViewModel.getRecentQuestionToAnswerId(token, userId);
+        }
+
+        //josh
+
+
+//        socket.on("typing", onTyping);
+//
+//        socket.on("message", onMessage);
+//
+//        socket.on("userdisconnect", onUserDisconnect);
+
+
         otherAnswersViewModel.getQuestionById(questionId, token);
     }
 
 
     private void observeViewModel(){
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
-        otherAnswersViewModel.getError().observe(this, this::onError);
     }
-
-    public void onError(String err){
-        findViewById(R.id.contentotheranswersLayout).setVisibility(View.GONE);
-        errorHandlingUtils.showError(OtherAnswersActivity.this,err, retryOnClickListener, "Retry");
-    }
-
-    private View.OnClickListener retryOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            errorHandlingUtils.hideError();
-            findViewById(R.id.contentotheranswersLayout).setVisibility(View.VISIBLE);
-        }
-    };
 
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
+        this.questionId = question.getId();
+        if (questionId.equals("")) {
+            Intent intent = new Intent(OtherAnswersActivity.this, NoQuestionActivity.class);
+            startActivity(intent);
+            OtherAnswersActivity.this.finish();
+        }
+        socketStuff();
     }
 
+    private void socketStuff(){
+
+        try {
+            joinQuestionJSONObject.put("userId", userId);
+            joinQuestionJSONObject.put("questionId", questionId);
+
+        } catch (JSONException e) {
+            Toast.makeText(getApplicationContext(),
+                    "Unexpected Error. Please try again later.",
+                    Toast.LENGTH_LONG)
+                    .show();
+            e.printStackTrace();
+        }
+        try {
+            //if you are using a phone device you should connect to same local
+            //network as your laptop and disable your pubic firewall as well
+            socket = IO.socket("http://168.62.166.42:3000/");
+//            "https://ubconnect.azurewebsites.net"
+
+            //create connection
+            socket.connect();
+
+            // emit the event join along side with the nickname
+            // josh
+
+            socket.emit("joinQuestion", joinQuestionJSONObject);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),
+                    "Could not connect to server",
+                    Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
+        //josh
+        socket.on("create", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject) args[0];
+                        try {
+                            //extract data from fired event
+
+//                            String nickname = data.getString("senderNickname");
+                            answer = data.getString("answer");
+                            messagetxt.setText(answer);
+                            messagetxt.addTextChangedListener(textWatcher);
+//                            answerId = data.getString("answerId");
+                            // HAVE JON SET THIS ANSWEERID AS NEW CURRENT ANSWER
+//                            roomId = data.getString("roomId");
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Could not connect to server",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
+            }
+        });
+
+
+
+    }
+//josh
     private View.OnClickListener floatingActionButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(OtherAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
+            Intent intent = new Intent(OtherAnswersActivity.this, NavBetweenAnswersActivity.class);
             intent.putExtra("arg",questionId);
+            intent.putExtra("userAnsweringId", userId);
             startActivity(intent);
             OtherAnswersActivity.this.finish();
         }
     };
+//josh
+    private View.OnClickListener submitAnswerOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try {
+                submitAnswerJSONObject.put("userId", userId);
+                submitAnswerJSONObject.put("messagetxt", messagetxt);
+                submitAnswerJSONObject.put("questionId", questionId);
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(),
+                        "Unexpected Error. Please try again later.",
+                        Toast.LENGTH_LONG)
+                        .show();
+                e.printStackTrace();
+            }
+            socket.emit("submitAnswer", submitAnswerJSONObject);
+            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
+            startActivity(intent);
+            OtherAnswersActivity.this.finish();
+            //have jon take this answer out of recent and store in data base
+        }
+    };
+//    private View.OnClickListener saveAnswerOnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            try {
+//                saveAnswerJSONObject.put("userId", userId);
+//                saveAnswerJSONObject.put("messagetxt", messagetxt);
+//            } catch (JSONException e) {
+//                Toast.makeText(getApplicationContext(),
+//                        "Unexpected Error. Please try again later.",
+//                        Toast.LENGTH_LONG)
+//                        .show();
+//                e.printStackTrace();
+//            }
+//            socket.emit("saveAnswer", saveAnswerJSONObject);
+//            //store in data base
+//
+//        }
+//    };
+    //josh
 
     private TextWatcher textWatcher = new TextWatcher() {
 
@@ -167,10 +290,26 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             // to do
         }
+        //josh
         public void onTextChanged(CharSequence s, int start,
                                   int before, int count) {
 
-            socket.emit("messagedetection", userId, s);
+//josh
+            try {
+                textWatcherJSONObject.put("userId", userId);
+                textWatcherJSONObject.put("currentSequence", s);
+                textWatcherJSONObject.put("questionId", questionId);
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(),
+                        "Unexpected Error. Please try again later.",
+                        Toast.LENGTH_LONG)
+                        .show();
+                e.printStackTrace();
+            }
+            Long tsLong = System.currentTimeMillis()/1000;
+            String ts = tsLong.toString();
+            Log.d("emitted", "time started " + ts);
+            socket.emit("messagedetection", textWatcherJSONObject);
         }
     };
 
@@ -193,6 +332,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                 @Override
                 public void run() {
                     // to do
+
 
                 }
             });
@@ -263,8 +403,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                 startActivity(i);
                 break;
             case R.id.nav_search:
-                Intent g= new Intent(OtherAnswersActivity.this,OtherAnswersActivity
-                        .class);
+                Intent g= new Intent(OtherAnswersActivity.this, SearchActivity.class);
                 startActivity(g);
                 break;
             case R.id.nav_profile:
@@ -276,7 +415,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(OtherAnswersActivity.this,ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(OtherAnswersActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
 

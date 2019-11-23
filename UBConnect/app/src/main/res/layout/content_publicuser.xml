@@ -6,16 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/publicUserImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="228dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <Button
         android:id="@+id/publicRate"
         android:layout_width="0dp"
@@ -23,28 +13,34 @@
         android:text="Rate"
         app:layout_constraintBottom_toBottomOf="@+id/publicStar"
         app:layout_constraintEnd_toStartOf="@+id/publicStar"
-        app:layout_constraintStart_toStartOf="@+id/publicUserImage"
+        app:layout_constraintStart_toStartOf="@+id/publicUserInfo"
         app:layout_constraintTop_toTopOf="@+id/publicStar" />
 
     <TextView
         android:id="@+id/publicUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="16dp"
         android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/publicUserInfo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/publicUserImage"
-        app:layout_constraintTop_toTopOf="@+id/publicUserImage" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/publicUserInfo"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/publicUserImage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/publicUserName"
-        app:layout_constraintStart_toEndOf="@+id/publicUserImage"
-        app:layout_constraintTop_toBottomOf="@+id/publicUserName" />
+        app:layout_constraintStart_toStartOf="@+id/publicUserName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
     <RatingBar
         android:id="@+id/publicStar"
@@ -63,7 +59,8 @@
         android:text="Report"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/publicRate"
-        app:layout_constraintStart_toStartOf="@+id/publicUserImage"
+        app:layout_constraintStart_toStartOf="@+id/publicRate"
         app:layout_constraintTop_toBottomOf="@+id/publicRate"
         app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

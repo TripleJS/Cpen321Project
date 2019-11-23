@@ -56,7 +56,7 @@ public class PublicUserFragment extends Fragment {
     }
 
     protected void observeViewModelRate(String userId) {
-        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedRate);
+        //publicUserViewModel.userRate(userId, token).observe(this, this::onChangedRate);
     }
 
     public void onChangedRate(User user){
@@ -64,7 +64,7 @@ public class PublicUserFragment extends Fragment {
     }
 
     protected void observeViewModelReport(String userId) {
-        publicUserViewModel.userRate(userId, token).observe(this, this::onChangedReport);
+        //publicUserViewModel.userRate(userId, token).observe(this, this::onChangedReport);
     }
 
     public void onChangedReport(User user){

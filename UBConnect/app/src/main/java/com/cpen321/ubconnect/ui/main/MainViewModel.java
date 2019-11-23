@@ -1,6 +1,7 @@
 package com.cpen321.ubconnect.ui.main;
 
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
@@ -8,11 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.ConstantsUtils;
-import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.AccessTokens;
 import com.cpen321.ubconnect.model.data.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainViewModel extends ViewModel implements LifecycleObserver{
 
     private MutableLiveData<User> currentUser = new MutableLiveData<>();
-    private MutableLiveData<String> error = new MutableLiveData<>();
+    private MutableLiveData<Pair<Integer,String>> error = new MutableLiveData<>();
 
     private IBackEndService mBackEndService;
 
@@ -46,7 +49,8 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    Pair<Integer,String> err = new Pair<Integer, String>(response.code(),NetworkUtil.onServerResponseError(response));
+                    error.postValue(err);
                     return;
                 }
 
@@ -58,7 +62,8 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                Pair<Integer,String> err = new Pair<Integer, String>(-1,"Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                error.postValue(err);
                 Log.d("fff", "onFailure: ");
             }
         });
@@ -74,8 +79,8 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-                    error.postValue(NetworkUtil.onServerResponseError(response));
-                    return;
+                    Pair<Integer,String> err = new Pair<Integer, String>(response.code(),NetworkUtil.onServerResponseError(response));
+                    error.postValue(err);
                 }
 
                 if (response.body() == null)
@@ -86,18 +91,19 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                Pair<Integer,String> err = new Pair<Integer, String>(-1,"Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                error.postValue(err);
             }
         });
     }
 
     public void setAppUser(User user) {
-        mBackEndService.postUser(user).enqueue(new Callback<User>() {
+        mBackEndService.signUpUser(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-                    error.postValue(NetworkUtil.onServerResponseError(response));
-                    return;
+                    Pair<Integer,String> err = new Pair<Integer, String>(response.code(),NetworkUtil.onServerResponseError(response));
+                    error.postValue(err);
                 }
 
                 if (response.body() == null)
@@ -108,12 +114,13 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                Pair<Integer,String> err = new Pair<Integer, String>(-1,"Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
+                error.postValue(err);
             }
         });
     }
 
-    public MutableLiveData<String> getError(){
+    public MutableLiveData<Pair<Integer,String>> getError(){
         return error;
     }
 
