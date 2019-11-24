@@ -51,7 +51,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
     private TextView question;
-    private TextView userAnswering;
+    private String userAnswering;
     private OtherAnswersViewModel otherAnswersViewModel;
     private String token;
     private QuestionViewModel questionViewModel;

@@ -23,6 +23,7 @@ import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -33,9 +34,13 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
     private TextView content;
     private TextView dateAuthor;
     private TextView answer;
-    private String questionId;
+    private String questionId = "dummyString";
+
 
     private QuestionViewModel questionViewModel;
+    //joshua
+    private String userId;
+    private Button startAnswer;
 
     private String token;
 
@@ -64,31 +69,31 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         content = findViewById(R.id.questionAContent);
         dateAuthor = findViewById(R.id.questionADateAuthor);
         answer = findViewById(R.id.questionAAnswer);
-        Button startAnswer = findViewById(R.id.answerButton);
+        startAnswer = findViewById(R.id.answerButton);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
+        userId = ((GlobalVariables) this.getApplication()).getUserID();
 
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
+//joshua
+        observeViewModel();
 
-        questionId = getIntent().getExtras().getString("arg");
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            questionId = bundle.getString("arg");
+        }
+        else {
+            questionViewModel.getRecentQuestion(userId, token);
 
-        View.OnClickListener answerOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(QuestionActivity.this, OtherAnswersActivity.class);
-                intent.putExtra("arg",questionId);
-                startActivity(intent);
-                QuestionActivity.this.finish();
-            }
-        };
+        }
 
-        startAnswer.setOnClickListener(answerOnClickListener);
 
-        observeViewModel(questionId);
+
+
     }
 
-    protected void observeViewModel(String questionId) {
-        questionViewModel.getQuestion(questionId, token).observe(this, this::onChangedQuestion);
+    protected void observeViewModel() {
+        questionViewModel.getQuestionData().observe(this, this::onChangedQuestion);
         questionViewModel.getError().observe(this, this::onError);
     }
 
@@ -106,15 +111,32 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
     };
 
     public void onChangedQuestion(Question question){
+        questionId = question.getId();
+        if (questionId.equals("")) {
+            Intent intent = new Intent(QuestionActivity.this, NoQuestionActivity.class);
+            startActivity(intent);
+            QuestionActivity.this.finish();
+        }
         title.setText(question.getQuestionTitle());
         content.setText(question.getQuestion());
         dateAuthor.setText(question.getDate() + " by " + question.getOwner());
         if(question.getAnswer() != null){
-            answer.setText(question.getAnswer().get(0));
+                answer.setText(question.getAnswer().get(0));
+            }
+            else {
+                answer.setText("No Answers. Be the first to answer!!");
         }
-        else {
-            answer.setText("No Answers. Be the first to answer!!");
-        }
+        View.OnClickListener answerOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuestionActivity.this, OtherAnswersActivity.class);
+                intent.putExtra("arg",questionId);
+                startActivity(intent);
+                QuestionActivity.this.finish();
+            }
+        };
+
+        startAnswer.setOnClickListener(answerOnClickListener);
     }
 
     @Override
