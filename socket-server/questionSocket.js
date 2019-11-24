@@ -14,7 +14,7 @@ const questionHandler = (io, socket, redisClient) => {
     socket.on("joinQuestion", async (data) => {
 
         const {questionId, userId} = data;
-        const roomId = "room_" + questionId + "_" + userId
+        const roomId = "room_" + questionId + "_" + userId;
         console.log("question id: " + questionId);
         console.log("userid: " + userId);
         socket.join(roomId);
@@ -28,9 +28,10 @@ const questionHandler = (io, socket, redisClient) => {
             };
 
             let curQuestion = await Question.findOne(condition);
+            console.log(curQuestion);
 
             if (!curQuestion) {
-                curQuestion = await Question.findByIdAndUpdate(userId, {$push : {answerers : userId}});
+                curQuestion = await Question.findByIdAndUpdate(questionId, {$push : {answerers : userId}});
                 await curQuestion.save();
             }
 
