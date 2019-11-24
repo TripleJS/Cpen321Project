@@ -4,10 +4,9 @@ const {logger} = require("../../../logger");
 const getCosineSimilarity = require("../suggestions/cosineSimilarity");
 const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
-const SIMILARITY_THRESHOLD = 0.4;
+const SIMILARITY_THRESHOLD = 0.65;
 const MAXIMUM_RETURNED_QUESTIONS = 5;
-// const {startServer} = require("../../api");
-// const {mongodburl, port} = require("../../../config");
+
 
 /**
  * @param {ObjectID} userID MongoDB ObjectID of a user
@@ -102,8 +101,8 @@ const matchKeywords = (question, keywordList) => {
  const getBagOfQuestions = (questions, questionKeywords) => {
     const bagOfQuestions = [];
     const keywordsFreqOnly = questionKeywords.map(({freq}) => freq);
-    
-    for (let i = 0; i < questions.size; i++) {
+    console.log(keywordsFreqOnly);
+    for (let i = 0; i < questions.length; i++) {
 
         // Take only the frequency 
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
@@ -153,5 +152,11 @@ module.exports = {
 // };
 
 // test();
+
+const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+const questionsWithKeywords = [{question : {}, keywordsWithFreq : [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}]}];
+
+let result = getBagOfQuestions(questionsWithKeywords, keywords);
+console.log(result);
 
 

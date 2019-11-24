@@ -84,7 +84,7 @@ const questionHandler = (io, socket, redisClient) => {
 
         try {
 
-            if (currentSequence != null || currentSequence != "") {
+            if (currentSequence !== null || currentSequence !== "") {
                 let curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
                 if (curAnswer === null) {
                     // TODO: fill this later 

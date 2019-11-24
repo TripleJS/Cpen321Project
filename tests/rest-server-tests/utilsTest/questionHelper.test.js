@@ -134,4 +134,53 @@ describe("Question Helper Test Suite", () => {
         });
     });
 
+
+    describe("Get bag of Questions Test", () => {
+
+        test("1 Question, Matching Keywords",async  () => {
+            const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            let question = await Question.findById(mockData.testQuestionArray[6]._id);
+            const questionsWithKeywords = [{question : question, keywordsWithFreq : [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}]}];
+
+            let result = questionHelper.getBagOfQuestions(questionsWithKeywords, keywords);
+            expect(result.length).toEqual(1);
+            expect(result).toEqual([question]);
+        });
+
+        test("Empty questions array", () => {
+            const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            const questionsWithKeywords = [];
+
+            let result = questionHelper.getBagOfQuestions(questionsWithKeywords, keywords);
+            expect(result.length).toEqual(0);
+            expect(result).toEqual([]);
+        });
+
+        test("2 questions, returns both questions", () => {
+            const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            const question1KeywordFreqArray = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            const question2KeywordFreqArray = [{keyword : "big", freq : 2}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}]; 
+
+            const questionsWithKeywords = [{question : "testq1", keywordsWithFreq : question1KeywordFreqArray}, 
+                                            {question : "test12", keywordsWithFreq : question2KeywordFreqArray}];
+            
+            let result = questionHelper.getBagOfQuestions(questionsWithKeywords, keywords);
+            expect(result.length).toEqual(2);
+        });
+
+        test("3 questions, only returns 1", () => {
+            const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            const question1KeywordFreqArray = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+            const question2KeywordFreqArray = [{keyword : "big", freq : 17}, {keyword : "last", freq : 19}, {keyword : "question", freq : 1}]; 
+            const question3KeywordFreqArray = [{keyword : "big", freq : 47}, {keyword : "last", freq : 23}]; 
+
+            const questionsWithKeywords = [{question : "testq1", keywordsWithFreq : question1KeywordFreqArray}, 
+                                            {question : "testq2", keywordsWithFreq : question2KeywordFreqArray},
+                                            {question : "testq3", keywordsWithFreq : question3KeywordFreqArray}];
+
+            let result = questionHelper.getBagOfQuestions(questionsWithKeywords, keywords);
+            expect(result.length).toEqual(1);
+        });
+    })
+
 });
