@@ -23,7 +23,7 @@ const createNewUser = (profile, loginMethod) => {
                 id: newId,
                 email: userEmail
             },
-            userName: profile.displayName,
+            userName: profile.displayName.replace(" ", ""),
             email: userEmail
         });
     } else if (loginMethod === "google") {
