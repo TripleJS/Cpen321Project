@@ -242,7 +242,6 @@ const report = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-
 };
 
 const exportFunctions = {

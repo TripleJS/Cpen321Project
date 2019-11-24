@@ -7,7 +7,7 @@ const {errorCatch} = require("../utils/errorHandler");
 
 const containsId = (a, obj) => {
     for (var i = 0; i < a.length; i++) {
-        if (a[i].userId === obj.userId) {
+        if (a[i]._id === obj._id) {
             return true;
         }
     }
@@ -34,7 +34,6 @@ const search = async (req, res, next) => {
         if (searchStringKeywords.length === 1) {
             allUsers = await User.find({userName : searchString});
         } else {
-            
             for (var i = 0; i < allQuestions.length; i++) {
                 const curUser = await User.findById(allQuestions[parseInt(i)].owner);
                 const curUserObject = curUser.toObject();

@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">28.21% </span>
+        <span class="strong">52.5% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>11/39</span>
+        <span class='fraction'>21/40</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,16 +35,16 @@
         <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">30.56% </span>
+        <span class="strong">54.05% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/36</span>
+        <span class='fraction'>20/37</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -105,7 +105,8 @@
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -125,41 +126,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,28 +186,29 @@ const search = async (req, res, next) =&gt; {
 &nbsp;
     const searchString = req.query.question;
     searchString.toLowerCase();
-<span class="cstat-no" title="statement not covered" >    console.log(searchString);</span>
+    console.log(searchString);
 &nbsp;
-    const searchStringKeywords = <span class="cstat-no" title="statement not covered" >keywords(searchString);</span>
-<span class="cstat-no" title="statement not covered" >    console.log(searchStringKeywords);</span>
+    const searchStringKeywords = keywords(searchString);
+    console.log(searchStringKeywords);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    try {</span>
-        const allQuestions = <span class="cstat-no" title="statement not covered" >await Question.find({keywords : { $all : searchStringKeywords}});</span>
-        
-<span class="cstat-no" title="statement not covered" >        for (var i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; allQuestions.length; i++) {</span>
+    try {
+        const allQuestions = await Question.find({keywords : { $all : searchStringKeywords}});
+&nbsp;
+        for (var i = 0; i &lt; allQuestions.length; i++) {
 <span class="cstat-no" title="statement not covered" >            console.log(allQuestions[parseInt(i)].title);</span>
         }
 &nbsp;
-        let allUsers;
-<span class="cstat-no" title="statement not covered" >        if (searchStringKeywords.length === 1) {</span>
+        let allUsers = [];
+        if (searchStringKeywords.length === 1) {
 <span class="cstat-no" title="statement not covered" >            allUsers = await User.find({userName : searchString});</span>
         } else {
-<span class="cstat-no" title="statement not covered" >            allUsers = [];</span>
+            
 <span class="cstat-no" title="statement not covered" >            for (var i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; allQuestions.length; i++) {</span>
                 const curUser = <span class="cstat-no" title="statement not covered" >await User.findById(allQuestions[parseInt(i)].owner);</span>
                 const curUserObject = <span class="cstat-no" title="statement not covered" >curUser.toObject();</span>
 <span class="cstat-no" title="statement not covered" >                curUserObject.userId = curUser._id;</span>
-            
+<span class="cstat-no" title="statement not covered" >                console.log(curUserObject.userId);</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >                if (!containsId(allUsers, curUserObject)) {</span>
 <span class="cstat-no" title="statement not covered" >                    allUsers.push(curUserObject);</span>
                 }
@@ -218,7 +221,7 @@ const search = async (req, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >        res.status(200).json({questions : allQuestions, users : allUsers});</span>
         
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >        errorCatch(error, next);</span>
+        errorCatch(error, next);
     }
 };
 &nbsp;
@@ -229,7 +232,7 @@ module.exports = search;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Nov 24 2019 11:25:27 GMT-0800 (STD)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Nov 24 2019 12:32:25 GMT-0800 (STD)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

@@ -2,9 +2,9 @@ const Question = require("../../schema/questions");
 const User = require("../../schema/user");
 const {logger} = require("../../../logger");
 const getCosineSimilarity = require("../suggestions/cosineSimilarity");
-const MAX_RETRIEVED_QUESTIONS = 3;
+const MAX_RETRIEVED_QUESTIONS = 100;
 const MAX_KEYWORDS = 8; 
-const SIMILARITY_THRESHOLD = 0.4;
+const SIMILARITY_THRESHOLD = () => (0.4);
 const MAXIMUM_RETURNED_QUESTIONS = 5;
 
 
@@ -110,7 +110,7 @@ const matchKeywords = (question, keywordList) => {
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Cosine Similarity Value: " + cosineSimilarity);
 
-        if (cosineSimilarity > SIMILARITY_THRESHOLD) {
+        if (cosineSimilarity > SIMILARITY_THRESHOLD()) {
 
             // Push ONLY THE QUESTION OBJECT
             bagOfQuestions.push(questions[parseInt(i)].question);
@@ -130,7 +130,8 @@ module.exports = {
     matchKeywords,
     getBagOfQuestions,
     MAX_RETRIEVED_QUESTIONS,
-    MAX_KEYWORDS
+    MAX_KEYWORDS,
+    SIMILARITY_THRESHOLD
 }
 
 // const testArray = ["test", "hello", "myname", "test", "nibba", "xdddd", "xdddd", "cmon", "cuh", "yo", "yodawh", "yoyo", "hey", "there", "their", "there", "there", "xddd"];
