@@ -13,9 +13,11 @@ const search = async (req, res, next) => {
     searchString.toLowerCase().split(" ");
 
     const searchStringKeywords = keywords(searchString);
+    console.log(searchStringKeywords);
 
     try {
-        const allQuestions = await Question.find({keywords : {$all : searchStringKeywords}});
+        const allQuestions = await Question.find({keywords : searchStringKeywords});
+
         
         for (var i = 0; i < allQuestions.length; i++) {
             console.log(allQuestions[parseInt(i)].title);
@@ -33,6 +35,8 @@ const search = async (req, res, next) => {
                 allUsers.push(curUser);
             }
         }
+
+        
 
         res.status(200).json({question : allQuestions, users : allUsers});
         
