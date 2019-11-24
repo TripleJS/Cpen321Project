@@ -33,7 +33,7 @@ const testUser3 = {
         email : "facebooktest@email.com",
         password : "testpassword"
     },
-    userName : "testusername2"
+    userName : "testusername3"
 };
 
 const testFacebookUser = {
@@ -44,7 +44,7 @@ const testFacebookUser = {
         email : "fbemail@email.com",
         id : "somefbid2"
     },
-    userName : "testusername3"
+    userName : "testusername4"
 };
 
 const testQuestion = {

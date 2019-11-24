@@ -25,8 +25,7 @@ const search = async (req, res, next) => {
 
     try {
         const allQuestions = await Question.find({keywords : { $all : searchStringKeywords}});
-
-
+        
         for (var i = 0; i < allQuestions.length; i++) {
             console.log(allQuestions[parseInt(i)].title);
         }

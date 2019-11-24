@@ -40,7 +40,7 @@ const addUser = async (req, res, next) => {
         console.log(curUser);
         console.log(checkUserName);
 
-        if (curUser !== null && checkUserName === null) {
+        if (curUser === null && checkUserName === null) {
             curUser = new User({
                 method: "local",
                 local: { 
