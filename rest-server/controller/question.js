@@ -122,7 +122,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
          */
         let questionsWithUpdatedFreq = [];
 
-        if (courses.isEmpty()) {
+        if (isEmpty(courses)) {
             questionsForUser = await Question.bySwipedUser(userId);
         } else {
             questionsForUser = await Question.byCourseTag(courses, userId);
@@ -137,7 +137,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         res.status(200).json(questionsToReturn);
  
-
     } catch (error) {
         errorCatch(error, next);
     }
