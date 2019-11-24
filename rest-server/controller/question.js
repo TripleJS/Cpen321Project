@@ -112,37 +112,32 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         logger.info("User Keyword Frequency:");
         logger.info(userKeywordFrequency);
-        try {
+    
             // Question Objects for the User 
-            let questionsForUser;
+        let questionsForUser;
 
-            /**
-             * Question Objects for the User with the updated keywords including
-             * their frequency 
-             */
-            let questionsWithUpdatedFreq = [];
+        /**
+         * Question Objects for the User with the updated keywords including
+         * their frequency 
+         */
+        let questionsWithUpdatedFreq = [];
 
-            if (courses.isEmpty()) {
-                questionsForUser = await Question.bySwipedUser(userId);
-            } else {
-                questionsForUser = await Question.byCourseTag(courses, userId);
-            }
-
-            for (var i = 0; i < questionsForUser.length; i++) {
-                const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
-                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
-            }
-            
-            const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
-
-            res.status(200).json(questionsToReturn);
-        } catch (error) {
-            
+        if (courses.isEmpty()) {
+            questionsForUser = await Question.bySwipedUser(userId);
+        } else {
+            questionsForUser = await Question.byCourseTag(courses, userId);
         }
 
-        res.status(203).json(
-            resultingQuestions
-        );
+        for (var i = 0; i < questionsForUser.length; i++) {
+            const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
+        }
+            
+        const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
+
+        res.status(200).json(questionsToReturn);
+ 
+
     } catch (error) {
         errorCatch(error, next);
     }
