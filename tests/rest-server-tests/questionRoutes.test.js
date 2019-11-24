@@ -48,7 +48,7 @@ describe("Question Route Test Suite", () => {
 
   afterEach(async () => {
     await mongoose.connection.dropDatabase();
-  })
+  });
 
   // Test Suites: 
 

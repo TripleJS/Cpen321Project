@@ -1,9 +1,7 @@
 const Question = require("../schema/questions");
 const User = require("../schema/user");
 const keywords = require("../utils/lg");
-const {errorCatch, errorThrow, errorThrowValidator} = require("../utils/errorHandler");
-const {validationResult} = require("express-validator");
-const {isEmpty} = require("lodash");
+const {errorCatch, errorThrow} = require("../utils/errorHandler");
 const {logger} = require("../../logger");
 const { getQuestionsByUser, 
         getKeywordFrequency,
@@ -11,9 +9,6 @@ const { getQuestionsByUser,
         MAX_RETRIEVED_QUESTIONS,
         getBagOfQuestions,
         MAX_KEYWORDS } = require('../utils/suggestions/questionHelper');
-
-
-
 
 
 const getQuestion = async (req, res, next) => {
@@ -76,21 +71,6 @@ const postQuestion = async (req, res, next) => {
 };
 
 
-const suggestedQuestions = async (req, res, next) => {
-
-    logger.info(req.params.userId);
-
-    try {
-        let questionList = await Question.find({}).limit(5);
-
-        res.status(200).json(
-            questionList
-        );    
-    } catch (error) {
-        errorCatch(error, next);
-    }
-};
-
 const suggestedQuestionsV2 = async (req, res, next) => {
     try {
         
@@ -135,32 +115,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-};
-
-const searchQuestion = async (req, res, next) => {
-    logger.info("In search question");
-    logger.info(req.query);
-
-    try {
-        const questions = await Question.find({}).limit(5);
-        const users = await User.find().limit(2);
-        const newUsers = [];
-
-        for (var i = 0 ; i < users.length; i++) {
-            const currentUser = users[parseInt(i)].toObject();
-            currentUser.userId = currentUser._id;
-            newUsers.push(currentUser);
-        }
-
-        res.status(200).json({
-            questions : questions,
-            users : newUsers
-        });
-        
-    } catch (error) {
-        errorCatch(error, next);
-    }
-    
 };
 
 const swipedQuestion = async (req, res, next) => {
@@ -216,8 +170,6 @@ const getMostRecentQuestion = async (req, res, next) => {
 module.exports = {
     getQuestion,
     postQuestion,
-    suggestedQuestions,
-    searchQuestion,
     swipedQuestion,
     suggestedQuestionsV2,
     getMostRecentQuestion

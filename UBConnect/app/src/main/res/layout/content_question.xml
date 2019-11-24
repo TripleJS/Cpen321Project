@@ -64,6 +64,12 @@
             android:layout_height="wrap_content"
             android:text="Answer" />
 
+        <Button
+            android:id="@+id/navAnswersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View More Answers" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

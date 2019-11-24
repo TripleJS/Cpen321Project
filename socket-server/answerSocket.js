@@ -56,10 +56,11 @@ const answerHandler = (io, socket, redisClient) => {
     });
 
     socket.on("joinNavAnswers", async (data) => {
-        const {questionId} = data; 
+        const {questionId, userId} = data; 
 
         const room = "room_" + questionId;
         socket.join(room);
+        console.log("question id: " + questionId);
 
         try {
             const curQuestion = await Question.findById(questionId);
@@ -67,9 +68,11 @@ const answerHandler = (io, socket, redisClient) => {
             let userNames = [];
 
             for (var i = 0; i < answerers.length; i++) {
-                let user = await User.findById(answerers[i]);
+                let user = await User.findById(answerers[parseInt(i)]);
                 userNames.push(user.userName);
             }
+
+            console.log(answerers);
 
             io.to(room).emit("getUserAnswering", {userAnswering : answerers, userNames : userNames});
         } catch (error) {

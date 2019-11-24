@@ -55,6 +55,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
     private TextView userAnswering;
     private OtherAnswersViewModel otherAnswersViewModel;
     //joshua
+    private Socket socket;
     private PublicUserViewModel publicUserViewModel;
     private QuestionViewModel questionViewModel;
     private String token;
@@ -162,7 +163,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
                     .show();
             e.printStackTrace();
         }
-        Socket socket = null;
+        socket = null;
 
         try {
 
@@ -295,5 +296,10 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.close();
     }
 }

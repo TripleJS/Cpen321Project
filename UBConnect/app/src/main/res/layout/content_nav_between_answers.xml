@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linear_layout"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/question"
+    <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/chooseAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose Answer To View" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/chooseAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Answer To View" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
