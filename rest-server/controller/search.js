@@ -15,7 +15,7 @@ const search = async (req, res, next) => {
     console.log(searchStringKeywords);
 
     try {
-        const allQuestions = await Question.find({keywords : { $all {searchStringKeywords}});
+        const allQuestions = await Question.find({keywords : { $all : {searchStringKeywords}});
 
 
         for (var i = 0; i < allQuestions.length; i++) {
