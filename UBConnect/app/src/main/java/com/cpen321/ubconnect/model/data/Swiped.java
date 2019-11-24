@@ -1,7 +1,7 @@
 package com.cpen321.ubconnect.model.data;
 
 public class Swiped {
-    private String userId;
+    private String _Id;
     private String questionId;
     private String direction;
 
@@ -22,10 +22,10 @@ public class Swiped {
     }
 
     public String getUserId() {
-        return userId;
+        return _Id;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this._Id = userId;
     }
 }
