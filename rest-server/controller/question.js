@@ -114,7 +114,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
     
         // Question Objects for the User 
         let questionsForUser = await Question.find({}).bySwipedUser(userId);
-
+        console.log(questionsForUser);
         /**
          * Question Objects for the User with the updated keywords including
          * their frequency 
