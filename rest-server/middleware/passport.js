@@ -12,7 +12,8 @@ const {logger} = require("../../logger");
 const createNewUser = (profile, loginMethod) => {
     const newId = profile.id;
     const userEmail = profile.emails[0].value;
-    const newUserName = profile.displayName.replace(" ", "") + profile.id.toString().splice(0, 3);
+    const idAsString = newId.toString();
+    const newUserName = profile.displayName.replace(" ", "") + idAsString.slice(0, 3);
                 
     logger.info(userEmail);
     let user; 
