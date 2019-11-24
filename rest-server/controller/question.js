@@ -97,12 +97,12 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const userId = req.params.userId; 
         // Array of Question Objects
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
-        
-        // Array of all the keywords from all user questions
+
         let userQuestionKeywords = [];
 
         for (var i = 0; i < userQuestions.length; i++) {
-            userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
+            console.log(userQuestions[i].keywords);
+            userQuestionKeywords.push.apply(userQuestionKeywords, userQuestions[parseInt(i)].keywords);
         }
 
         console.log("User Question Keywords: " + userQuestionKeywords);
@@ -110,12 +110,11 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         logger.info("User Keyword Frequency:");
-        logger.info(userKeywordFrequency);
+        console.log(userKeywordFrequency);
     
         // Question Objects for the User 
-        let questionsForUser = await Question.find({});
-        console.log("questions for user: " + questionsForUser);
-
+        let questionsForUser = await Question.find({}).bySwipedUser(userId);
+        console.log(questionsForUser);
         /**
          * Question Objects for the User with the updated keywords including
          * their frequency 
@@ -124,9 +123,11 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         for (var i = 0; i < questionsForUser.length; i++) {
             const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
-            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
+            const updatedKeywordsWithFreq = getKeywordFrequency(updatedKeywords, updatedKeywords.length);
+            console.log(updatedKeywords);
+            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywordsWithFreq});
         }
-            
+        
         const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
         console.log("questions to return: " + questionsToReturn);
         res.status(200).json(questionsToReturn);
