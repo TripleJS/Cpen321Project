@@ -57,23 +57,6 @@ questionSchema.query.byUserId = function(userId) {
 }
 
 /** 
- * Finds the Questions if the question contains a value from array of courses
- */
-questionSchema.query.byCourseTag = function(courses, userId) { 
-
-    let allQuestions = [];
-    for (var i = 0; i < courses.length; i++) {
-        
-        // Finds questions that match the current course and the user hasn't swiped on it yet 
-        const questions = this.find({course: courses[parseInt(i)], swipedUsers : {$ne: userId}});
-
-        allQuestions.concat(questions);
-    }
-
-    return allQuestions;
-}
-
-/** 
  * Finds the Questions that a user has swiped on
  */
 questionSchema.query.bySwipedUser = function(userId) {

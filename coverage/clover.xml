@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1574627545814" clover="3.2.0">
-  <project timestamp="1574627545815" name="All files">
+<coverage generated="1574627764565" clover="3.2.0">
+  <project timestamp="1574627764566" name="All files">
     <metrics statements="407" coveredstatements="350" conditionals="64" coveredconditionals="55" methods="35" coveredmethods="30" elements="506" coveredelements="435" complexity="0" loc="407" ncloc="407" packages="6" files="12" classes="12"/>
     <package name="Cpen321Project">
       <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -134,19 +134,19 @@
         <line num="33" count="2" type="stmt"/>
         <line num="34" count="2" type="cond" truecount="0" falsecount="2"/>
         <line num="35" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
         <line num="40" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="44" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="45" count="0" type="stmt"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="56" count="2" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
       </file>
       <file name="user.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/rest-server/controller/user.js">
         <metrics statements="127" coveredstatements="125" conditionals="24" coveredconditionals="24" methods="9" coveredmethods="9"/>
