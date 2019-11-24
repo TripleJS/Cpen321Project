@@ -12,6 +12,7 @@ const {logger} = require("../../logger");
 const createNewUser = (profile, loginMethod) => {
     const newId = profile.id;
     const userEmail = profile.emails[0].value;
+    const newUserName = profile.displayName.replace(" ", "") + profile.id.toString().splice(0, 3);
                 
     logger.info(userEmail);
     let user; 
@@ -23,7 +24,7 @@ const createNewUser = (profile, loginMethod) => {
                 id: newId,
                 email: userEmail
             },
-            userName: profile.displayName.replace(" ", ""),
+            userName: newUserName,
             email: userEmail
         });
     } else if (loginMethod === "google") {
