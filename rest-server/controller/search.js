@@ -41,7 +41,7 @@ const search = async (req, res, next) => {
                 const curUserObject = curUser.toObject();
                 curUserObject.userId = curUser._id;
             
-                if (!containsId(allUsers, curUser)) {
+                if (!containsId(allUsers, curUserObject)) {
                     allUsers.push(curUserObject);
                 }
             }
