@@ -31,7 +31,12 @@ const search = async (req, res, next) => {
                 const curUser = await User.findById(allQuestions[parseInt(i)].owner);
                 curUser.toObject();
                 curUser.userId = curUser._id;
-                allUsers.push(curUser);
+            
+                for (var j = 0; j < allUsers.length; j++) {
+                   if (allUsers[parseInt(i)] !== curUser) {
+                    allUsers.push(curUser);
+                   }
+                }
             }
         }
 
