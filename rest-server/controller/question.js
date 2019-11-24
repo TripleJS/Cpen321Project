@@ -102,7 +102,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         for (var i = 0; i < userQuestions.length; i++) {
             console.log(userQuestions[i].keywords);
-            userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
+            userQuestionKeywords.push.apply(userQuestionKeywords, userQuestions[parseInt(i)].keywords);
         }
 
         console.log("User Question Keywords: " + userQuestionKeywords);
