@@ -49,7 +49,7 @@ import java.util.List;
 
 public class OtherAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Socket socket;
-    private String questionId;
+    private String questionId = "dummyString";
     private String userId;
     private Question questionClass;
     //josh
@@ -75,8 +75,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
     private JSONObject textWatcherJSONObject = new JSONObject();
     private JSONObject joinQuestionJSONObject = new JSONObject();
-    private JSONObject submitAnswerJSONObject = new JSONObject();
-    private JSONObject saveAnswerJSONObject = new JSONObject();
+
 
     @Override
     protected
@@ -100,11 +99,13 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
 
         messagetxt = (EditText) findViewById(R.id.myTextBox) ;
+        messagetxt.addTextChangedListener(textWatcher);
 
 //        Button saveAnswer = findViewById(R.id.saveChanges);
 //        saveAnswer.setOnClickListener(saveAnswerOnClickListener);
         Button submitAnswer = findViewById(R.id.submitAnswer);
-        submitAnswer.setOnClickListener(submitAnswerOnClickListener);
+        //joshua
+//        submitAnswer.setOnClickListener(submitAnswerOnClickListener);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(floatingActionButtonOnClickListener);
@@ -124,7 +125,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             questionId = bundle.getString("arg");
-            socketStuff();
+            otherAnswersViewModel.getQuestionById(questionId, token);
         }
         else {
             otherAnswersViewModel.getRecentQuestionToAnswerId(token, userId);
@@ -139,27 +140,25 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 //
 //        socket.on("userdisconnect", onUserDisconnect);
 
-
-        otherAnswersViewModel.getQuestionById(questionId, token);
-    }
-
+}
 
     private void observeViewModel(){
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
     }
-
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
-        this.questionId = question.getId();
+        if (questionId.equals("dummyString")) {
+            questionId = question.getId();
+        }
         if (questionId.equals("")) {
             Intent intent = new Intent(OtherAnswersActivity.this, NoQuestionActivity.class);
             startActivity(intent);
             OtherAnswersActivity.this.finish();
         }
-        socketStuff();
+        mainSocketMethod();
     }
-
-    private void socketStuff(){
+//joshua
+    private void mainSocketMethod(){
 
         try {
             joinQuestionJSONObject.put("userId", userId);
@@ -240,28 +239,28 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
             OtherAnswersActivity.this.finish();
         }
     };
-//josh
-    private View.OnClickListener submitAnswerOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            try {
-                submitAnswerJSONObject.put("userId", userId);
-                submitAnswerJSONObject.put("messagetxt", messagetxt);
-                submitAnswerJSONObject.put("questionId", questionId);
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(),
-                        "Unexpected Error. Please try again later.",
-                        Toast.LENGTH_LONG)
-                        .show();
-                e.printStackTrace();
-            }
-            socket.emit("submitAnswer", submitAnswerJSONObject);
-            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
-            startActivity(intent);
-            OtherAnswersActivity.this.finish();
-            //have jon take this answer out of recent and store in data base
-        }
-    };
+//joshua
+//    private View.OnClickListener submitAnswerOnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            try {
+//                submitAnswerJSONObject.put("userId", userId);
+//                submitAnswerJSONObject.put("messagetxt", messagetxt);
+//                submitAnswerJSONObject.put("questionId", questionId);
+//            } catch (JSONException e) {
+//                Toast.makeText(getApplicationContext(),
+//                        "Unexpected Error. Please try again later.",
+//                        Toast.LENGTH_LONG)
+//                        .show();
+//                e.printStackTrace();
+//            }
+//            socket.emit("submitAnswer", submitAnswerJSONObject);
+//            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
+//            startActivity(intent);
+//            OtherAnswersActivity.this.finish();
+//            //have jon take this answer out of recent and store in data base
+//        }
+//    };
 //    private View.OnClickListener saveAnswerOnClickListener = new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v) {
@@ -361,7 +360,9 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
+            startActivity(intent);
+            OtherAnswersActivity.this.finish();
         }
     }
 
@@ -422,7 +423,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
         }
 
-
+        OtherAnswersActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

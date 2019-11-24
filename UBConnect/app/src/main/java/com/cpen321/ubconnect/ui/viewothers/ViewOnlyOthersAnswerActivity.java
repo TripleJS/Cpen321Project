@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +20,15 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.fcmservice.MessagingService;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
+import com.cpen321.ubconnect.ui.publicaccount.PublicUserViewModel;
+import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionViewModel;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
@@ -48,6 +53,8 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
     private TextView question;
     private TextView userAnswering;
     private OtherAnswersViewModel otherAnswersViewModel;
+    //joshua
+    private PublicUserViewModel publicUserViewModel;
     private QuestionViewModel questionViewModel;
     private String token;
 
@@ -83,13 +90,14 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 //        userAnsweringId = getIntent().getExtras().getString("userAnsweringId");
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            questionId = bundle.getString("questionId");
-            userAnsweringId = bundle.getString("userId");
+            questionId = bundle.getString("arg");
+            userAnsweringId = bundle.getString("userAnsweringId");
         }
+        //joshua
         else {
-//            MessagingService messagingService = new MessagingService();
-//            questionId = messagingService.getFCMQuestionId();
-//            userAnsweringId = messagingService.getFCMUserAnsweringId();
+            Intent intent = new Intent(ViewOnlyOthersAnswerActivity.this, NoAnswerActivity.class);
+            startActivity(intent);
+            ViewOnlyOthersAnswerActivity.this.finish();
         }
 
 
@@ -99,9 +107,15 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 //        answer = getIntent().getExtras().getString("answer");
         userId = ((GlobalVariables) this.getApplication()).getUserID();
 
-        otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
+
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
+        //josh
+
+        publicUserViewModel = ViewModelProviders.of(this).get(PublicUserViewModel.class);
+        otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
+        observeOtherAnswerViewModel();
+        observePublicUserViewModel();
         //connect you socket client to the server
         question = findViewById(R.id.questionView);
 
@@ -113,6 +127,26 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         messagetxt = (TextView) findViewById(R.id.myTextBox1);
 
 
+
+
+        otherAnswersViewModel.getQuestionById(questionId, token);
+        //+ otherAnswersViewModel.getUserNameById(userAnsweringId, token)
+    }
+    private void observeOtherAnswerViewModel(){
+        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
+    }
+    private void observePublicUserViewModel(){
+        publicUserViewModel.getPublicUserObserve().observe(this, this::onChangedUser);
+    }
+
+    private void onChangedQuestion(Question question){
+        this.question.setText(question.getQuestion());
+    }
+    private void onChangedUser(User user){
+        this.userAnswering.setText(user.getUserName());
+        mainSocketMethod();
+    }
+    private void mainSocketMethod() {
         try {
             joinViewAnswerJSONObject.put("userId", userId);
             joinViewAnswerJSONObject.put("userAnsweringId", userAnsweringId);
@@ -181,16 +215,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
                 });
             }
         });
-        observeViewModel();
-        otherAnswersViewModel.getQuestionById(questionId, token);
-        userAnswering.setText("Answer From" );
-        //+ otherAnswersViewModel.getUserNameById(userAnsweringId, token)
-    }
-    private void observeViewModel(){
-        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
-    }
-    private void onChangedQuestion(Question question){
-        this.question.setText(question.getQuestion());
+
     }
 
     //josh

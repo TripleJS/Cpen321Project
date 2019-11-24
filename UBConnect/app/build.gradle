@@ -59,6 +59,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.0'
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
 
+    //josh
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+
     androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 
 

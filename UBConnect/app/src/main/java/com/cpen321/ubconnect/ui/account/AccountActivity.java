@@ -10,10 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -151,7 +149,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         accountViewModel.getUserInfo(token, userId);
     }
 
-    ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+    private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
 
         @Override
         public void onGlobalLayout() {
@@ -415,7 +413,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(AccountActivity.this, HomeActivity.class);
+            startActivity(intent);
+            AccountActivity.this.finish();
         }
     }
 
