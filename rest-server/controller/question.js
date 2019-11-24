@@ -100,6 +100,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         
         const curUser = await User.findById(userId);
         const {courses} = curUser;
+        console.log("USer courses: " + courses);
 
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
@@ -107,6 +108,8 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         for (var i = 0; i < userQuestions.length; i++) {
             userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
         }
+
+        console.log("User Question Keywords: " + userQuestionKeywords);
 
         // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
@@ -125,8 +128,10 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         if (isEmpty(courses)) {
             questionsForUser = await Question.find({}).bySwipedUser(userId);
         } else {
-            questionsForUser = await Question.find({}).byCourseTag(courses, userId);
+            questionsForUser = await Question.find({});
         }
+
+        console.log("questions for user: " + questionsForUser);
 
         for (var i = 0; i < questionsForUser.length; i++) {
             const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
@@ -134,7 +139,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         }
             
         const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
-
+        console.log("questions to return: " + questionsToReturn);
         res.status(200).json(questionsToReturn);
  
     } catch (error) {

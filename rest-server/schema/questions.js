@@ -77,7 +77,9 @@ questionSchema.query.byCourseTag = function(courses, userId) {
  * Finds the Questions that a user has swiped on
  */
 questionSchema.query.bySwipedUser = function(userId) {
-    return this.find({swipedUsers : {$ne: userId}});
+    let result = this.find({swipedUsers : {$ne: userId}});
+    console.log("Questions that user hasn't swiped on :" + result);
+    return result;
 }
 
 /** 
