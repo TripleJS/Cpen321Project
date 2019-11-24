@@ -19,7 +19,7 @@ const signTokenAndSignIn = (id, res) => {
     logger.info("JWT TOKEN: " + token);
 
     res.status(201).json({
-            userId : id, 
+            _id : id, 
             jwt : token
         }
     );   
@@ -169,7 +169,7 @@ const oAuthLogin = async (req, res, next) => {
 
 const rate = async (req, res, next) => {
     const ratingUserId = req.params.ratingUserId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
     const rating = req.body.rating; 
 
     console.log(ratingUserId);
@@ -217,7 +217,7 @@ const rate = async (req, res, next) => {
 
 const report = async (req, res, next) => {
     const reportingUserId = req.params.reportingUserId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
 
     console.log("reporting userid: " + reportingUserId);
     console.log("reported userid: " + userId);
