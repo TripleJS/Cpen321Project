@@ -29,7 +29,7 @@ const search = async (req, res, next) => {
             }
         }
 
-        res.send(200).json({question : allQuestions, users : allUsers});
+        res.status(200).json({question : allQuestions, users : allUsers});
         
     } catch (error) {
         errorCatch(error, next);
