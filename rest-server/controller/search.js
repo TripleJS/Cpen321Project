@@ -7,9 +7,9 @@ const {errorCatch} = require("../utils/errorHandler");
 
 const search = async (req, res, next) => {
 
-    const searchString = req.query.searchString;
+    const searchString = req.query.question;
     console.log(req.query);
-    
+
     searchString.split("+").join(" ");
 
     const searchStringKeywords = keywords(searchString);
