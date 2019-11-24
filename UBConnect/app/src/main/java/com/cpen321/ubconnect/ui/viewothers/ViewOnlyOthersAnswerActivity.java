@@ -90,8 +90,8 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 //        userAnsweringId = getIntent().getExtras().getString("userAnsweringId");
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            questionId = bundle.getString("arg");
-            userAnsweringId = bundle.getString("userAnsweringId");
+            questionId = bundle.getString("questionId");
+            userAnsweringId = bundle.getString("userId");
         }
         //joshua
         else {
@@ -141,6 +141,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
+        mainSocketMethod();
     }
     private void onChangedUser(User user){
         this.userAnswering.setText(user.getUserName());

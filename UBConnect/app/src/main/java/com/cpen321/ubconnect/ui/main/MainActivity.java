@@ -62,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
     private Button appLoginButton;
     private Button signupButton;
 
+    private boolean loggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bundleHandling(getIntent().getExtras());
+//        bundleHandling(getIntent().getExtras());
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         getLifecycle().addObserver(mainViewModel);
@@ -178,9 +180,12 @@ public class MainActivity extends AppCompatActivity {
         ((GlobalVariables) this.getApplication()).setUserID(user.getUserId());
         ((GlobalVariables) this.getApplication()).setJwt(user.getJwt());
 
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-        startActivity(intent);
-        MainActivity.this.finish();
+        bundleHandling(getIntent().getExtras());
+        if(!loggedIn){
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
     }
 
     public boolean checkEmailFormat(String email){
@@ -200,9 +205,12 @@ public class MainActivity extends AppCompatActivity {
     private void bundleHandling(Bundle bundle) {
         if (bundle != null && bundle.get("questionId") != null && bundle.get("userId") != null) {
             //here can get notification message
+            loggedIn = true;
+            Log.d("not", "bundleHandling: " + bundle.get("questionId").toString());
+            Log.d("not", "bundleHandling: " + bundle.get("userId"));
             Intent intent = new Intent(MainActivity.this, ViewOnlyOthersAnswerActivity.class);
-            intent.putExtra("questionId", (bundle.get("questionId")).toString());
-            intent.putExtra("userId", (bundle.get("userId")).toString());
+            intent.putExtra("questionId", bundle.get("questionId").toString());
+            intent.putExtra("userId", bundle.get("userId").toString());
             startActivity(intent);
             MainActivity.this.finish();
 
