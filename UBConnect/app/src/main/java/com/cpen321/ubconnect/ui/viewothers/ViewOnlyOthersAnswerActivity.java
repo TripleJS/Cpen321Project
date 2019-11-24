@@ -91,8 +91,8 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 //        userAnsweringId = getIntent().getExtras().getString("userAnsweringId");
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            questionId = bundle.getString("arg");
-            userAnsweringId = bundle.getString("userAnsweringId");
+            questionId = bundle.getString("questionId");
+            userAnsweringId = bundle.getString("userId");
         }
         //joshua
         else {

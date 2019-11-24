@@ -18,7 +18,7 @@ const onJoin = async (userId, questionId) => {
 
         // fcmAccessToken = user.fcmAccessToken;
 
-        await subscribeToTopic(questionId, fcmAccessToken);
+        // await subscribeToTopic(questionId, fcmAccessToken);
 
         const notification = createNotificationMessage("Your Question " + questionData.title + " is being answered", "Someone is answering your Question!");
         const inputData = {
