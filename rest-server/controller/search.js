@@ -9,7 +9,7 @@ const search = async (req, res, next) => {
 
     const searchString = req.query.question;
     console.log(req.query);
-
+    console.log(searchString);
     searchString.split(" ");
 
     const searchStringKeywords = keywords(searchString);
