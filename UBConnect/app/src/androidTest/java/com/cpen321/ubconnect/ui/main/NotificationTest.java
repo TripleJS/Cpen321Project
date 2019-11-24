@@ -65,12 +65,11 @@ public class NotificationTest{
 //                                0),
 //                        isDisplayed()));
 //        loginButton.perform(click());
-        pressBack();
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         device.openNotification();
-        device.wait(Until.hasObject(By.text("title")), 3000000);
-        UiObject2 title = device.findObject(By.text("title"));
-        Assert.assertEquals("title", title.getText());
+        device.wait(Until.hasObject(By.text("Someone is answering your Question!")), 3000000);
+        UiObject2 title = device.findObject(By.text("Someone is answering your Question!"));
+        Assert.assertEquals("Someone is answering your Question!", title.getText());
         title.click();
         device.wait(Until.hasObject(By.text("Answer")), 300000);
 
