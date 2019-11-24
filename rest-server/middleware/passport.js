@@ -20,10 +20,10 @@ const createNewUser = (profile, loginMethod) => {
     user = new User({
         method: loginMethod,
             facebook: {
-            id: newId,
-            email: userEmail
+                id: newId,
+                email: userEmail
             },
-            userName: userEmail,
+            userName: profile.displayName,
             email: userEmail
         });
     } else if (loginMethod === "google") {
