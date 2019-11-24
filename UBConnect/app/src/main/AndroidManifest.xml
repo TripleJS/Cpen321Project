@@ -28,6 +28,20 @@
         <activity
             android:name=".ui.NavigateToOtherAnswers.NavBetweenAnswersActivity"
             android:label="Choose An Answer To View"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".ui.question.NoQuestionActivity"
+            android:label="No Question Found"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+        <activity
+            android:name=".ui.otheranswers.NoAnswerActivity"
+            android:label="No Answer Found"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

@@ -5,18 +5,28 @@ const {logger} = require("../../logger");
 const MIN_SEARCH = 3;
 const {errorCatch} = require("../utils/errorHandler");
 
+const containsId = (a, obj) => {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i]._id === obj._id) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const search = async (req, res, next) => {
 
     const searchString = req.query.question;
-    console.log(req.query);
+    searchString.toLowerCase();
     console.log(searchString);
-    searchString.toLowerCase().split(" ");
 
     const searchStringKeywords = keywords(searchString);
+    console.log(searchStringKeywords);
 
     try {
-        const allQuestions = await Question.find({keywords : {$all : searchStringKeywords}});
-        
+        const allQuestions = await Question.find({keywords : { $all : searchStringKeywords}});
+
+
         for (var i = 0; i < allQuestions.length; i++) {
             console.log(allQuestions[parseInt(i)].title);
         }
@@ -28,18 +38,26 @@ const search = async (req, res, next) => {
             allUsers = [];
             for (var i = 0; i < allQuestions.length; i++) {
                 const curUser = await User.findById(allQuestions[parseInt(i)].owner);
-                curUser.toObject();
-                curUser.userId = curUser._id;
-                allUsers.push(curUser);
+                const curUserObject = curUser.toObject();
+                curUserObject.userId = curUser._id;
+            
+                if (!containsId(allUsers, curUserObject)) {
+                    allUsers.push(curUserObject);
+                }
             }
         }
 
-        res.status(200).json({question : allQuestions, users : allUsers});
+        console.log("All Questions: " + allQuestions);
+        console.log("All users: " + allUsers);
+        console.log("All users length: " + allUsers.length);
+        res.status(200).json({questions : allQuestions, users : allUsers});
         
     } catch (error) {
         errorCatch(error, next);
     }
-}
+};
+
+
 
 
 module.exports = search;
