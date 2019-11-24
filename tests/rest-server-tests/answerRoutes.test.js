@@ -53,8 +53,14 @@ describe("Question Route Test Suite", () => {
   // Test Suites: 
 
   describe("Get Answer Tests", () => {
-    test("Get Answer for Recent Question", async () => {
 
+    const mockGetAnswerRequest = () => {
+        
+    };
+
+
+    test("Get Answer for Recent Question", async () => {
+        
     });
 
     test("Get Answer for question that does not exist", async () => {

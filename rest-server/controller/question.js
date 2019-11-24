@@ -105,7 +105,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         let userQuestionKeywords = [];
 
         for (var i = 0; i < userQuestions.length; i++) {
-            userQuestionKeywords.pushValues(userQuestions[parseInt(i)].keywords);
+            userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
         }
 
         // Keywords and their frequency 
