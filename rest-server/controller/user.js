@@ -67,10 +67,12 @@ const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
     const userPassword = req.body.password; 
     
+    console.log(userEmail);
+    console.log(userPassword);
     try {
         let curUser = await User.findOne({email : userEmail});
 
-        if (curUser == null) {
+        if (curUser === null) {
             errorThrow({}, "User does not exist", 404);
         }
 
