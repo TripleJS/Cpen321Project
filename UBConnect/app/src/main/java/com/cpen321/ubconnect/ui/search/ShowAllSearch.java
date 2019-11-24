@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,44 +16,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.SearchAdapter;
 import com.cpen321.ubconnect.SearchQuestionAdapter;
 import com.cpen321.ubconnect.SearchUserAdapter;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
-import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.SearchItem;
 import com.cpen321.ubconnect.model.data.SearchResult;
-import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class ShowAllSearch extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SearchViewModel searchViewModel;
 
     private RecyclerView recyclerView;
-    private List<SearchItem> searchItems;
-    private String token;
-
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
 
     private ErrorHandlingUtils errorHandlingUtils;
 
     private String searchItemType;
-    private String question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,29 +44,29 @@ public class ShowAllSearch extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showall);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         searchItemType = getIntent().getExtras().getString("searchItem");
-        question = getIntent().getExtras().getString("question");
+        String question = getIntent().getExtras().getString("question");
 
         errorHandlingUtils = new ErrorHandlingUtils();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
 
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-        token = ((GlobalVariables) this.getApplication()).getJwt();
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
 
-        searchItems = new ArrayList<>();
+
         recyclerView = findViewById(R.id.showallRV);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -116,11 +97,11 @@ public class ShowAllSearch extends AppCompatActivity implements NavigationView.O
 
     public void onChangedResult(SearchResult searchResult){
         // this.questions.addAll(questions);
-        if(searchItemType.equals("Question")){
+        if("Question".equals(searchItemType)){
             RecyclerView.Adapter adapter = new SearchQuestionAdapter(searchResult.getQuestions());
             recyclerView.setAdapter(adapter);
         }
-        else if(searchItemType.equals("User")){
+        else if("User".equals(searchItemType)){
             RecyclerView.Adapter adapter = new SearchUserAdapter(searchResult.getUsers());
             recyclerView.setAdapter(adapter);
         }
@@ -134,7 +115,9 @@ public class ShowAllSearch extends AppCompatActivity implements NavigationView.O
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(ShowAllSearch.this, HomeActivity.class);
+            startActivity(intent);
+            ShowAllSearch.this.finish();
         }
     }
 
@@ -189,12 +172,14 @@ public class ShowAllSearch extends AppCompatActivity implements NavigationView.O
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(ShowAllSearch.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(ShowAllSearch.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
-
+            default:
+                break;
         }
 
+        ShowAllSearch.this.finish();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

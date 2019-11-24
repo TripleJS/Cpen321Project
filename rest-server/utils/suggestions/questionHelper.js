@@ -17,10 +17,14 @@ const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {
         let userQuestions = await Question.find({}).limit(numberOfQuestions).byUserId(userID);
         // logger.info("User Questions Length: " + userQuestions.length);
+
+        if (userQuestions.length === 0) {
+            throw new Error("Could not find Question");
+        }
         return Promise.resolve(userQuestions);
 
     } catch (err) {
-        logger.error("questions error" + err);
+        logger.error("questions error " + err);
         return Promise.reject("Error Getting Questions");
     }
 };

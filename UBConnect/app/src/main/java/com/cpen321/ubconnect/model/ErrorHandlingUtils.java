@@ -1,11 +1,9 @@
 package com.cpen321.ubconnect.model;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ErrorHandlingUtils {
@@ -30,7 +28,7 @@ public class ErrorHandlingUtils {
             snackTextView.setMaxLines(10);
 
             mSnackBar.show();
-        }catch (Exception e){};
+        }catch (Exception e){}
 
     }
 }

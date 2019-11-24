@@ -204,7 +204,9 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(NavBetweenAnswersActivity.this, HomeActivity.class);
+            startActivity(intent);
+            NavBetweenAnswersActivity.this.finish();
         }
     }
 
@@ -265,7 +267,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
         }
 
-
+        NavBetweenAnswersActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -23,7 +23,6 @@ const answerHandler = (io, socket, redisClient) => {
                 throw new Error("Couldn't Find Answer");
             }
 
-        
             const curSequence = curAnswer.answer;
 
             io.to(roomId).emit("message", {message : curSequence});

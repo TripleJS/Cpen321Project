@@ -13,7 +13,6 @@ import androidx.test.runner.AndroidJUnit4;
 import androidx.test.uiautomator.UiDevice;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.ui.home.HomeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -30,19 +29,17 @@ import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest2 {
+public class FacebookAPITest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -68,7 +65,7 @@ public class MainActivityTest2 {
 
 
     @Test
-    public void mainActivityTest() {
+    public void facebookAPITest() {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -149,7 +146,7 @@ public class MainActivityTest2 {
 
         takeScreenshots("endresult");
 
-        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+        assertNotNull(onView(withId(R.id.login_button)).check(matches(isDisplayed())));
     }
 
     private static Matcher<View> childAtPosition(

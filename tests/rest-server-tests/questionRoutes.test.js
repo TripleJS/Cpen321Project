@@ -1,11 +1,7 @@
 const questionController = require("../../rest-server/controller/question");
-const errorHandler = require("../../rest-server/utils/errorHandler");
-
-const {MongoClient} = require('mongodb');
- 
-const userController = require("../../rest-server/controller/user");
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const User = require("../../rest-server/schema/user");
+const Question = require("../../rest-server/schema/questions");
 const mockData = require("../mongoose-mock-data");
 
 jest.mock("../../rest-server/utils/errorHandler", () => ({
@@ -13,16 +9,29 @@ jest.mock("../../rest-server/utils/errorHandler", () => ({
   errorThrow : jest.fn()
 }));
 
-const mockErrorHandler = require("../../rest-server/utils/errorHandler");
+jest.mock("../../rest-server/utils/lg");
 
-describe("User Route Test Suite", () => {
+const mockErrorHandler = require("../../rest-server/utils/errorHandler");
+const mockKeywords = require("../../rest-server/utils/lg");
+
+const mockResponse = () => {
+  const res = {};
+  res.status = jest.fn().mockReturnValue(res);
+  res.json = jest.fn().mockReturnValue(res);
+  return res;
+};
+
+const next = () => {};
+
+describe("Question Route Test Suite", () => {
   let db;
 
   beforeAll(async () => {
     try {
       db = await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify : false
       });
     } catch (error) {
       process.exit();
@@ -34,28 +43,71 @@ describe("User Route Test Suite", () => {
   });
 
   beforeEach(async () => {
-    await mongoose.connection.dropDatabase();
+    await mockData.initializeDatabase();
   });
 
+  afterEach(async () => {
+    await mongoose.connection.dropDatabase();
+  })
 
   // Test Suites: 
 
   describe("Get Question Tests", () => {
+
+    const mockGetQuestionRequest = (id) => {
+      return {
+        params : {
+          questionId : id
+        }
+      }
+    };
+
     test("Get Existing Question", async () => {
+      const res = mockResponse();
+      const req = mockGetQuestionRequest(mockData.testQuestion._id);
 
-
+      await questionController.getQuestion(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(200);
+      let question = await Question.findById(mockData.testQuestion._id);
+      expect(res.json).toHaveBeenCalledWith(question);
     });
 
-    test ("Get non-exisiting Question", async () => {
+    test ("Get non-existing Question", async () => {
+      const res = mockResponse();
+      const req = mockGetQuestionRequest(mongoose.Types.ObjectId());
 
+      await questionController.getQuestion(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Could not find Question", 403);
     });
 
   });
 
   describe("Post Question Tests", () => {
-    test("", async () => {
+    const mockPostQuestionRequest = (mockTitle, mockQuestion, mockOwner, mockCourse) => {
+      return {
+        body : {
+          title : mockTitle,
+          question : mockQuestion,
+          owner : mockOwner,
+          course : mockCourse
+        }
+      }
+    }
+
+    test("Posting a new question", async () => {
+      const req = mockPostQuestionRequest("new database entry", "some question test", mockData.testUserArray[1]._id, "Cpen 311");
+      const res = mockResponse();
+
+      await questionController.postQuestion(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(203);
+      expect(mockKeywords).toHaveBeenCalled();
+    });
+
+    test("Posting a new question with invalid user", async () => {
 
     });
+
+    
 
   });
 
@@ -76,7 +128,7 @@ describe("User Route Test Suite", () => {
 
     });
 
-    test("Exisiting Question", async () => {
+    test("Existing Question", async () => {
 
     });
 
@@ -84,5 +136,8 @@ describe("User Route Test Suite", () => {
 
     });
     
+    test("Swiping on question user has already swiped on", async () => {
+
+    });
   });
 });

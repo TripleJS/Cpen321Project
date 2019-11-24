@@ -23,13 +23,11 @@ import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.HelperUtils;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -46,11 +44,6 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
 
     private PostQuestionVewModel postQuestionVewModel;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
 
     private ErrorHandlingUtils errorHandlingUtils;
 
@@ -59,16 +52,16 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postquestion);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
+                // nothing to do
             }
 
             @Override
@@ -90,13 +83,13 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
+                // nothing to do
             }
         });
 
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -179,7 +172,9 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(PostQuestionActivity.this, HomeActivity.class);
+            startActivity(intent);
+            PostQuestionActivity.this.finish();
         }
     }
 
@@ -236,6 +231,8 @@ public class PostQuestionActivity extends AppCompatActivity implements Navigatio
             case R.id.nav_continue_answering:
                 Intent t= new Intent(PostQuestionActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

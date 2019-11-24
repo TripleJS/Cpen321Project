@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.SearchItem;
 import com.cpen321.ubconnect.model.data.User;
-import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.ShowAllSearch;
 
 import java.util.ArrayList;

@@ -88,7 +88,8 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
+
         mDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -359,7 +360,9 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
+            startActivity(intent);
+            OtherAnswersActivity.this.finish();
         }
     }
 
@@ -420,7 +423,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
         }
 
-
+        OtherAnswersActivity.this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

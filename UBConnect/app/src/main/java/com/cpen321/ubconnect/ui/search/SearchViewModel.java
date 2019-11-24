@@ -7,10 +7,7 @@ import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.NetworkUtil;
-import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.SearchResult;
-
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -25,16 +22,10 @@ public class SearchViewModel extends ViewModel {
 
     private IBackEndService mBackEndService;
 
-    private int pageNumber;
 
     public SearchViewModel() {
         super();
-        init();
         initService();
-    }
-
-    private void init() {
-        pageNumber = 0;
     }
 
     private void initService() {
@@ -72,7 +63,7 @@ public class SearchViewModel extends ViewModel {
         return searchResult;
     }
 
-    void setupRetrofit(String token){
+    private void setupRetrofit(String token){
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();

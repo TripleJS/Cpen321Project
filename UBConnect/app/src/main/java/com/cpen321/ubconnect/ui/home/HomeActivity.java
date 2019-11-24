@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,7 +34,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -243,6 +240,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_continue_answering:
                 Intent t= new Intent(HomeActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

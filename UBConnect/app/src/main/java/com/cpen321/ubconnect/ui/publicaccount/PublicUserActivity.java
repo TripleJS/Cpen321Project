@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
-import com.cpen321.ubconnect.model.data.PublicUser;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.model.data.UserReportRate;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
@@ -30,7 +29,6 @@ import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -41,12 +39,6 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
     private String publicUserId;
 
     private String state;
-
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
 
     private RatingBar stars;
     private TextView publicUN;
@@ -63,15 +55,15 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicuser);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -167,10 +159,10 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
             }
         }
 
-        if(state.equals("rated")){
+        if("rated".equals(state)){
             Toast.makeText(getApplicationContext(),"rated", Toast.LENGTH_SHORT).show();
         }
-        else if (state.equals("reported")){
+        else if ("reported".equals(state)){
             Toast.makeText(getApplicationContext(),"reported", Toast.LENGTH_SHORT).show();
         }
         state = "NA";
@@ -184,7 +176,9 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(PublicUserActivity.this, HomeActivity.class);
+            startActivity(intent);
+            PublicUserActivity.this.finish();
         }
     }
 
@@ -241,6 +235,8 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
             case R.id.nav_continue_answering:
                 Intent t= new Intent(PublicUserActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

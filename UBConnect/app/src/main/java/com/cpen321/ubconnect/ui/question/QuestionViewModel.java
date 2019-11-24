@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.cpen321.ubconnect.model.AuthInterceptor;
 import com.cpen321.ubconnect.model.ConstantsUtils;
-import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.IBackEndService;
 import com.cpen321.ubconnect.model.NetworkUtil;
 import com.cpen321.ubconnect.model.data.Question;
@@ -66,7 +65,7 @@ public class QuestionViewModel extends ViewModel {
         return question;
     }
 
-    void setupRetrofit(String token){
+    private void setupRetrofit(String token){
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();

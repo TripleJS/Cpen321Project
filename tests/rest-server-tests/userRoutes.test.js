@@ -29,6 +29,10 @@ describe("User Route Test Suite", () => {
   });
 
   beforeEach(async () => {
+    await mockData.initializeDatabase();
+  })
+
+  afterEach(async () => {
     await mongoose.connection.dropDatabase();
   });
 
@@ -66,12 +70,7 @@ describe("User Route Test Suite", () => {
     test("Signing Up with Email that Exists", async () => {
       const req = mockLoginSignupRequest("testemail@email.com", "someusername", "password");
       const res = mockResponse();
-      
-      const user = new User(
-        mockData.testUser
-      );
 
-      await user.save();
       await userController.addUser(req, res, next);
       expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User already Exists", 403);
     });
@@ -81,15 +80,12 @@ describe("User Route Test Suite", () => {
   describe("Check Login", () => {
 
       test("Logging In With Email", async () => {
-          let user = new User(mockData.testUser);
-          await user.save();
-
           const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, mockData.testUser.password);
           const res = mockResponse();
 
           await userController.loginUser(req, res, next);
           expect(res.status).toHaveBeenCalledWith(201);
-          expect(res.json).toHaveBeenCalledWith({userId : mockData.testUser._id, jwt : mockData.testJwt});
+          expect(res.json).toHaveBeenCalledWith({jwt : mockData.testJwt, userId : mockData.testUser._id});
       });
 
       test("Logging in With Email where User doesn't exist", async () => {
@@ -97,13 +93,10 @@ describe("User Route Test Suite", () => {
         const res = mockResponse();
 
         await userController.loginUser(req, res, next);
-        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User does not exist", 404);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User does not exist", 403);
       });
 
       test("Logging in With incorrect Password", async () => {
-        let user = new User(mockData.testUser);
-        await user.save();
-
         const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, "incorrect password");
         const res = mockResponse();
 
@@ -112,19 +105,16 @@ describe("User Route Test Suite", () => {
       });
 
       test("Logging in With Facebook", async () => {
-        const user = new User(mockData.testFacebookUser);
+        let user = await User.findById(mockData.testFacebookUser._id);
         const res = mockResponse();
-        await user.save();
-
         const req = {
           body : {
             fcmAccesToken : "sometoken"
           },
           user : user
         };
-
         await userController.oAuthLogin(req, res, next);
-        expect(res.json).toHaveBeenCalledWith({userId : mockData.testFacebookUser._id, jwt : mockData.testJwt});
+        expect(res.json).toHaveBeenCalledWith({jwt : mockData.testJwt, userId : mockData.testFacebookUser._id});
       });
   });
 
@@ -147,10 +137,6 @@ describe("User Route Test Suite", () => {
       test("Rating With Correct Inputs", async () => {
         const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
 
         await userController.rate(req, res, next);
         expect(res.status).toHaveBeenCalledWith(200);
@@ -159,11 +145,6 @@ describe("User Route Test Suite", () => {
       test("Rating a user that does not exist", async() => {
         const req = mockRatingRequest(mongoose.Types.ObjectId(), mockData.testUser2._id, 5);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
-
         await userController.rate(req, res, next);
         expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
       });
@@ -171,10 +152,6 @@ describe("User Route Test Suite", () => {
       test("Rating a user with a user that does not exist", async() => {
         const req = mockRatingRequest(mockData.testUser2._id, mongoose.Types.ObjectId(), 5);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
 
         await userController.rate(req, res, next);
         expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
@@ -184,14 +161,9 @@ describe("User Route Test Suite", () => {
       test("Rating a user twice with same inputs", async () => {
         const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
 
-        await userController.rate(req, res, next);
-        await userController.rate(req, res, next);
         let result = await User.findById(mockData.testUser._id);
+        console.log(result);
         expect(result.rating).toEqual(5);
         expect(result.usersWhoRated.length).toEqual(1);
       });
@@ -200,14 +172,11 @@ describe("User Route Test Suite", () => {
         const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const req2 = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 3);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
 
         await userController.rate(req, res, next);
         await userController.rate(req2, res, next);
         let result = await User.findById(mockData.testUser._id);
+        console.log(result);
         expect(result.rating).toEqual(3);
         expect(result.usersWhoRated.length).toEqual(1);
       });
@@ -216,16 +185,10 @@ describe("User Route Test Suite", () => {
         const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const req2 = mockRatingRequest(mockData.testUser._id, mockData.testUser3._id, 3);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        const user3 = new User(mockData.testUser3);
-        await user.save();
-        await user2.save();
-        await user3.save();
-
         await userController.rate(req, res, next);
         await userController.rate(req2, res, next);
         let result = await User.findById(mockData.testUser._id);
+
         expect(result.rating).toEqual(4);
         expect(result.usersWhoRated.length).toEqual(2);
       });
@@ -240,7 +203,7 @@ describe("User Route Test Suite", () => {
             userId : mockUserId,
           }, 
           params : {
-            ratingUserId : mockUserReportingId
+            reportingUserId : mockUserReportingId
           }
         }
         
@@ -250,66 +213,42 @@ describe("User Route Test Suite", () => {
       test("Reporting With Correct Inputs", async () => {
         const req = mockReportRequest(mockData.testUser._id, mockData.testUser2._id);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
-
         await userController.report(req, res, next);
+        expect(res.status).toHaveBeenCalledWith(200);
       });
 
       test("Reporting a user that does not exist", async() => {
         const req = mockReportRequest(mongoose.Types.ObjectId(), mockData.testUser2._id);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
-
         await userController.report(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
       });
 
       test("Reporting a user with a user that does not exist", async() => {
         const req = mockReportRequest(mockData.testUser2._id, mongoose.Types.ObjectId);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        await user.save();
-        await user2.save();
-
         await userController.report(req, res, next);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User doesn't Exist", 404);
       });
 
       test("Reporting a user twice with same user", async () => {
         const req = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
         const req2 = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        const user3 = new User(mockData.testUser3.data);
-
-        await user.save();
-        await user2.save();
-        await user3.save();
-
         await userController.report(req, res, next);
         await userController.report(req2, res, next);
+        let result = await User.findById(mockData.testUser2._id);
+        expect(result.usersWhoReported.length).toEqual(1);
       });
 
-      test("Reportina a user multiple times with different users", async () => {
+      test("Reporting a user multiple times with different users", async () => {
         const req = mockReportRequest(mockData.testUser2._id, mockData.testUser._id);
         const req2 = mockReportRequest(mockData.testUser2._id, mockData.testUser3._id);
         const res = mockResponse(); 
-        const user = new User(mockData.testUser);
-        const user2 = new User(mockData.testUser2);
-        const user3 = new User(mockData.testUser3.data);
-
-        await user.save();
-        await user2.save();
-        await user3.save();
-
         await userController.report(req, res, next);
         await userController.report(req2, res, next);
+        let result = await User.findById(mockData.testUser2._id);
+        expect(result.usersWhoReported.length).toEqual(2);
       });
   });
 
@@ -323,43 +262,100 @@ describe("User Route Test Suite", () => {
     };
 
     test("Get existing User", async () => {
-      
+      const req = mockGetUserRequest(mockData.testUser._id);
+      const res = mockResponse();
+      await userController.getUser(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(200);
     });
 
     test("Get non-exisiting User", async () => {
-
+      const req = mockGetUserRequest(mongoose.Types.ObjectId());
+      const res = mockResponse();
+      await userController.getUser(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User Does Not Exist", 403);      
     });
   });
 
   describe("Testing Update User", () => {
-    const mockUpdateUserRequest = () => {
+    const mockUpdateUserRequest = (mockUserName, mockCourses, mockEmail, id) => {
       return {
-
+        body : {
+          userName : mockUserName,
+          courses : mockCourses,
+          email : mockEmail
+        },
+        params : {
+          userId : id
+        }
       }
     };
 
     test("Updating existing User", async () => {
+      const req = mockUpdateUserRequest("New Username", ["Cpen 321", "Cpen 331"], "newemail@email.com", mockData.testUser._id);
+      const res = mockResponse();
 
+      await userController.updateUser(req, res, next);
+      let user = await User.findById(mockData.testUser._id);
+      const updatedUser = user.toObject();
+      updatedUser.questions = [];
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith(updatedUser);
     });
 
     test("Updating non-existing User", async () => {
+      const req = mockUpdateUserRequest("New Username", ["Cpen 321", "Cpen 331"], "newemail@email.com", mongoose.Types.ObjectId());
+      const res = mockResponse();
 
+      await userController.updateUser(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User Does Not Exist", 403);
     });
 
     test("Updating User with its current values", async () => {
+      const req = mockUpdateUserRequest(mockData.testUser.userName, [], mockData.testUser.email, mockData.testUser._id);
+      const res = mockResponse();
 
+      await userController.updateUser(req, res, next);
+      user = await User.findById(mockData.testUser._id);
+      const updatedUser = user.toObject();
+      updatedUser.questions = [];
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith(updatedUser);
     });
 
     test("Updating only username", async () => {
+      const req = mockUpdateUserRequest("newusername", [], mockData.testUser.email, mockData.testUser._id);
+      const res = mockResponse();
+      await userController.updateUser(req, res, next);
 
+      user = await User.findById(mockData.testUser._id);
+      const updatedUser = user.toObject();
+      updatedUser.questions = [];
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith(updatedUser);
     });
 
     test("Updating only courses", async () => {
+      const req = mockUpdateUserRequest(mockData.testUser.userName, ["Cpen 321"], mockData.testUser.email, mockData.testUser._id);
+      const res = mockResponse();
+      await userController.updateUser(req, res, next);
 
+      user = await User.findById(mockData.testUser._id);
+      const updatedUser = user.toObject();
+      updatedUser.questions = [];
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith(updatedUser);
     });
 
     test("Updating only email", async () => {
+      const req = mockUpdateUserRequest(mockData.testUser.userName, [], "newemail@email.com", mockData.testUser._id);
+      const res = mockResponse();
+      await userController.updateUser(req, res, next);
 
+      let user = await User.findById(mockData.testUser._id);
+      const updatedUser = user.toObject();
+      updatedUser.questions = [];
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith(updatedUser);
     });
   });
 

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -38,8 +37,6 @@ import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
-import com.cpen321.ubconnect.ui.search.SearchViewModel;
-import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -60,7 +57,6 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private String userId;
 
     private AccountViewModel accountViewModel;
-    private SearchViewModel searchViewModel;
 
     private RecyclerView recyclerView;
     private List<Question> questions;
@@ -69,15 +65,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     private String noUsername;
     private String noCourses;
 
-    private AlertDialog dialog;
     private boolean isKeyboardShowing = false;
     private View contentView;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
     private boolean applied = false;
 
     private ErrorHandlingUtils errorHandlingUtils;
@@ -89,41 +79,16 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_account);
 
         //josh
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(@NonNull View drawerView) {
-                HelperUtils.hideKeyboard(AccountActivity.this);
-                emailNameET.setCursorVisible(false);
-                coursesNameET.setCursorVisible(false);
-                userNameET.setCursorVisible(false);
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View drawerView) {
-                emailNameET.setCursorVisible(true);
-                coursesNameET.setCursorVisible(true);
-                userNameET.setCursorVisible(true);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
+        drawer.addDrawerListener(drawerListener);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
         //josh
@@ -162,129 +127,8 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         emailNameET.setFocusable(false);
         coursesNameET.setFocusable(false);
 
-        View.OnClickListener usernameOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEditTexts();
-                if(userNameET.getText().toString().equals("Update your username")){
-                    userNameET.setText("");
-                }
-                emailNameET.setFocusableInTouchMode(false);
-                coursesNameET.setFocusableInTouchMode(false);
-                userNameET.setFocusableInTouchMode(true);
-                userNameET.requestFocus();
-                userNameET.setSelection(userNameET.getText().length());
-
-                if (!isKeyboardShowing) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                }
-
-            }
-        };
-
-        View.OnClickListener emailOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEditTexts();
-                if(emailNameET.getText().toString().equals("Update your email")){
-                    emailNameET.setText("");
-                }
-                userNameET.setFocusableInTouchMode(false);
-                coursesNameET.setFocusableInTouchMode(false);
-                emailNameET.setFocusableInTouchMode(true);
-                emailNameET.requestFocus();
-                emailNameET.setSelection(emailNameET.getText().length());
-
-                if (!isKeyboardShowing) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                }
-
-            }
-        };
-
-        View.OnClickListener coursesOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEditTexts();
-                if(coursesNameET.getText().toString().equals("Update your courses")){
-                    coursesNameET.setText("");
-                }
-                userNameET.setFocusableInTouchMode(false);
-                emailNameET.setFocusableInTouchMode(false);
-                coursesNameET.setFocusableInTouchMode(true);
-                coursesNameET.requestFocus();
-                coursesNameET.setSelection(coursesNameET.getText().length());
-
-//                int screenHeight = getView().getHeight();
-//                Rect r = new Rect();
-//                getView().getWindowVisibleDisplayFrame(r);
-//                int keypadHeight = screenHeight - r.bottom;
-//                Log.d("hi", "onClick: "+ screenHeight + "????????? "+ keypadHeight);
-                if (!isKeyboardShowing) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                }
-
-            }
-        };
-
         // ContentView is the root view of the layout of this activity/fragment
-        contentView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-
-                        Rect r = new Rect();
-                        contentView.getWindowVisibleDisplayFrame(r);
-                        int screenHeight = contentView.getRootView().getHeight();
-
-                        // r.bottom is the position above soft keypad or device button.
-                        // if keypad is shown, the r.bottom is smaller than that before.
-                        int keypadHeight = screenHeight - r.bottom;
-
-                        Log.d("Fuck2", "keypadHeight = " + keypadHeight);
-
-                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                            // keyboard is opened
-                            if (!isKeyboardShowing) {
-                                isKeyboardShowing = true;
-                            }
-                        }
-                        else {
-                            // keyboard is closed
-                            if (isKeyboardShowing) {
-                                isKeyboardShowing = false;
-                            }
-                        }
-                    }
-                });
-
-        View.OnClickListener applyOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(notValid()){
-                    Toast.makeText(getApplicationContext(),"Email and Username cannot be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (! checkEmailFormat(emailNameET.getText().toString())) {
-                    Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                userNameET.setFocusableInTouchMode(false);
-                emailNameET.setFocusableInTouchMode(false);
-                coursesNameET.setFocusableInTouchMode(false);
-                applied = true;
-                User user = new User();
-                user.setEmail(emailNameET.getText().toString());
-                user.setUserName(userNameET.getText().toString());
-                user.setCourses(Arrays.asList(coursesNameET.getText().toString().split("\\s*,\\s*")));
-                accountViewModel.setUserInfo(token, userId,user);
-            }
-        };
+        contentView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
 
         editUser.setOnClickListener(usernameOnClickListener);
         editEmail.setOnClickListener(emailOnClickListener);
@@ -294,7 +138,6 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
 
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
         questions = new ArrayList<>();
         recyclerView = findViewById(R.id.accountRecycle);
@@ -305,6 +148,150 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
 
         accountViewModel.getUserInfo(token, userId);
     }
+
+    private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+
+        @Override
+        public void onGlobalLayout() {
+            Rect r = new Rect();
+            contentView.getWindowVisibleDisplayFrame(r);
+            int screenHeight = contentView.getRootView().getHeight();
+
+            // r.bottom is the position above soft keypad or device button.
+            // if keypad is shown, the r.bottom is smaller than that before.
+            int keypadHeight = screenHeight - r.bottom;
+
+            Log.d("Fuck2", "keypadHeight = " + keypadHeight);
+
+            if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                // keyboard is opened
+                if (!isKeyboardShowing) {
+                    isKeyboardShowing = true;
+                }
+            }
+            else {
+                // keyboard is closed
+                if (isKeyboardShowing) {
+                    isKeyboardShowing = false;
+                }
+            }
+        }
+    };
+
+    private View.OnClickListener applyOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(notValid()){
+                Toast.makeText(getApplicationContext(),"Email and Username cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (! checkEmailFormat(emailNameET.getText().toString())) {
+                Toast.makeText(getApplicationContext(),"wrong email format", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            userNameET.setFocusableInTouchMode(false);
+            emailNameET.setFocusableInTouchMode(false);
+            coursesNameET.setFocusableInTouchMode(false);
+            applied = true;
+            User user = new User();
+            user.setEmail(emailNameET.getText().toString());
+            user.setUserName(userNameET.getText().toString());
+            user.setCourses(Arrays.asList(coursesNameET.getText().toString().split("\\s*,\\s*")));
+            accountViewModel.setUserInfo(token, userId,user);
+        }
+    };
+
+    private View.OnClickListener usernameOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkEditTexts();
+            if(userNameET.getText().toString().equals("Update your username")){
+                userNameET.setText("");
+            }
+            emailNameET.setFocusableInTouchMode(false);
+            coursesNameET.setFocusableInTouchMode(false);
+            userNameET.setFocusableInTouchMode(true);
+            userNameET.requestFocus();
+            userNameET.setSelection(userNameET.getText().length());
+
+            if (!isKeyboardShowing) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }
+
+        }
+    };
+
+    private View.OnClickListener emailOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkEditTexts();
+            if(emailNameET.getText().toString().equals("Update your email")){
+                emailNameET.setText("");
+            }
+            userNameET.setFocusableInTouchMode(false);
+            coursesNameET.setFocusableInTouchMode(false);
+            emailNameET.setFocusableInTouchMode(true);
+            emailNameET.requestFocus();
+            emailNameET.setSelection(emailNameET.getText().length());
+
+            if (!isKeyboardShowing) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }
+
+        }
+    };
+
+    private View.OnClickListener coursesOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkEditTexts();
+            if(coursesNameET.getText().toString().equals("Update your courses")){
+                coursesNameET.setText("");
+            }
+            userNameET.setFocusableInTouchMode(false);
+            emailNameET.setFocusableInTouchMode(false);
+            coursesNameET.setFocusableInTouchMode(true);
+            coursesNameET.requestFocus();
+            coursesNameET.setSelection(coursesNameET.getText().length());
+
+            if (!isKeyboardShowing) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }
+
+        }
+    };
+
+    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            // nothing to do
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+            HelperUtils.hideKeyboard(AccountActivity.this);
+            emailNameET.setCursorVisible(false);
+            coursesNameET.setCursorVisible(false);
+            userNameET.setCursorVisible(false);
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+            emailNameET.setCursorVisible(true);
+            coursesNameET.setCursorVisible(true);
+            userNameET.setCursorVisible(true);
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+            // nothing to do
+        }
+    };
 
 
     protected void observeViewModel() {
@@ -384,7 +371,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
     };
 
 
-    String updateCourses(List<String> courses){
+    private String updateCourses(List<String> courses){
         String result = "";
         for(int i = 0; i < courses.size(); i++){
             if(i == courses.size()-1){
@@ -397,7 +384,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         return  result;
     }
 
-    void checkEditTexts(){
+    private void checkEditTexts(){
         if(coursesNameET.getText().toString().equals("")){
             coursesNameET.setText(noCourses);
         }
@@ -426,7 +413,9 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(AccountActivity.this, HomeActivity.class);
+            startActivity(intent);
+            AccountActivity.this.finish();
         }
     }
 
@@ -489,6 +478,8 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_continue_answering:
                 Intent t= new Intent(AccountActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

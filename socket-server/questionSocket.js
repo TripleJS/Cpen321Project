@@ -78,7 +78,6 @@ const questionHandler = (io, socket, redisClient) => {
         logger.info("answer key is: " +  answerKey);
         logger.info(currentSequence);
 
-        // Save the sent message to the redis cache
         redisClient.setex(answerKey, 36000000, currentSequence);
 
         io.to(`room_${questionId}_${userId}`).emit("message", {message : currentSequence});
@@ -89,6 +88,8 @@ const questionHandler = (io, socket, redisClient) => {
             if (curAnswer === null) {
                 // TODO: fill this later 
             }
+
+            await curAnswer.save();
         } catch (error) {
             logger.error("error in message detection");
             logger.error(error);
