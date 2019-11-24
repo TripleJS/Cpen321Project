@@ -18,7 +18,7 @@ const getQuestionsByUser = async (userID, numberOfQuestions) => {
         // logger.info("User Questions Length: " + userQuestions.length);
 
         if (userQuestions.length === 0) {
-            throw new Error("Could not find Question");
+            Promise.resolve([]);
         }
 
         return Promise.resolve(userQuestions);

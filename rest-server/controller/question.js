@@ -76,7 +76,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         
         const userId = req.params.userId; 
         // Array of Question Objects
-        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
+        let userQuestions = await (userId, MAX_RETRIEVED_QUESTIONS);
 
         let userQuestionKeywords = [];
 
