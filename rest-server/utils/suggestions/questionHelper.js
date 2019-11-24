@@ -81,6 +81,7 @@ const matchKeywords = (question, keywordList) => {
     const {keywords} = question; 
     let updatedKeywords = [];
     keywords.sort(); 
+
     for (var i = 0; i < keywords.length; i++) {
         const found = keywordList.some(el => el.keyword === keywords[i]);
 
@@ -93,11 +94,10 @@ const matchKeywords = (question, keywordList) => {
 }
 
 /**
- * 
  * @param {Object} questions Array of question objects with their keywords + frequency
- *                           Note: the keywords + freq matches those of the questionKeywords
+ *                           Note: the keywords + freq matches those of the questionKeywords (ie. {question : questionObject, keywordsWithFreq : [{keyword : qkeyword, freq : qfreq}]})
  * @param {Array} questionKeywords Array of keywords with their frequency
- * @returns {Array} Of questions that meet the cosine similarity value threshold
+ * @returns {Array} Questions that meet the cosine similarity value threshold
  */
  const getBagOfQuestions = (questions, questionKeywords) => {
     const bagOfQuestions = [];
@@ -108,7 +108,6 @@ const matchKeywords = (question, keywordList) => {
         // Take only the frequency 
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
         
-
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Current Question:");
         logger.info(questions[parseInt(i)].question);

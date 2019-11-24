@@ -95,24 +95,42 @@ describe("Question Helper Test Suite", () => {
             let result = questionHelper.getKeywordFrequency(testArr, 3);
             expect(result.length).toEqual(3);
             expect(result).toEqual([{keyword : "atom", freq : 2}, {keyword : "hello", freq : 2}, {keyword : "what", freq : 2}]);
-        })
+        });
     })
 
     describe("Match Keywords Test", () => {
-        test("Keywords that match all of those in Question", () => {
-
+        test("Keywords that match all of those in Question", async () => {
+            let question = await Question.findById(mockData.testQuestionArray[4]._id);
+            const keywordList = [{keyword : "xd", freq : 2}];
+            let result = questionHelper.matchKeywords(question, keywordList);
+            expect(result.length).toEqual(4);
+            expect(result).toEqual(["xd", "xd", "xd", "xd"]);
         });
 
-        test("Empty Keywords Array", () => {
-
+        test("Empty Keywords Array", async () => {
+            let question = await Question.findById(mockData.testQuestionArray[4]._id);
+            const keywordList = [];
+            let result = questionHelper.matchKeywords(question, keywordList);
+            expect(result.length).toEqual(0);
+            expect(result).toEqual([]);
         });
 
-        test("Keywords array where no keywords are in the Question", () => {
+        test("Keywords array where no keywords are in the Question", async () => {
+            let question = await Question.findById(mockData.testQuestionArray[6]._id);
+            const keywordList = [{keyword : "notxd", freq : 3}, {keyword : "defnotinthere", freq : 2}];
 
+            let result = questionHelper.matchKeywords(question, keywordList);
+            expect(result.length).toEqual(0);
+            expect(result).toEqual([]);
         });
 
-        test("Keywords array where some words are in the Question", () => {
+        test("Keywords array where some words are in the Question", async () => {
+            let question = await Question.findById(mockData.testQuestionArray[6]._id);
+            const keywordList = [{keyword : "xd", freq : 3}, {keyword : "last", freq : 2}];
 
+            let result = questionHelper.matchKeywords(question, keywordList);
+            expect(result.length).toEqual(2);
+            expect(result).toEqual(["last", "xd"]);
         });
     });
 

@@ -64,8 +64,14 @@ const answerHandler = (io, socket, redisClient) => {
         try {
             const curQuestion = await Question.findById(questionId);
             const answerers = curQuestion.answerers;
-            console.log(answerers);
-            io.to(room).emit("getUserAnswering", {userAnswering : answerers});
+            let userNames = [];
+
+            for (var i = 0; i < answerers.length; i++) {
+                let user = await User.findById(answerers[i]);
+                userNames.push(user.userName);
+            }
+
+            io.to(room).emit("getUserAnswering", {userAnswering : answerers, userNames : userNames});
         } catch (error) {
             logger.error(error);
         }

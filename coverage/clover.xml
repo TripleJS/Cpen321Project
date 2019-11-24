@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1574554343383" clover="3.2.0">
-  <project timestamp="1574554343383" name="All files">
-    <metrics statements="381" coveredstatements="307" conditionals="58" coveredconditionals="49" methods="34" coveredmethods="23" elements="473" coveredelements="379" complexity="0" loc="381" ncloc="381" packages="6" files="11" classes="11"/>
+<coverage generated="1574557410633" clover="3.2.0">
+  <project timestamp="1574557410633" name="All files">
+    <metrics statements="381" coveredstatements="315" conditionals="58" coveredconditionals="51" methods="34" coveredmethods="25" elements="473" coveredelements="391" complexity="0" loc="381" ncloc="381" packages="6" files="11" classes="11"/>
     <package name="Cpen321Project">
       <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="config.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/config.js">
@@ -310,7 +310,7 @@
       </file>
     </package>
     <package name="Cpen321Project.rest-server.utils.suggestions">
-      <metrics statements="80" coveredstatements="59" conditionals="20" coveredconditionals="14" methods="11" coveredmethods="6"/>
+      <metrics statements="80" coveredstatements="67" conditionals="20" coveredconditionals="16" methods="11" coveredmethods="8"/>
       <file name="cosineSimilarity.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/rest-server/utils/suggestions/cosineSimilarity.js">
         <metrics statements="23" coveredstatements="23" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
         <line num="3" count="4" type="stmt"/>
@@ -338,7 +338,7 @@
         <line num="43" count="4" type="stmt"/>
       </file>
       <file name="questionHelper.js" path="/mnt/c/Users/johnb/Cpen321/Cpen321Project/rest-server/utils/suggestions/questionHelper.js">
-        <metrics statements="57" coveredstatements="36" conditionals="14" coveredconditionals="8" methods="8" coveredmethods="3"/>
+        <metrics statements="57" coveredstatements="44" conditionals="14" coveredconditionals="10" methods="8" coveredmethods="5"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
@@ -373,29 +373,29 @@
         <line num="67" count="16" type="cond" truecount="2" falsecount="0"/>
         <line num="70" count="4" type="stmt"/>
         <line num="79" count="3" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="87" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="102" count="3" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
+        <line num="81" count="4" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="83" count="4" type="stmt"/>
+        <line num="85" count="4" type="stmt"/>
+        <line num="86" count="19" type="stmt"/>
+        <line num="88" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="89" count="6" type="stmt"/>
+        <line num="93" count="4" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
         <line num="104" count="0" type="stmt"/>
-        <line num="106" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
         <line num="113" count="0" type="stmt"/>
         <line num="114" count="0" type="stmt"/>
         <line num="115" count="0" type="stmt"/>
-        <line num="117" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="120" count="0" type="stmt"/>
-        <line num="123" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="124" count="0" type="stmt"/>
-        <line num="128" count="0" type="stmt"/>
-        <line num="131" count="3" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="121" count="0" type="stmt"/>
+        <line num="124" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="132" count="3" type="stmt"/>
       </file>
     </package>
     <package name="Cpen321Project.tests">
@@ -414,24 +414,24 @@
         <line num="59" count="3" type="stmt"/>
         <line num="68" count="3" type="stmt"/>
         <line num="77" count="3" type="stmt"/>
-        <line num="86" count="3" type="stmt"/>
-        <line num="95" count="3" type="stmt"/>
-        <line num="104" count="3" type="stmt"/>
-        <line num="113" count="3" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
+        <line num="97" count="3" type="stmt"/>
+        <line num="107" count="3" type="stmt"/>
         <line num="117" count="3" type="stmt"/>
         <line num="121" count="3" type="stmt"/>
         <line num="125" count="3" type="stmt"/>
         <line num="129" count="3" type="stmt"/>
-        <line num="131" count="3" type="stmt"/>
-        <line num="132" count="3" type="stmt"/>
-        <line num="134" count="3" type="stmt"/>
-        <line num="135" count="48" type="stmt"/>
-        <line num="136" count="192" type="stmt"/>
-        <line num="137" count="192" type="stmt"/>
-        <line num="140" count="48" type="stmt"/>
-        <line num="141" count="336" type="stmt"/>
-        <line num="142" count="336" type="stmt"/>
-        <line num="146" count="3" type="stmt"/>
+        <line num="133" count="3" type="stmt"/>
+        <line num="135" count="3" type="stmt"/>
+        <line num="136" count="3" type="stmt"/>
+        <line num="138" count="3" type="stmt"/>
+        <line num="139" count="48" type="stmt"/>
+        <line num="140" count="192" type="stmt"/>
+        <line num="141" count="192" type="stmt"/>
+        <line num="144" count="48" type="stmt"/>
+        <line num="145" count="336" type="stmt"/>
+        <line num="146" count="336" type="stmt"/>
+        <line num="150" count="3" type="stmt"/>
       </file>
     </package>
   </project>

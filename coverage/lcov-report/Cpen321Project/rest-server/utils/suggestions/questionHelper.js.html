@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">60% </span>
+        <span class="strong">75.38% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>39/65</span>
+        <span class='fraction'>49/65</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">57.14% </span>
+        <span class="strong">71.43% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/14</span>
+        <span class='fraction'>10/14</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">37.5% </span>
+        <span class="strong">62.5% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/8</span>
+        <span class='fraction'>5/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">63.16% </span>
+        <span class="strong">77.19% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>36/57</span>
+        <span class='fraction'>44/57</span>
       </div>
     </div>
     <p class="quiet">
@@ -204,7 +204,8 @@
 <a name='L156'></a><a href='#L156'>156</a>
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -284,18 +285,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -440,20 +442,21 @@ const getKeywordFrequency = (questionKeywords, numKeywords) =&gt; {
  * @param {Mongoose.Object} question Question object
  * @param {Array} keywordList List of keywords to match with 
  */
-const matchKeywords = <span class="fstat-no" title="function not covered" >(q</span>uestion, keywordList) =&gt; {
+const matchKeywords = (question, keywordList) =&gt; {
 &nbsp;
-    const {keywords} = <span class="cstat-no" title="statement not covered" >question; </span>
-    let updatedKeywords = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >    keywords.sort(); </span>
-<span class="cstat-no" title="statement not covered" >    for (var i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; keywords.length; i++) {</span>
-        const found = <span class="cstat-no" title="statement not covered" >keywordList.some(<span class="fstat-no" title="function not covered" >el</span> =&gt; <span class="cstat-no" title="statement not covered" >el.keyword === keywords[i])</span>;</span>
+    const {keywords} = question; 
+    let updatedKeywords = [];
+    keywords.sort(); 
+    
+    for (var i = 0; i &lt; keywords.length; i++) {
+        const found = keywordList.some(el =&gt; el.keyword === keywords[i]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (found) {</span>
-<span class="cstat-no" title="statement not covered" >            updatedKeywords.push(keywords[i]);</span>
+        if (found) {
+            updatedKeywords.push(keywords[i]);
         }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return updatedKeywords;</span>
+    return updatedKeywords;
 }
 &nbsp;
 /**
@@ -526,7 +529,7 @@ module.exports = {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 23 2019 16:12:23 GMT-0800 (STD)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 23 2019 17:03:30 GMT-0800 (STD)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>

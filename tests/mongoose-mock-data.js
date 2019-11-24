@@ -53,7 +53,7 @@ const testQuestion = {
     title : "test question 1",
     course : "Cpen 321", 
     owner : testUser._id,
-    date : new Date()
+    date : Date.now(),
 };
 
 const testQuestion2 = {
@@ -62,7 +62,7 @@ const testQuestion2 = {
     title : "test question 2",
     course : "Cpen 331", 
     owner : testUser2._id,
-    date : new Date()
+    date : Date.now()
 };
 
 const testQuestion3 = {
@@ -71,16 +71,17 @@ const testQuestion3 = {
     title : "test question 2",
     course : "Elec 221", 
     owner : testUser3._id,
-    date : new Date()
+    date : Date.now()
 };
 
 const testQuestion4 = {
     _id : mongoose.Types.ObjectId(),
-    question : "What is the z-transform",
+    question : "What is the z-transform of what is cpen 321 elec 221 z-transform",
     title : "test question 2",
     course : "Cpsc 320", 
     owner : testUser._id,
-    date : new Date()
+    date : Date.now(),
+    keywords : ["z-transform", "cpen", "elec", "z-transform"]
 };
 
 const testQuestion5 = {
@@ -89,7 +90,8 @@ const testQuestion5 = {
     title : "test question 2",
     course : "Cpsc 221", 
     owner : testUser2._id,
-    date : new Date()
+    date : Date.now(),
+    keywords : ["xd", "xd", "xd", "xd"]
 };
 
 const testQuestion6 = {
@@ -98,7 +100,8 @@ const testQuestion6 = {
     title : "test question 2",
     course : "Math 220", 
     owner : testUser3._id,
-    date : new Date()
+    date : Date.now(),
+    keywords : ["last", "question", "big", "xd"]
 };
 
 const testQuestion7 = {
@@ -107,7 +110,8 @@ const testQuestion7 = {
     title : "test question 57",
     course : "Cpsc 320", 
     owner : testUser._id,
-    date : new Date()
+    date : Date.now(),
+    keywords : ["last", "question", "big", "xd"]
 }
 
 const testAnswer = {
