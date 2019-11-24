@@ -97,7 +97,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const userId = req.params.userId; 
         // Array of Question Objects
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
-        console.log("User asked questions " + userQuestions);
+        // console.log("User asked questions " + userQuestions);
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
 
