@@ -106,7 +106,7 @@ const matchKeywords = (question, keywordList) => {
 
         // Take only the frequency 
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
-        
+        console.log("frequency array: " + freqArray);
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Cosine Similarity Value: " + cosineSimilarity);
 
