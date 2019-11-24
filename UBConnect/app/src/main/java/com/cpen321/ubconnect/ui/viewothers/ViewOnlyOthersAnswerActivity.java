@@ -23,6 +23,7 @@ import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.main.MainActivity;
 import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
@@ -219,7 +220,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         });
 
     }
-
+    
     //josh
 
 

@@ -1,7 +1,9 @@
 package com.cpen321.ubconnect.ui.main;
 
 
+import android.app.Activity;
 import android.app.Instrumentation;
+import android.bluetooth.BluetoothClass;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -36,6 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -62,7 +65,7 @@ public class NotificationTest{
 //                                0),
 //                        isDisplayed()));
 //        loginButton.perform(click());
-
+        pressBack();
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         device.openNotification();
         device.wait(Until.hasObject(By.text("title")), 3000000);

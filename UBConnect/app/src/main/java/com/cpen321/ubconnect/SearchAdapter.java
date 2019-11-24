@@ -58,37 +58,54 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             for(int index = 0; index < 3 && index < searchItem.getSearchItem().size(); index++) {
                 questions.add((Question) searchItem.getSearchItem().get(index));
             }
-            RecyclerView.Adapter questionAdapter = new SearchQuestionAdapter(questions);
-            viewHolder.recyclerView.setAdapter(questionAdapter);
-            viewHolder.showAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, ShowAllSearch.class);
-                    intent.putExtra("searchItem", "Question");
-                    intent.putExtra("question", question);
-                    context.startActivity(intent);
-                }
-            });
+            if(questions.isEmpty()){
+                viewHolder.searchNoResult.setVisibility(View.VISIBLE);
+                viewHolder.searchNoResult.setText("No Question Found");
+            }
+            else{
+                RecyclerView.Adapter questionAdapter = new SearchQuestionAdapter(questions);
+                viewHolder.recyclerView.setAdapter(questionAdapter);
+                viewHolder.showAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, ShowAllSearch.class);
+                        intent.putExtra("searchItem", "Question");
+                        intent.putExtra("question", question);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+
         }
         else if(searchItem.getType().equals("User")){
+
             List<User> users = new ArrayList<>();
             for(int index = 0; index < 3 && index < searchItem.getSearchItem().size(); index++) {
                 users.add((User) searchItem.getSearchItem().get(index));
             }
-            RecyclerView.Adapter userAdapter = new SearchUserAdapter(users);
-            viewHolder.recyclerView.setAdapter(userAdapter);
+            if(users.isEmpty()){
+                viewHolder.searchNoResult.setVisibility(View.VISIBLE);
+                viewHolder.searchNoResult.setText("No Users Found");
+            }
+            else{
+                RecyclerView.Adapter userAdapter = new SearchUserAdapter(users);
+                viewHolder.recyclerView.setAdapter(userAdapter);
 
-            viewHolder.showAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, ShowAllSearch.class);
-                    intent.putExtra("searchItem", "User");
-                    intent.putExtra("question", question);
-                    context.startActivity(intent);
-                }
-            });
+                viewHolder.showAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, ShowAllSearch.class);
+                        intent.putExtra("searchItem", "User");
+                        intent.putExtra("question", question);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+
+
+
         }
 
 
@@ -107,6 +124,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         private RecyclerView.Adapter userAdapter;
         public LinearLayout linearLayout;
         public Button showAll;
+        public TextView searchNoResult;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +134,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             recyclerView = itemView.findViewById(R.id.searchitemRV);
             showAll = itemView.findViewById(R.id.searchitemShowAll);
             linearLayout = itemView.findViewById(R.id.searchItemLin);
+            searchNoResult = itemView.findViewById(R.id.searchNoResultView);
+            searchNoResult.setVisibility(View.GONE);
 
 
         }

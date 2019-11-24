@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private List<Question> questions;
     private String userId;
     private String token;
+    private TextView noResult;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -87,6 +89,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         };
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        noResult = findViewById(R.id.noSuggestionResult);
+        noResult.setVisibility(View.GONE);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
 
@@ -150,8 +155,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void onChangedSuggestions(List<Question> questions){
         this.questions.addAll(questions);
-        adapter = new SuggestedQuestionAdapter(this.questions);
-        recyclerView.setAdapter(adapter);
+        if(questions.isEmpty()){
+            noResult.setVisibility(View.VISIBLE);
+            noResult.setText("No Suggestions Left");
+        }
+        else {
+            adapter = new SuggestedQuestionAdapter(this.questions);
+            recyclerView.setAdapter(adapter);
+        }
         toolbar.bringToFront();
         drawer.bringToFront();
         navigationView.bringToFront();
