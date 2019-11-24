@@ -151,13 +151,14 @@ const swipedQuestion = async (req, res, next) => {
 };
 
 const getMostRecentQuestion = async (req, res, next) => {
-    const userId = req.params._id;
+    const userId = req.params.userId;
 
     try {
         const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});
 
         if (latestQuestion == null) {
             res.status(200).json([]);
+            return;
         }
 
         res.status(200).json(latestQuestion);

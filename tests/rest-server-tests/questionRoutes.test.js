@@ -128,7 +128,7 @@ describe("Question Route Test Suite", () => {
       await questionController.getMostRecentQuestion(req, res, next);
       let expected = await Question.findById(mockData.testQuestionArray[0]._id);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(expected);
+      expect(res.json).toHaveBeenCalledWith([]);
     });
 
     test("Get most recent question by non-existing user", async () => {
@@ -136,7 +136,8 @@ describe("Question Route Test Suite", () => {
       const res = mockResponse();
 
       await questionController.getMostRecentQuestion(req, res, next);
-      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Could not find any questions", 403);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({_id : ""});
     });
 
   });
