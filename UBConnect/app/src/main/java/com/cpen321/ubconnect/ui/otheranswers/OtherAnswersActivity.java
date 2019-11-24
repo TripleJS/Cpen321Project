@@ -207,7 +207,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 //                            String nickname = data.getString("senderNickname");
                             answer = data.getString("answer");
                             messagetxt.setText(answer);
-                            messagetxt.addTextChangedListener(textWatcher);
+
 //                            answerId = data.getString("answerId");
                             // HAVE JON SET THIS ANSWEERID AS NEW CURRENT ANSWER
 //                            roomId = data.getString("roomId");
@@ -291,6 +291,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
             // to do
         }
         //josh
+
         public void onTextChanged(CharSequence s, int start,
                                   int before, int count) {
 
