@@ -119,7 +119,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
 const swipedQuestion = async (req, res, next) => {
     const questionId = req.body.questionId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
     const direction = req.body.direction; 
 
     logger.info(questionId);
@@ -151,7 +151,7 @@ const swipedQuestion = async (req, res, next) => {
 };
 
 const getMostRecentQuestion = async (req, res, next) => {
-    const userId = req.params.userId;
+    const userId = req.params._id;
 
     try {
         const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});

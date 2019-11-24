@@ -17,6 +17,7 @@ const signTokenAndSignIn = (id, res) => {
     );
 
     logger.info("JWT TOKEN: " + token);
+    logger.info(id);
 
     res.status(201).json({
             _id : id, 
