@@ -174,6 +174,3 @@ module.exports = {
     suggestedQuestionsV2,
     getMostRecentQuestion
 };
-
-
-
