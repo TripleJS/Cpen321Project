@@ -20,6 +20,8 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
+import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersViewModel;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
@@ -41,6 +43,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
     //joshua
     private String userId;
     private Button startAnswer;
+    private Button viewMoreAnswers;
 
     private String token;
 
@@ -70,6 +73,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         dateAuthor = findViewById(R.id.questionADateAuthor);
         answer = findViewById(R.id.questionAAnswer);
         startAnswer = findViewById(R.id.answerButton);
+        viewMoreAnswers = findViewById(R.id.navAnswersButton);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
         userId = ((GlobalVariables) this.getApplication()).getUserID();
@@ -135,8 +139,18 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
                 QuestionActivity.this.finish();
             }
         };
+        View.OnClickListener viewMoreOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuestionActivity.this, NavBetweenAnswersActivity.class);
+                intent.putExtra("arg",questionId);
+                startActivity(intent);
+                QuestionActivity.this.finish();
+            }
+        };
 
         startAnswer.setOnClickListener(answerOnClickListener);
+        viewMoreAnswers.setOnClickListener(viewMoreOnClickListener);
     }
 
     @Override
