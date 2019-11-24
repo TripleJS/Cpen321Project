@@ -33,7 +33,7 @@ const search = async (req, res, next) => {
                 curUser.userId = curUser._id;
             
                 for (var j = 0; j < allUsers.length; j++) {
-                   if (allUsers[parseInt(i)] !== curUser) {
+                   if (allUsers[parseInt(j)] !== curUser) {
                     allUsers.push(curUser);
                    }
                 }
