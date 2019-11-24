@@ -20,11 +20,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
+import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
+import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionViewModel;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
@@ -45,13 +48,14 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
     private String questionId;
     //josh
 //    private JSONArray answersId;
-    private JSONArray userAnsweringId;
+    private JSONArray userAnswering;
     private String userId;
     private LinearLayout linearLayout;
+    private NavBetweenAnswersViewModel navBetweenAnswersViewModel;
 
 
     private TextView question;
-    private String userAnswering;
+    private String userAnsweringId;
     private OtherAnswersViewModel otherAnswersViewModel;
     private String token;
     private QuestionViewModel questionViewModel;
@@ -87,11 +91,13 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
+        navBetweenAnswersViewModel = ViewModelProviders.of(this).get(NavBetweenAnswersViewModel.class);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
         //connect you socket client to the server
         question = findViewById(R.id.question);
-        observeViewModel();
+        observeOtherAnswersViewModel();
+        observeNavBetweenAnswersViewModel();
 
 
 
@@ -145,15 +151,22 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 //                            String user = data.getString("senderNickname");
 //                            answersId = data.getJSONArray("answersId");
-                            userAnsweringId = data.getJSONArray("userAnswering");
+                            userAnswering = data.getJSONArray("userAnswering");
+                            //josh
+                            if (userAnswering.length() ==  0) {
+                                Intent intent = new Intent(NavBetweenAnswersActivity.this, NoAnswerActivity.class);
+                                startActivity(intent);
+                                NavBetweenAnswersActivity.this.finish();
+
+                            }
                             linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
                             linearLayout.setVerticalScrollBarEnabled(true);
 
-                            Button[] btnArray = new Button[userAnsweringId.length()];
-                            for (int i = 0; i < userAnsweringId.length(); i++) {
+                            Button[] btnArray = new Button[userAnswering.length()];
+                            for (int i = 0; i < userAnswering.length(); i++) {
                                 btnArray[i] = new Button(getApplicationContext());
                                 //otherAnswersViewModel.getUserNameById(userAnsweringId.get(i).toString(), token).getValue().getUserId()
-                                btnArray[i].setText((userAnsweringId.get(i).toString()));
+                                btnArray[i].setText((userAnswering.get(i).toString()));
                                 btnArray[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                         LinearLayout.LayoutParams.WRAP_CONTENT));
                                 linearLayout.addView(btnArray[i]);
@@ -175,23 +188,31 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
     }
-    private void observeViewModel(){
+    private void observeOtherAnswersViewModel(){
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
+
+    }
+    private void observeNavBetweenAnswersViewModel(){
+        navBetweenAnswersViewModel.getUserData().observe(this, this::onChangedUser);
 
     }
 
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
     }
+    private void onChangedUser(User user){
+        this.userAnsweringId = (user.getUserId());
+        Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
+        intent.putExtra("arg",questionId);
+        intent.putExtra("userAnsweringId",userAnsweringId);
+        startActivity(intent);
+        NavBetweenAnswersActivity.this.finish();
+    }
 
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
-                intent.putExtra("arg",questionId);
-                intent.putExtra("userAnsweringId",button.getText().toString());
-                startActivity(intent);
-                NavBetweenAnswersActivity.this.finish();
+                navBetweenAnswersViewModel.getUserId(button.getText().toString(), token);
             }
         };
     }

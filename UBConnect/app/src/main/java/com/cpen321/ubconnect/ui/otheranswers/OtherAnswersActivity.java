@@ -106,7 +106,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
 //        Button saveAnswer = findViewById(R.id.saveChanges);
 //        saveAnswer.setOnClickListener(saveAnswerOnClickListener);
-        Button submitAnswer = findViewById(R.id.submitAnswer);
+
         //joshua
 //        submitAnswer.setOnClickListener(submitAnswerOnClickListener);
 

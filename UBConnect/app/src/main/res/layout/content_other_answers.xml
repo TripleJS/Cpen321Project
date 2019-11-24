@@ -32,7 +32,7 @@
         <EditText
             android:id="@+id/myTextBox"
             android:layout_width="fill_parent"
-            android:layout_height="444dp"
+            android:layout_height="390dp"
             android:ems="10"
             android:gravity="top|left"
             android:inputType="textMultiLine"
@@ -51,11 +51,14 @@
         <!--        android:layout_height="wrap_content"-->
         <!--        android:text="Save Changes" />-->
 
-        <Button
-            android:id="@+id/submitAnswer"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit Answer" />
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,15 +66,6 @@
             android:layout_weight="1"
             android:gravity="right|bottom"
             android:orientation="vertical">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:clickable="true"
-                app:srcCompat="@android:drawable/ic_input_add" />
 
 
         </LinearLayout>

@@ -65,6 +65,9 @@ public interface IBackEndService {
     Call<Question> getRecentQuestionId(@Path("userId")String userId);
     @GET("api/answers/recent/{userId}")
     Call<Question> getRecentQuestionToAnswerId(@Path("userId")String userId);
+//josh
+    @GET("/api/user/getUserId/{userName}")
+    Call<Question> getUserId(@Path("userName")String userId);
 
 
 }
