@@ -108,8 +108,6 @@ const matchKeywords = (question, keywordList) => {
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
         
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
-        logger.info("Current Question:");
-        logger.info(questions[parseInt(i)].question);
         logger.info("Cosine Similarity Value: " + cosineSimilarity);
 
         if (cosineSimilarity > SIMILARITY_THRESHOLD) {
