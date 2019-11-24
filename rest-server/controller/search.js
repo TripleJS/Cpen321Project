@@ -25,7 +25,7 @@ const search = async (req, res, next) => {
 
     try {
         const allQuestions = await Question.find({keywords : { $all : searchStringKeywords}});
-        
+
         for (var i = 0; i < allQuestions.length; i++) {
             console.log(allQuestions[parseInt(i)].title);
         }
@@ -39,7 +39,8 @@ const search = async (req, res, next) => {
                 const curUser = await User.findById(allQuestions[parseInt(i)].owner);
                 const curUserObject = curUser.toObject();
                 curUserObject.userId = curUser._id;
-            
+                console.log(curUserObject.userId);
+                
                 if (!containsId(allUsers, curUserObject)) {
                     allUsers.push(curUserObject);
                 }

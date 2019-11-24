@@ -41,12 +41,12 @@ describe("Question Helper Test Suite", () => {
 
         test("Get Question for User that does not Exist", async () => {
             expect(questionHelper.getQuestionsByUser(mongoose.Types.ObjectId()))
-                .rejects.toEqual("Error Getting Questions");
+                .resolves.toEqual([]);
         });
 
         test("Get Question For User with no Questions Asked", async () => {
             expect(questionHelper.getQuestionsByUser(mockData.testFacebookUser._id))
-                .rejects.toEqual("Error Getting Questions");
+                .resolves.toEqual([]);
         });
 
         test("Get 1 question from user", async () => {
