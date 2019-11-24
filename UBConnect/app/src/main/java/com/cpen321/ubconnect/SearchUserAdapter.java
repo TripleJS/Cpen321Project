@@ -38,7 +38,12 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
         User user = searchUserItems.get(i);
         viewHolder.userName.setText(user.getUserName());
-        viewHolder.userInfo.setText(user.getCourses().toString());
+        if(!user.getCourses().toString().equals("[]")){
+            viewHolder.userInfo.setText(user.getCourses().toString());
+        }
+        else{
+            viewHolder.userInfo.setText("");
+        }
 
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

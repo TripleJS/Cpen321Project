@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+
     <TextView
         android:id="@+id/usercardUInf"
         android:layout_width="match_parent"

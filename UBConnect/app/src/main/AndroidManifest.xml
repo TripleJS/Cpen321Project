@@ -82,7 +82,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.publicaccount.PublicUserActivity"
-            android:label="@string/menu_question"
+            android:label= "Public User"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

@@ -88,7 +88,6 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         }
         else {
             questionViewModel.getRecentQuestion(userId, token);
-
         }
 
 
