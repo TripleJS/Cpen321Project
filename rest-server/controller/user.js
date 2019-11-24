@@ -76,6 +76,7 @@ const loginUser = async (req, res, next) => {
             errorThrow({}, "User does not exist", 404);
         }
 
+        console.log(curUser.local.password);
         if (curUser.local.password !== userPassword) {
             errorThrow({}, "Incorrect Password", 403);
         }
