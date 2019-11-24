@@ -12,10 +12,11 @@ const getMostRecentAnswerId = async (req, res, next) => {
 
         if (latestAnswer === null) {
             res.status(200).json({_id : ""});
+            return;
         }
         
         logger.info(latestAnswer);
-        
+
         const relatedQuestionId = latestAnswer.questionRef;
 
         const relatedQuestion = await Question.findById(relatedQuestionId);
