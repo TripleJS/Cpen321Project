@@ -95,7 +95,7 @@ describe("User Route Test Suite", () => {
       
           await userController.loginUser(req, res, next);
           expect(res.status).toHaveBeenCalledWith(201);
-          expect(res.json).toHaveBeenCalledWith({jwt : testJwt, userId : mockData.testUser._id});
+          expect(res.json).toHaveBeenCalledWith({jwt : testJwt, _id : mockData.testUser._id});
       });
 
       test("Logging in With Email where User doesn't exist", async () => {
@@ -132,7 +132,7 @@ describe("User Route Test Suite", () => {
         );
         
         await userController.oAuthLogin(req, res, next);
-        expect(res.json).toHaveBeenCalledWith({jwt : testJwt, userId : mockData.testFacebookUser._id});
+        expect(res.json).toHaveBeenCalledWith({jwt : testJwt, _id : mockData.testFacebookUser._id});
       });
   });
 
@@ -141,7 +141,7 @@ describe("User Route Test Suite", () => {
       const mockRatingRequest = (mockUserId, mockUserRatingId, mockRating) => {
         const req = {
           body : {
-            userId : mockUserId,
+            _id : mockUserId,
             rating : mockRating
           }, 
           params : {
@@ -219,7 +219,7 @@ describe("User Route Test Suite", () => {
       const mockReportRequest = (mockUserId, mockUserReportingId) => {
         const req = {
           body : {
-            userId : mockUserId,
+            _id : mockUserId,
           }, 
           params : {
             reportingUserId : mockUserReportingId

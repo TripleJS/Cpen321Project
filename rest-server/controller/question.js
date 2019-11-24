@@ -157,7 +157,7 @@ const getMostRecentQuestion = async (req, res, next) => {
         const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});
 
         if (latestQuestion == null) {
-            errorThrow({}, "Could not find any questions", 403);
+            res.status(200).json([]);
         }
 
         res.status(200).json(latestQuestion);

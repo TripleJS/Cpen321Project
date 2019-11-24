@@ -11,10 +11,11 @@ const getMostRecentAnswerId = async (req, res, next) => {
         const latestAnswer = await Answer.findOne({userAnswerId : userId}).sort({date : -1});
 
         if (latestAnswer === null) {
-            errorThrow({}, "Answer does not exist", 403);
+            res.status(200).json({_id : ""});
         }
         
         logger.info(latestAnswer);
+        
         const relatedQuestionId = latestAnswer.questionRef;
 
         const relatedQuestion = await Question.findById(relatedQuestionId);
