@@ -42,6 +42,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NavBetweenAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -49,9 +51,11 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
     //josh
 //    private JSONArray answersId;
     private JSONArray userAnswering;
+    private JSONArray userAnsweringIdJSON;
+    private Map<String, String> map = new HashMap<>();
     private String userId;
     private LinearLayout linearLayout;
-    private NavBetweenAnswersViewModel navBetweenAnswersViewModel;
+
 
 
     private TextView question;
@@ -91,13 +95,12 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
-        navBetweenAnswersViewModel = ViewModelProviders.of(this).get(NavBetweenAnswersViewModel.class);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
         //connect you socket client to the server
         question = findViewById(R.id.question);
         observeOtherAnswersViewModel();
-        observeNavBetweenAnswersViewModel();
+
 
 
 
@@ -151,7 +154,8 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 //                            String user = data.getString("senderNickname");
 //                            answersId = data.getJSONArray("answersId");
-                            userAnswering = data.getJSONArray("userAnswering");
+                            userAnswering = data.getJSONArray("userName");
+                            userAnsweringIdJSON = data.getJSONArray("userAnsweringId");
                             //josh
                             if (userAnswering.length() ==  0) {
                                 Intent intent = new Intent(NavBetweenAnswersActivity.this, NoAnswerActivity.class);
@@ -171,6 +175,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                                         LinearLayout.LayoutParams.WRAP_CONTENT));
                                 linearLayout.addView(btnArray[i]);
                                 btnArray[i].setOnClickListener(handleOnClick(btnArray[i]));
+                                map.put(userAnswering.get(i).toString(), userAnsweringIdJSON.get(i).toString());
                             }
 
                         } catch (JSONException e) {
@@ -192,27 +197,21 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
 
     }
-    private void observeNavBetweenAnswersViewModel(){
-        navBetweenAnswersViewModel.getUserData().observe(this, this::onChangedUser);
 
-    }
 
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
     }
-    private void onChangedUser(User user){
-        this.userAnsweringId = (user.getUserId());
-        Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
-        intent.putExtra("arg",questionId);
-        intent.putExtra("userAnsweringId",userAnsweringId);
-        startActivity(intent);
-        NavBetweenAnswersActivity.this.finish();
-    }
+
 
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
-                navBetweenAnswersViewModel.getUserId(button.getText().toString(), token);
+                Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
+                intent.putExtra("arg", questionId);
+                intent.putExtra("userAnsweringId", map.get(button.getText().toString()));
+                startActivity(intent);
+                NavBetweenAnswersActivity.this.finish();
             }
         };
     }
