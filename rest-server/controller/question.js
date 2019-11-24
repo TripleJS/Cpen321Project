@@ -45,7 +45,8 @@ const postQuestion = async (req, res, next) => {
     logger.info(lowerCaseString);
     const creator = req.body.owner; 
     const course = req.body.course;
-
+    course.toLowerCase().replace(" ", "");
+    console.log(course);
 
     try {
         const curUser = await User.findById(creator);
@@ -99,49 +100,48 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         
         const curUser = await User.findById(userId);
         const {courses} = curUser;
+        console.log("USer courses: " + courses);
 
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
 
         for (var i = 0; i < userQuestions.length; i++) {
-            userQuestionKeywords.pushValues(userQuestions[parseInt(i)].keywords);
+            userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
         }
+
+        console.log("User Question Keywords: " + userQuestionKeywords);
 
         // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         logger.info("User Keyword Frequency:");
         logger.info(userKeywordFrequency);
-        try {
+    
             // Question Objects for the User 
-            let questionsForUser;
+        let questionsForUser;
 
-            /**
-             * Question Objects for the User with the updated keywords including
-             * their frequency 
-             */
-            let questionsWithUpdatedFreq = [];
+        /**
+         * Question Objects for the User with the updated keywords including
+         * their frequency 
+         */
+        let questionsWithUpdatedFreq = [];
 
-            if (courses.isEmpty()) {
-                questionsForUser = await Question.bySwipedUser(userId);
-            } else {
-                questionsForUser = await Question.byCourseTag(courses, userId);
-            }
-
-            for (var i = 0; i < questionsForUser.length; i++) {
-                const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
-                questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
-            }
-            
-            const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
-
-            res.status(200).json(questionsToReturn);
-        } catch (error) {
-            
+        if (isEmpty(courses)) {
+            questionsForUser = await Question.find({}).bySwipedUser(userId);
+        } else {
+            questionsForUser = await Question.find({});
         }
 
-        res.status(203).json(
-            resultingQuestions
-        );
+        console.log("questions for user: " + questionsForUser);
+
+        for (var i = 0; i < questionsForUser.length; i++) {
+            const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
+        }
+            
+        const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
+        console.log("questions to return: " + questionsToReturn);
+        res.status(200).json(questionsToReturn);
+ 
     } catch (error) {
         errorCatch(error, next);
     }

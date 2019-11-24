@@ -4,10 +4,9 @@ const {logger} = require("../../../logger");
 const getCosineSimilarity = require("../suggestions/cosineSimilarity");
 const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
-const SIMILARITY_THRESHOLD = 0.4;
+const SIMILARITY_THRESHOLD = 0.65;
 const MAXIMUM_RETURNED_QUESTIONS = 5;
-// const {startServer} = require("../../api");
-// const {mongodburl, port} = require("../../../config");
+
 
 /**
  * @param {ObjectID} userID MongoDB ObjectID of a user
@@ -15,12 +14,13 @@ const MAXIMUM_RETURNED_QUESTIONS = 5;
  */
 const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {
-        let userQuestions = await Question.find({}).limit(numberOfQuestions).byUserId(userID);
+        let userQuestions = await Question.find({}).byUserId(userID).limit(numberOfQuestions);
         // logger.info("User Questions Length: " + userQuestions.length);
 
         if (userQuestions.length === 0) {
             throw new Error("Could not find Question");
         }
+
         return Promise.resolve(userQuestions);
 
     } catch (err) {
@@ -58,6 +58,10 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
                 freq: freqArray[parseInt(i)]});
     }
 
+    if (keywordFreqArray.length == 0) {
+        return [];
+    }
+
     keywordFreqArray.sort((a, b) => {
         return (a.freq < b.freq) ? 1 : -1;
     });
@@ -76,6 +80,7 @@ const matchKeywords = (question, keywordList) => {
     const {keywords} = question; 
     let updatedKeywords = [];
     keywords.sort(); 
+
     for (var i = 0; i < keywords.length; i++) {
         const found = keywordList.some(el => el.keyword === keywords[i]);
 
@@ -88,22 +93,20 @@ const matchKeywords = (question, keywordList) => {
 }
 
 /**
- * 
  * @param {Object} questions Array of question objects with their keywords + frequency
- *                           Note: the keywords + freq matches those of the questionKeywords
+ *                           Note: the keywords + freq matches those of the questionKeywords (ie. {question : questionObject, keywordsWithFreq : [{keyword : qkeyword, freq : qfreq}]})
  * @param {Array} questionKeywords Array of keywords with their frequency
- * @returns {Array} Of questions that meet the cosine similarity value threshold
+ * @returns {Array} Questions that meet the cosine similarity value threshold
  */
  const getBagOfQuestions = (questions, questionKeywords) => {
     const bagOfQuestions = [];
     const keywordsFreqOnly = questionKeywords.map(({freq}) => freq);
-    
-    for (let i = 0; i < questions.size; i++) {
+    console.log(keywordsFreqOnly);
+    for (let i = 0; i < questions.length; i++) {
 
         // Take only the frequency 
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
         
-
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Current Question:");
         logger.info(questions[parseInt(i)].question);
@@ -149,5 +152,11 @@ module.exports = {
 // };
 
 // test();
+
+const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
+const questionsWithKeywords = [{question : {}, keywordsWithFreq : [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}]}];
+
+let result = getBagOfQuestions(questionsWithKeywords, keywords);
+console.log(result);
 
 

@@ -7,27 +7,29 @@ const {errorCatch} = require("../utils/errorHandler");
 
 const search = async (req, res, next) => {
 
-    const searchString = req.query.searchString;
-    searchString.split("+").join(" ");
+    const searchString = req.query.question;
+    console.log(req.query);
+    console.log(searchString);
+    searchString.toLowerCase().split(" ");
 
     const searchStringKeywords = keywords(searchString);
 
     try {
         const allQuestions = await Question.find({keywords : {$all : searchStringKeywords}});
-        let users;
+        let allUsers;
         if (searchStringKeywords.length < 1) {
-            users = await User.find({userName : searchString});
+            allUsers = await User.find({userName : searchString});
         } else {
-            users = [];
+            allUsers = [];
             for (var i = 0; i < allQuestions.length; i++) {
                 const curUser = await User.findById(allQuestions[parseInt(i)].owner);
                 curUser.toObject();
                 curUser.userId = curUser._id;
-                users.push(curUser);
+                allUsers.push(curUser);
             }
         }
 
-        res.send(200).json({question : allQuestions, users : allUsers});
+        res.status(200).json({question : allQuestions, users : allUsers});
         
     } catch (error) {
         errorCatch(error, next);

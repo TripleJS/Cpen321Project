@@ -2,6 +2,8 @@ const userController = require("../../rest-server/controller/user");
 const mongoose = require("mongoose");
 const User = require("../../rest-server/schema/user");
 const mockData = require("../mongoose-mock-data");
+const jwt = require("jsonwebtoken");
+const {secretKey} = require("../../config");
 
 jest.mock("../../rest-server/utils/errorHandler", () => ({
   errorCatch : jest.fn(),
@@ -17,7 +19,8 @@ describe("User Route Test Suite", () => {
     try {
       db = await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify : false
       });
     } catch (error) {
       process.exit();
@@ -83,17 +86,24 @@ describe("User Route Test Suite", () => {
           const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, mockData.testUser.password);
           const res = mockResponse();
 
+          const testJwt = jwt.sign({
+            user: mockData.testUser._id
+          },
+            secretKey, 
+            { expiresIn: "24h" },
+          );
+      
           await userController.loginUser(req, res, next);
           expect(res.status).toHaveBeenCalledWith(201);
-          expect(res.json).toHaveBeenCalledWith({jwt : mockData.testJwt, userId : mockData.testUser._id});
+          expect(res.json).toHaveBeenCalledWith({jwt : testJwt, userId : mockData.testUser._id});
       });
 
       test("Logging in With Email where User doesn't exist", async () => {
-        const req = mockLoginSignupRequest(mockData.testUser.email, mockData.testUser.userName, mockData.testUser.password);
+        const req = mockLoginSignupRequest("somenotexistentemail@email.com", mockData.testUser.userName, mockData.testUser.password);
         const res = mockResponse();
 
         await userController.loginUser(req, res, next);
-        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User does not exist", 403);
+        expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "User does not exist", 404);
       });
 
       test("Logging in With incorrect Password", async () => {
@@ -113,8 +123,16 @@ describe("User Route Test Suite", () => {
           },
           user : user
         };
+
+        const testJwt = jwt.sign({
+          user: mockData.testFacebookUser._id
+        },
+          secretKey, 
+          { expiresIn: "24h" },
+        );
+        
         await userController.oAuthLogin(req, res, next);
-        expect(res.json).toHaveBeenCalledWith({jwt : mockData.testJwt, userId : mockData.testFacebookUser._id});
+        expect(res.json).toHaveBeenCalledWith({jwt : testJwt, userId : mockData.testFacebookUser._id});
       });
   });
 
@@ -162,8 +180,9 @@ describe("User Route Test Suite", () => {
         const req = mockRatingRequest(mockData.testUser._id, mockData.testUser2._id, 5);
         const res = mockResponse(); 
 
+        await userController.rate(req, res, next);
+        await userController.rate(req, res, next);
         let result = await User.findById(mockData.testUser._id);
-        console.log(result);
         expect(result.rating).toEqual(5);
         expect(result.usersWhoRated.length).toEqual(1);
       });

@@ -49,7 +49,7 @@ import java.util.List;
 
 public class OtherAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Socket socket;
-    private String questionId = "dummyString";
+    private String questionId;
     private String userId;
     private Question questionClass;
     //josh
@@ -83,6 +83,8 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_answers);
 
+        questionId = "dummyString";
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,8 +100,9 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
 
 
-        messagetxt = (EditText) findViewById(R.id.myTextBox) ;
+        messagetxt = (EditText) findViewById(R.id.myTextBox);
         messagetxt.addTextChangedListener(textWatcher);
+
 
 //        Button saveAnswer = findViewById(R.id.saveChanges);
 //        saveAnswer.setOnClickListener(saveAnswerOnClickListener);
@@ -207,7 +210,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 //                            String nickname = data.getString("senderNickname");
                             answer = data.getString("answer");
                             messagetxt.setText(answer);
-
+//                            messagetxt.addTextChangedListener(textWatcher);
 //                            answerId = data.getString("answerId");
                             // HAVE JON SET THIS ANSWEERID AS NEW CURRENT ANSWER
 //                            roomId = data.getString("roomId");
@@ -291,7 +294,6 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
             // to do
         }
         //josh
-
         public void onTextChanged(CharSequence s, int start,
                                   int before, int count) {
 
@@ -429,5 +431,12 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.close();
+        messagetxt.removeTextChangedListener(textWatcher);
     }
 }

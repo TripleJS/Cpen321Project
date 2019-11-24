@@ -67,7 +67,7 @@ questionSchema.query.byCourseTag = function(courses, userId) {
         // Finds questions that match the current course and the user hasn't swiped on it yet 
         const questions = this.find({course: courses[parseInt(i)], swipedUsers : {$ne: userId}});
 
-        allQuestions.pushValues(questions);
+        allQuestions.concat(questions);
     }
 
     return allQuestions;
@@ -77,7 +77,9 @@ questionSchema.query.byCourseTag = function(courses, userId) {
  * Finds the Questions that a user has swiped on
  */
 questionSchema.query.bySwipedUser = function(userId) {
-    return this.find({swipedUsers : {$ne: userId}});
+    let result = this.find({swipedUsers : {$ne: userId}});
+    console.log("Questions that user hasn't swiped on :" + result);
+    return result;
 }
 
 /** 
