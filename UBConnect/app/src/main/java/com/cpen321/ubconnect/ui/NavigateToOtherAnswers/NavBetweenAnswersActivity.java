@@ -147,6 +147,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 //                            answersId = data.getJSONArray("answersId");
                             userAnsweringId = data.getJSONArray("userAnswering");
                             linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
+                            linearLayout.setVerticalScrollBarEnabled(true);
 
                             Button[] btnArray = new Button[userAnsweringId.length()];
                             for (int i = 0; i < userAnsweringId.length(); i++) {

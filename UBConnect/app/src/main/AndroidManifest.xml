@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+//joshua
+        <activity
+            android:name=".ui.NavigateToOtherAnswers.NavBetweenAnswersActivity"
+            android:label="Choose An Answer To View"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".ui.search.ShowAllSearch"

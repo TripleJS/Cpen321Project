@@ -241,7 +241,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(HomeActivity.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(HomeActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
 

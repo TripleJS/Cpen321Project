@@ -31,6 +31,7 @@ import com.cpen321.ubconnect.model.data.SearchResult;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
+import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
@@ -325,7 +326,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 startActivity(s);
                 break;
             case R.id.nav_continue_answering:
-                Intent t= new Intent(SearchActivity.this, ViewOnlyOthersAnswerActivity.class);
+                Intent t= new Intent(SearchActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
 
