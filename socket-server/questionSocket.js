@@ -67,7 +67,6 @@ const questionHandler = (io, socket, redisClient) => {
             logger.error("error in joinQuestion");
             logger.error(error);
         }
-
     });
 
     socket.on("messagedetection", async (data) => {
@@ -86,22 +85,14 @@ const questionHandler = (io, socket, redisClient) => {
 
             if (currentSequence !== null || currentSequence !== "") {
                 let curAnswer = await Answer.findOneAndUpdate({key : answerKey}, {answer : currentSequence});
-                if (curAnswer === null) {
-                    // TODO: fill this later 
-                }
-    
-                await curAnswer.save();
+                if (curAnswer !== null) {
+                    await curAnswer.save();
+                }   
             }
-            
-
         } catch (error) {
             logger.error("error in message detection");
             logger.error(error);
         }
-    });
-
-    socket.on("", (data) => {
-
     });
 
 };
