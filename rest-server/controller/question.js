@@ -97,11 +97,11 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const userId = req.params.userId; 
         // Array of Question Objects
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
-        // console.log("User asked questions " + userQuestions);
-        // Array of all the keywords from all user questions
+
         let userQuestionKeywords = [];
 
         for (var i = 0; i < userQuestions.length; i++) {
+            console.log(userQuestions[i].keywords);
             userQuestionKeywords.concat(userQuestions[parseInt(i)].keywords);
         }
 
@@ -113,7 +113,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         logger.info(userKeywordFrequency);
     
         // Question Objects for the User 
-        let questionsForUser = await Question.find({});
+        let questionsForUser = await Question.find({}).bySwipedUser(userId);
 
         /**
          * Question Objects for the User with the updated keywords including
