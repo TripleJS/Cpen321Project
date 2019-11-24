@@ -24,10 +24,16 @@ const questionHandler = (io, socket, redisClient) => {
         try {
             const condition = {
                 _id : questionId,
-                answerers : {$ne : userId}
+                answerers : userId
             };
 
-            const curQuestion = await Question.findByIdAndUpdate(condition, {$push : {answerers : userId}});
+            let curQuestion = await Question.findOne(condition);
+
+            if (!curQuestion) {
+                curQuestion = await Question.findByIdAndUpdate(userId, {$push : {answerers : userId}});
+                await curQuestion.save();
+            }
+
             let curAnswer = await Answer.findOne({key : answerKey});
             console.log("cur answer is: " + curAnswer);
 

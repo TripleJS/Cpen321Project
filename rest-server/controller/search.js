@@ -7,7 +7,7 @@ const {errorCatch} = require("../utils/errorHandler");
 
 const containsId = (a, obj) => {
     for (var i = 0; i < a.length; i++) {
-        if (a[i]._id === obj._id) {
+        if (a[i].userId === obj.userId) {
             return true;
         }
     }
@@ -56,8 +56,6 @@ const search = async (req, res, next) => {
         errorCatch(error, next);
     }
 };
-
-
 
 
 module.exports = search;
