@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const {secretKey} = require("../config");
 const Question = require("../rest-server/schema/questions");
 const User = require("../rest-server/schema/user");
 const Answer = require("../rest-server/schema/answers");
@@ -103,6 +101,15 @@ const testQuestion6 = {
     date : new Date()
 };
 
+const testQuestion7 = {
+    _id : mongoose.Types.ObjectId(),
+    question : "Last question big xd",
+    title : "test question 57",
+    course : "Cpsc 320", 
+    owner : testUser._id,
+    date : new Date()
+}
+
 const testAnswer = {
 
 };
@@ -119,23 +126,10 @@ const testAnswer4 = {
 
 };
 
-const testQuestionArray = [testQuestion, testQuestion2, testQuestion3, testQuestion4, testQuestion5, testQuestion6];
+const testQuestionArray = [testQuestion, testQuestion2, testQuestion3, testQuestion4, 
+                            testQuestion5, testQuestion6, testQuestion7];
 const testUserArray = [testUser, testUser2, testUser3, testFacebookUser];
 const testAnswerArray= [testAnswer, testAnswer2, testAnswer3, testAnswer4];
-
-const testJwt = jwt.sign({
-    user: testUser._id
-},
-    secretKey, 
-    { expiresIn: "24h" },
-);
-
-const testFbJwt = jwt.sign({
-    user: testFacebookUser._id
-},
-    secretKey, 
-    { expiresIn: "24h" },
-);
 
 const initializeDatabase =  async () => {
     for (var i = 0; i < testUserArray.length; i++) {
@@ -156,8 +150,6 @@ module.exports = {
     testQuestion,
     testUserArray,
     testQuestionArray,
-    testJwt,
-    testFbJwt,
     testFacebookUser,
     initializeDatabase
 };

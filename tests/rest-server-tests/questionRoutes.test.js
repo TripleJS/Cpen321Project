@@ -104,40 +104,84 @@ describe("Question Route Test Suite", () => {
     });
 
     test("Posting a new question with invalid user", async () => {
+      const req = mockPostQuestionRequest("new database entry", "some question test", mongoose.Types.ObjectId(), "Cpen 311");
+      const res = mockResponse();
 
+      await questionController.postQuestion(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Could not find User", 403);
     });
-
-    
-
   });
 
   describe("Get Most Recent Question Tests", () => {
-    test("Get most recent question by existing user", async () => {
+    const mockGetMostRecentQuestion = (id) => {
+      return {
+        params : {
+          userId : id
+        }
+      }
+    };
 
+    test("Get most recent question by existing user", async () => {
+      const req = mockGetMostRecentQuestion(mockData.testUser._id);
+      const res = mockResponse();
+
+      await questionController.getMostRecentQuestion(req, res, next);
+      let expected = await Question.findById(mockData.testQuestionArray[0]._id);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(expected);
     });
 
     test("Get most recent question by non-existing user", async () => {
+      const req = mockGetMostRecentQuestion(mongoose.Types.ObjectId());
+      const res = mockResponse();
 
+      await questionController.getMostRecentQuestion(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Could not find any questions", 403);
     });
 
   });
 
   describe("Swiped Question Tests", () => {
 
-    test("Non-exisiting question", async () => {
-
-    });
+    const mockSwipeRequest = (dir, qid, uid) => {
+      return {
+        body : {
+          direction : dir,
+          questionId : qid,
+          userId : uid
+        }
+      }
+    }
 
     test("Existing Question", async () => {
+      const req = mockSwipeRequest("left", mockData.testQuestionArray[0]._id, mockData.testUser._id);
+      const res = mockResponse();
 
+      await questionController.swipedQuestion(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({user : mockData.testUser._id, direction : "left"});
     });
 
-    test("Non-existing user", async () => {
+    test("Non-exisiting question", async () => {
+      const req = mockSwipeRequest("left", mongoose.Types.ObjectId(), mockData.testUser._id);
+      const res = mockResponse();
 
+      await questionController.swipedQuestion(req, res, next);
+      expect(mockErrorHandler.errorThrow).toHaveBeenCalledWith({}, "Question Not Found", 403);
+    });
+  
+    test("Swiping on question user has already swiped on", async () => {
+      const req = mockSwipeRequest("right", mockData.testQuestionArray[0]._id, mockData.testUser._id);
+      const res = mockResponse();
+
+      await questionController.swipedQuestion(req, res, next);
+      await questionController.swipedQuestion(req, res, next);
+      let expected = await Question.findById(mockData.testQuestionArray[0]._id);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({user : mockData.testUser._id, direction : "right"});
+      expect(expected.swipedUsers.length).toEqual(1);
     });
     
-    test("Swiping on question user has already swiped on", async () => {
-
-    });
   });
+
 });

@@ -15,12 +15,13 @@ const MAXIMUM_RETURNED_QUESTIONS = 5;
  */
 const getQuestionsByUser = async (userID, numberOfQuestions) => {
     try {
-        let userQuestions = await Question.find({}).limit(numberOfQuestions).byUserId(userID);
+        let userQuestions = await Question.find({}).byUserId(userID).limit(numberOfQuestions);
         // logger.info("User Questions Length: " + userQuestions.length);
 
         if (userQuestions.length === 0) {
             throw new Error("Could not find Question");
         }
+
         return Promise.resolve(userQuestions);
 
     } catch (err) {
@@ -56,6 +57,10 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
         keywordFreqArray.push(
             {keyword: wordsArray[parseInt(i)], 
                 freq: freqArray[parseInt(i)]});
+    }
+
+    if (keywordFreqArray.length == 0) {
+        return [];
     }
 
     keywordFreqArray.sort((a, b) => {

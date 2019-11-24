@@ -66,7 +66,7 @@ const loginUser = async (req, res, next) => {
     try {
         let curUser = await User.findOne({email : userEmail});
 
-        if (!curUser) {
+        if (curUser == null) {
             errorThrow({}, "User does not exist", 404);
         }
 
