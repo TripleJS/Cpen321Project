@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpen321.ubconnect.OtherAnswersAdapter;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
+import com.cpen321.ubconnect.model.HelperUtils;
 import com.cpen321.ubconnect.model.data.Message;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
@@ -91,6 +93,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(drawerListener);
 
         mDrawerToggle.syncState();
 
@@ -313,6 +316,29 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
             String ts = tsLong.toString();
             Log.d("emitted", "time started " + ts);
             socket.emit("messagedetection", textWatcherJSONObject);
+        }
+    };
+
+    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            // nothing to do
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+            HelperUtils.hideKeyboard(OtherAnswersActivity.this);
+            messagetxt.setCursorVisible(false);
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+            messagetxt.setCursorVisible(true);
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+            // nothing to do
         }
     };
 
