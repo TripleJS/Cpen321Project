@@ -123,9 +123,9 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         let questionsWithUpdatedFreq = [];
 
         if (isEmpty(courses)) {
-            questionsForUser = await Question.bySwipedUser(userId);
+            questionsForUser = await Question.find({}).bySwipedUser(userId);
         } else {
-            questionsForUser = await Question.byCourseTag(courses, userId);
+            questionsForUser = await Question.find({}).byCourseTag(courses, userId);
         }
 
         for (var i = 0; i < questionsForUser.length; i++) {
