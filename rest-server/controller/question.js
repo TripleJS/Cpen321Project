@@ -98,10 +98,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         // Array of Question Objects
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
         
-        const curUser = await User.findById(userId);
-        const {courses} = curUser;
-        console.log("USer courses: " + courses);
-
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
 
@@ -116,22 +112,15 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         logger.info("User Keyword Frequency:");
         logger.info(userKeywordFrequency);
     
-            // Question Objects for the User 
-        let questionsForUser;
+        // Question Objects for the User 
+        let questionsForUser = await Question.find({});
+        console.log("questions for user: " + questionsForUser);
 
         /**
          * Question Objects for the User with the updated keywords including
          * their frequency 
          */
         let questionsWithUpdatedFreq = [];
-
-        if (isEmpty(courses)) {
-            questionsForUser = await Question.find({}).bySwipedUser(userId);
-        } else {
-            questionsForUser = await Question.find({});
-        }
-
-        console.log("questions for user: " + questionsForUser);
 
         for (var i = 0; i < questionsForUser.length; i++) {
             const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
