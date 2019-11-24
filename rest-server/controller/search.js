@@ -8,9 +8,8 @@ const {errorCatch} = require("../utils/errorHandler");
 const search = async (req, res, next) => {
 
     const searchString = req.query.question;
-    console.log(req.query);
+    searchString.toLowerCase();
     console.log(searchString);
-    searchString.toLowerCase().split(" ");
 
     const searchStringKeywords = keywords(searchString);
     console.log(searchStringKeywords);
@@ -18,7 +17,7 @@ const search = async (req, res, next) => {
     try {
         const allQuestions = await Question.find({keywords : searchStringKeywords});
 
-        
+
         for (var i = 0; i < allQuestions.length; i++) {
             console.log(allQuestions[parseInt(i)].title);
         }

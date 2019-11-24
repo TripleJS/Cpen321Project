@@ -14,22 +14,6 @@ const errorCatch = (err, next) =>
     next(err);
 };
 
-/**
- * Throws and error with the given message and status code.
- * @param {array} errors object of errors 
- * @param {String} message error message to be sent
- * @param {Number} statusCode HTTP error status code
- */
-const errorThrowValidator = (errors, message, statusCode) => 
-{
-    if (!errors.isEmpty()) {
-        const error = new Error(message);
-        error.statusCode = statusCode;
-        error.data = errors; 
-        throw error;
-    }
-};
-
 /**  
 * Throw an error with given message and status code
 * @param {object} errors Error Object with errors  
@@ -49,8 +33,7 @@ const errorThrow = (errors, message, statusCode) => {
 
 const exportFunctions = {
     errorThrow,
-    errorCatch,
-    errorThrowValidator
+    errorCatch
 };
 
 module.exports = exportFunctions;
