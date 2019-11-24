@@ -76,7 +76,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         
         const userId = req.params.userId; 
         // Array of Question Objects
-        let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
+        let userQuestions = await (userId, MAX_RETRIEVED_QUESTIONS);
 
         let userQuestionKeywords = [];
 
@@ -119,7 +119,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
 const swipedQuestion = async (req, res, next) => {
     const questionId = req.body.questionId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
     const direction = req.body.direction; 
 
     logger.info(questionId);
@@ -157,7 +157,8 @@ const getMostRecentQuestion = async (req, res, next) => {
         const latestQuestion = await Question.findOne({owner : userId}).sort({date : -1});
 
         if (latestQuestion == null) {
-            errorThrow({}, "Could not find any questions", 403);
+            res.status(200).json([]);
+            return;
         }
 
         res.status(200).json(latestQuestion);

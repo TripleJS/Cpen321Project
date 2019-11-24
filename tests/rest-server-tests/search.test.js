@@ -23,8 +23,14 @@ const mockResponse = () => {
 
 const next = () => {};
 
-describe("Question Route Test Suite", () => {
+describe("Search Test Suite", () => {
   let db;
+
+  const mockSearchRequest = (search) => {
+    return {
+      query : search
+    }
+  };
 
   beforeAll(async () => {
     try {
@@ -49,3 +55,22 @@ describe("Question Route Test Suite", () => {
   afterEach(async () => {
     await mongoose.connection.dropDatabase();
   });
+
+  test("Searching a user", async () => {
+    const req = mockSearchRequest("testusername");
+    const res = mockResponse();
+
+    await search(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  test("Searching non existent user", async () => {
+    const req = mockSearchRequest("testusernamethatdoesntexist");
+    const res = mockResponse();
+
+    await search(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({questions : [], users : []});
+  });
+
+});

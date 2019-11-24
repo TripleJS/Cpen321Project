@@ -17,9 +17,10 @@ const signTokenAndSignIn = (id, res) => {
     );
 
     logger.info("JWT TOKEN: " + token);
+    logger.info(id);
 
     res.status(201).json({
-            userId : id, 
+            _id : id, 
             jwt : token
         }
     );   
@@ -36,8 +37,11 @@ const addUser = async (req, res, next) => {
     try {
 
         let curUser = await User.findOne({email : userEmail});
+        let checkUserName = await User.findOne({userName : newUserName});
+        console.log(curUser);
+        console.log(checkUserName);
 
-        if (!curUser) {
+        if (curUser === null && checkUserName === null) {
             curUser = new User({
                 method: "local",
                 local: { 
@@ -107,8 +111,6 @@ const getUser = async (req, res, next) => {
     }
 };
 
-
-
 const updateUser = async (req, res, next) => {
 
     try {
@@ -168,7 +170,7 @@ const oAuthLogin = async (req, res, next) => {
 
 const rate = async (req, res, next) => {
     const ratingUserId = req.params.ratingUserId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
     const rating = req.body.rating; 
 
     console.log(ratingUserId);
@@ -216,7 +218,7 @@ const rate = async (req, res, next) => {
 
 const report = async (req, res, next) => {
     const reportingUserId = req.params.reportingUserId;
-    const userId = req.body.userId;
+    const userId = req.body._id;
 
     console.log("reporting userid: " + reportingUserId);
     console.log("reported userid: " + userId);

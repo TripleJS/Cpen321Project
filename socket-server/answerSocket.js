@@ -65,21 +65,22 @@ const answerHandler = (io, socket, redisClient) => {
         try {
             const curQuestion = await Question.findById(questionId);
             const answerers = curQuestion.answerers;
-            let userNames = [];
+            let users = [];
 
             for (var i = 0; i < answerers.length; i++) {
                 let user = await User.findById(answerers[parseInt(i)]);
-                userNames.push(user.userName);
+                if (user !== null) {
+                    users.push({userName : user.userName, userAnswerId : user._id});
+                }
             }
 
-            console.log(answerers);
+            console.log(users);
 
-            io.to(room).emit("getUserAnswering", {userAnswering : answerers, userNames : userNames});
+            io.to(room).emit("getUserAnswering", {userAnswering : users});
         } catch (error) {
             logger.error(error);
         }
     });
-
 
 };
 

@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">52.94% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/17</span>
+        <span class='fraction'>9/18</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>1/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">56.25% </span>
+        <span class="strong">52.94% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>9/16</span>
+        <span class='fraction'>9/17</span>
       </div>
     </div>
     <p class="quiet">
@@ -135,13 +135,11 @@
 <a name='L87'></a><a href='#L87'>87</a>
 <a name='L88'></a><a href='#L88'>88</a>
 <a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,14 +187,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -213,18 +214,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = require("mongoose");
+<span class="cline-any cline-yes">5x</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 &nbsp;
 const questionSchema = new Schema({
@@ -293,7 +295,7 @@ questionSchema.query.byCourseTag = <span class="fstat-no" title="function not co
         // Finds questions that match the current course and the user hasn't swiped on it yet 
         const questions = <span class="cstat-no" title="statement not covered" >this.find({course: courses[parseInt(i)], swipedUsers : {$ne: userId}});</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        allQuestions.pushValues(questions);</span>
+<span class="cstat-no" title="statement not covered" >        allQuestions.concat(questions);</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return allQuestions;</span>
@@ -303,7 +305,8 @@ questionSchema.query.byCourseTag = <span class="fstat-no" title="function not co
  * Finds the Questions that a user has swiped on
  */
 questionSchema.query.bySwipedUser = <span class="fstat-no" title="function not covered" >fu</span>nction(userId) {
-<span class="cstat-no" title="statement not covered" >    return this.find({swipedUsers : {$ne: userId}});</span>
+    let result = <span class="cstat-no" title="statement not covered" >this.find({swipedUsers : {$ne: userId}});</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
 }
 &nbsp;
 /** 
@@ -319,7 +322,7 @@ module.exports = mongoose.model("Question", questionSchema);</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 23 2019 18:17:52 GMT-0800 (STD)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Nov 24 2019 11:25:27 GMT-0800 (STD)
 </div>
 </div>
 <script src="../../../prettify.js"></script>
