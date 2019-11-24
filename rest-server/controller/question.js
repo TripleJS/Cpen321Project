@@ -97,7 +97,7 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         const userId = req.params.userId; 
         // Array of Question Objects
         let userQuestions = await getQuestionsByUser(userId, MAX_RETRIEVED_QUESTIONS);
-        
+        console.log("User asked questions " + userQuestions);
         // Array of all the keywords from all user questions
         let userQuestionKeywords = [];
 
@@ -114,7 +114,6 @@ const suggestedQuestionsV2 = async (req, res, next) => {
     
         // Question Objects for the User 
         let questionsForUser = await Question.find({});
-        console.log("questions for user: " + questionsForUser);
 
         /**
          * Question Objects for the User with the updated keywords including
