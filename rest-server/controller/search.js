@@ -5,6 +5,15 @@ const {logger} = require("../../logger");
 const MIN_SEARCH = 3;
 const {errorCatch} = require("../utils/errorHandler");
 
+const containsId = (a, obj) => {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i]._id === obj._id) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const search = async (req, res, next) => {
 
     const searchString = req.query.question;
@@ -32,10 +41,8 @@ const search = async (req, res, next) => {
                 const curUserObject = curUser.toObject();
                 curUserObject.userId = curUser._id;
             
-                for (var j = 0; j < allUsers.length; j++) {
-                   if (allUsers[parseInt(j)]._id !== curUser._id) {
-                        allUsers.push(curUserObject);
-                   }
+                if (!containsId(allUsers, curUser)) {
+                    allUsers.push(curUserObject);
                 }
             }
         }
@@ -48,7 +55,9 @@ const search = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-}
+};
+
+
 
 
 module.exports = search;
