@@ -35,8 +35,8 @@ const search = async (req, res, next) => {
             }
         }
 
-        
-
+        console.log("All Questions: " + allQuestions);
+        console.log("All users: " + allUsers);
         res.status(200).json({question : allQuestions, users : allUsers});
         
     } catch (error) {
