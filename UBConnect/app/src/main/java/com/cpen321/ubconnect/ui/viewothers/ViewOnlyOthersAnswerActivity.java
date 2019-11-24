@@ -230,7 +230,9 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(ViewOnlyOthersAnswerActivity.this, HomeActivity.class);
+            startActivity(intent);
+            ViewOnlyOthersAnswerActivity.this.finish();
         }
     }
 
@@ -291,6 +293,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 
         }
 
+        ViewOnlyOthersAnswerActivity.this.finish();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

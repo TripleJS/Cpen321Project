@@ -2,6 +2,7 @@ package com.cpen321.ubconnect.ui.NavigateToOtherAnswers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,10 +52,10 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
     //josh
 //    private JSONArray answersId;
     private JSONArray userAnswering;
-    private JSONArray userAnsweringIdJSON;
     private Map<String, String> map = new HashMap<>();
     private String userId;
     private LinearLayout linearLayout;
+    private JSONObject tempHolder;
 
 
 
@@ -149,13 +150,16 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                     @Override
                     public void run() {
                         JSONObject data = (JSONObject) args[0];
+
+
                         try {
                             //extract data from fired event
 
 //                            String user = data.getString("senderNickname");
 //                            answersId = data.getJSONArray("answersId");
-                            userAnswering = data.getJSONArray("userName");
-                            userAnsweringIdJSON = data.getJSONArray("userAnsweringId");
+
+                            userAnswering = data.getJSONArray("userAnswering");
+
                             //josh
                             if (userAnswering.length() ==  0) {
                                 Intent intent = new Intent(NavBetweenAnswersActivity.this, NoAnswerActivity.class);
@@ -168,14 +172,15 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
                             Button[] btnArray = new Button[userAnswering.length()];
                             for (int i = 0; i < userAnswering.length(); i++) {
+                                tempHolder = userAnswering.getJSONObject(i);
                                 btnArray[i] = new Button(getApplicationContext());
                                 //otherAnswersViewModel.getUserNameById(userAnsweringId.get(i).toString(), token).getValue().getUserId()
-                                btnArray[i].setText((userAnswering.get(i).toString()));
+                                btnArray[i].setText((tempHolder.getString("userName")));
                                 btnArray[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                         LinearLayout.LayoutParams.WRAP_CONTENT));
                                 linearLayout.addView(btnArray[i]);
                                 btnArray[i].setOnClickListener(handleOnClick(btnArray[i]));
-                                map.put(userAnswering.get(i).toString(), userAnsweringIdJSON.get(i).toString());
+                                map.put(tempHolder.getString("userName"), tempHolder.getString("userAnswerId"));
                             }
 
                         } catch (JSONException e) {
@@ -208,8 +213,8 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         return new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
-                intent.putExtra("arg", questionId);
-                intent.putExtra("userAnsweringId", map.get(button.getText().toString()));
+                intent.putExtra("questionId", questionId);
+                intent.putExtra("userId", map.get(button.getText().toString()));
                 startActivity(intent);
                 NavBetweenAnswersActivity.this.finish();
             }

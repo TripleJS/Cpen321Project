@@ -6,7 +6,7 @@ import java.util.List;
 
 @Keep
 public class User {
-    private String userId;
+    private String _id;
     private String jwt;
     private String email;
     private String password;
@@ -18,11 +18,11 @@ public class User {
     private List<String> usersWhoReported;
 
     public String getUserId() {
-        return userId;
+        return _id;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this._id = userId;
     }
 
     public String getJwt() {

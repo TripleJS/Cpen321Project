@@ -140,7 +140,13 @@ public class PublicUserActivity extends AppCompatActivity implements NavigationV
 
     private void onChangeUser(User user){
         publicUN.setText(user.getUserName());
-        publicUInf.setText("Courses: " + user.getCourses().toString() + "\n" + "Rating: " + user.getRating());
+        if(!user.getCourses().toString().equals("[]")){
+            publicUInf.setText("Courses: " + user.getCourses().toString() + "\n" + "Rating: " + user.getRating());
+        }
+        else{
+            publicUInf.setText("Courses: NA" + "\n" + "Rating: " + user.getRating());
+        }
+
 
         for(UserReportRate ruser : user.getUsersWhoRated()){
             if(ruser.getId().equals(userId)){

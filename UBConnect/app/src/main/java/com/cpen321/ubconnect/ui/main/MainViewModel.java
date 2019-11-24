@@ -99,7 +99,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver{
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-                    Pair<Integer,String> err = new Pair<Integer, String>(response.code(),NetworkUtil.onServerResponseError(response));
+                    Pair<Integer,String> err = new Pair<Integer, String>(response.code(),NetworkUtil.onServerResponseError(response,"signup"));
                     error.postValue(err);
                 }
 
