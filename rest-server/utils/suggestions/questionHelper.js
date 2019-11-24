@@ -4,7 +4,7 @@ const {logger} = require("../../../logger");
 const getCosineSimilarity = require("../suggestions/cosineSimilarity");
 const MAX_RETRIEVED_QUESTIONS = 3;
 const MAX_KEYWORDS = 8; 
-const SIMILARITY_THRESHOLD = 0.65;
+const SIMILARITY_THRESHOLD = 0.4;
 const MAXIMUM_RETURNED_QUESTIONS = 5;
 
 
