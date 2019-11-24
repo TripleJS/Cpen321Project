@@ -36,8 +36,11 @@ const addUser = async (req, res, next) => {
     try {
 
         let curUser = await User.findOne({email : userEmail});
+        let checkUserName = await User.findOne({userName : newUserName});
+        console.log(curUser);
+        console.log(checkUserName);
 
-        if (!curUser) {
+        if (curUser !== null && checkUserName === null) {
             curUser = new User({
                 method: "local",
                 local: { 
@@ -106,8 +109,6 @@ const getUser = async (req, res, next) => {
         errorCatch(error, next);
     }
 };
-
-
 
 const updateUser = async (req, res, next) => {
 
