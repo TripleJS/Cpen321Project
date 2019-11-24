@@ -123,8 +123,9 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         for (var i = 0; i < questionsForUser.length; i++) {
             const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+            const updatedKeywordsWithFreq = getKeywordFrequency(updatedKeywords, updatedKeywords.length);
             console.log(updatedKeywords);
-            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywords});
+            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywordsWithFreq});
         }
         
         const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
