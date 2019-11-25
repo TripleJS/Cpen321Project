@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,13 +19,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.cpen321.ubconnect.OtherAnswersAdapter;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.HelperUtils;
-import com.cpen321.ubconnect.model.data.Message;
+
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
@@ -34,7 +31,7 @@ import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.question.QuestionViewModel;
+
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -46,28 +43,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OtherAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Socket socket;
     private String questionId;
     private String userId;
-    private Question questionClass;
-    //josh
-//    private String roomId;
     private String answer;
-//    private String answerId = null;
-//josh
 
-    public RecyclerView myRecyclerView;
-    public List<Message> MessageList = new ArrayList<Message>();
-    public OtherAnswersAdapter otherAnswersAdapter;
+
+
     public EditText messagetxt ;
-    //    public  Button send ;
+
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
-    private QuestionViewModel questionViewModel;
+
     private String token;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -107,12 +96,6 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         messagetxt.addTextChangedListener(textWatcher);
 
 
-//        Button saveAnswer = findViewById(R.id.saveChanges);
-//        saveAnswer.setOnClickListener(saveAnswerOnClickListener);
-
-        //joshua
-//        submitAnswer.setOnClickListener(submitAnswerOnClickListener);
-
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(floatingActionButtonOnClickListener);
 
@@ -136,15 +119,6 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         else {
             otherAnswersViewModel.getRecentQuestionToAnswerId(token, userId);
         }
-
-        //josh
-
-
-//        socket.on("typing", onTyping);
-//
-//        socket.on("message", onMessage);
-//
-//        socket.on("userdisconnect", onUserDisconnect);
 
 }
 
@@ -210,13 +184,10 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                         try {
                             //extract data from fired event
 
-//                            String nickname = data.getString("senderNickname");
+//
                             answer = data.getString("answer");
                             messagetxt.setText(answer);
-//                            messagetxt.addTextChangedListener(textWatcher);
-//                            answerId = data.getString("answerId");
-                            // HAVE JON SET THIS ANSWEERID AS NEW CURRENT ANSWER
-//                            roomId = data.getString("roomId");
+//
 
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(),
@@ -234,7 +205,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
 
     }
-//josh
+
     private View.OnClickListener floatingActionButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -245,56 +216,16 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
             OtherAnswersActivity.this.finish();
         }
     };
-//joshua
-//    private View.OnClickListener submitAnswerOnClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            try {
-//                submitAnswerJSONObject.put("userId", userId);
-//                submitAnswerJSONObject.put("messagetxt", messagetxt);
-//                submitAnswerJSONObject.put("questionId", questionId);
-//            } catch (JSONException e) {
-//                Toast.makeText(getApplicationContext(),
-//                        "Unexpected Error. Please try again later.",
-//                        Toast.LENGTH_LONG)
-//                        .show();
-//                e.printStackTrace();
-//            }
-//            socket.emit("submitAnswer", submitAnswerJSONObject);
-//            Intent intent = new Intent(OtherAnswersActivity.this, HomeActivity.class);
-//            startActivity(intent);
-//            OtherAnswersActivity.this.finish();
-//            //have jon take this answer out of recent and store in data base
-//        }
-//    };
-//    private View.OnClickListener saveAnswerOnClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            try {
-//                saveAnswerJSONObject.put("userId", userId);
-//                saveAnswerJSONObject.put("messagetxt", messagetxt);
-//            } catch (JSONException e) {
-//                Toast.makeText(getApplicationContext(),
-//                        "Unexpected Error. Please try again later.",
-//                        Toast.LENGTH_LONG)
-//                        .show();
-//                e.printStackTrace();
-//            }
-//            socket.emit("saveAnswer", saveAnswerJSONObject);
-//            //store in data base
-//
-//        }
-//    };
-    //josh
+
 
     private TextWatcher textWatcher = new TextWatcher() {
 
         public void afterTextChanged(Editable s) {
-            // to do
+            // nothing to do
         }
 
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // to do
+            // nothing to do
         }
         //josh
         public void onTextChanged(CharSequence s, int start,
@@ -339,47 +270,6 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
         @Override
         public void onDrawerStateChanged(int newState) {
             // nothing to do
-        }
-    };
-
-    private Emitter.Listener onTyping = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // to do
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // to do
-
-
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onUserDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String data = (String) args[0];
-
-                    Toast.makeText(OtherAnswersActivity.this,data,Toast.LENGTH_SHORT).show();
-
-                }
-            });
         }
     };
 

@@ -2,7 +2,6 @@ package com.cpen321.ubconnect.ui.NavigateToOtherAnswers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +20,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
-import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
+
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.question.QuestionViewModel;
+
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.github.nkzawa.emitter.Emitter;
@@ -49,8 +47,7 @@ import java.util.Map;
 public class NavBetweenAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private String questionId;
-    //josh
-//    private JSONArray answersId;
+
     private JSONArray userAnswering;
     private Map<String, String> map = new HashMap<>();
     private String userId;
@@ -60,10 +57,8 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
     private TextView question;
-    private String userAnsweringId;
     private OtherAnswersViewModel otherAnswersViewModel;
     private String token;
-    private QuestionViewModel questionViewModel;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout drawer;
@@ -72,13 +67,12 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
     private JSONObject joinNavAnswerJSONObject = new JSONObject();
 
-    //josh how am i gunna get question id from drawer????
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_between_answers);
-//josh
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,7 +92,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
         token = ((GlobalVariables) this.getApplication()).getJwt();
-        //connect you socket client to the server
+
         question = findViewById(R.id.question);
         observeOtherAnswersViewModel();
 
@@ -106,7 +100,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
 
 
-        //josh
+        //connect your socket client to the server
         try {
             joinNavAnswerJSONObject.put("userId", userId);
             joinNavAnswerJSONObject.put("questionId", questionId);

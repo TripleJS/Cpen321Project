@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,19 +17,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.fcmservice.MessagingService;
+
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
 import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
-import com.cpen321.ubconnect.ui.main.MainActivity;
+
 import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.publicaccount.PublicUserViewModel;
-import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
+
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
 import com.cpen321.ubconnect.ui.question.QuestionViewModel;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
@@ -50,14 +50,14 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 //    private String roomId;
     private String userId;
     private String userAnsweringId;
-    private String answerId;
+
     private TextView question;
     private TextView userAnswering;
     private OtherAnswersViewModel otherAnswersViewModel;
     //joshua
     private Socket socket;
     private PublicUserViewModel publicUserViewModel;
-    private QuestionViewModel questionViewModel;
+
     private String token;
 
     private ActionBarDrawerToggle mDrawerToggle;
