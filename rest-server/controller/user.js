@@ -67,13 +67,17 @@ const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
     const userPassword = req.body.password; 
     
+    console.log(userEmail);
+    console.log(userPassword);
     try {
         let curUser = await User.findOne({email : userEmail});
 
-        if (curUser == null) {
+        if (curUser === null) {
             errorThrow({}, "User does not exist", 404);
         }
 
+        console.log(curUser.local.password);
+        console.log(curUser);
         if (curUser.local.password !== userPassword) {
             errorThrow({}, "Incorrect Password", 403);
         }
@@ -242,7 +246,6 @@ const report = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-
 };
 
 const exportFunctions = {

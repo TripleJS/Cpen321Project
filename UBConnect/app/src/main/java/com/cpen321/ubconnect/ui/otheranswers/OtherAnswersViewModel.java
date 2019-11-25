@@ -67,7 +67,8 @@ public class OtherAnswersViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (!response.isSuccessful()) {
-                    // ErrorHandlingUtils.errorHandling("dummy");
+                    error.postValue(NetworkUtil.onServerResponseError(response));
+                    return;
                 }
 
                 if (response.body() == null) {
@@ -80,7 +81,7 @@ public class OtherAnswersViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
-                // to do
+                error.postValue("Oops Something Went Wrong! Please Try Again Later!\n" + "more details:\n" + t.toString());
             }
         });
 
@@ -91,7 +92,7 @@ public class OtherAnswersViewModel extends ViewModel {
         return question;
     }
 
-    void setupRetrofit(String token){
+    private void setupRetrofit(String token){
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();

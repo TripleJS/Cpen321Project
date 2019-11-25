@@ -6,14 +6,13 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
+
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cpen321.ubconnect.R;
-import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
+
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -26,12 +25,11 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
+
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -101,16 +99,6 @@ public class SocketTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-//        ViewInteraction appCompatEditText2 = onView(
-//                allOf(withId(R.id.myTextBox), withText("hi "),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-//                                        0),
-//                                2),
-//                        isDisplayed()));
-
 
 
         try {

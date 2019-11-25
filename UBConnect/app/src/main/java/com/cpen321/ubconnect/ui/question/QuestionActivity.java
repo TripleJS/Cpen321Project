@@ -20,12 +20,10 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
-import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersViewModel;
+import com.cpen321.ubconnect.ui.navigatetootheranswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
-import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -41,11 +39,9 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     private QuestionViewModel questionViewModel;
     //joshua
-    private String userId;
     private Button startAnswer;
     private Button viewMoreAnswers;
 
-    private String token;
 
     private ErrorHandlingUtils errorHandlingUtils;
 
@@ -75,8 +71,8 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         startAnswer = findViewById(R.id.answerButton);
         viewMoreAnswers = findViewById(R.id.navAnswersButton);
 
-        token = ((GlobalVariables) this.getApplication()).getJwt();
-        userId = ((GlobalVariables) this.getApplication()).getUserID();
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
+        String userId = ((GlobalVariables) this.getApplication()).getUserID();
 
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
 //joshua
@@ -85,7 +81,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             questionId = bundle.getString("arg");
-            questionViewModel.getQuestion(questionId,token);
+            questionViewModel.getQuestion(questionId, token);
         }
         else {
             questionViewModel.getRecentQuestion(userId, token);
@@ -116,7 +112,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     public void onChangedQuestion(Question question){
         questionId = question.getId();
-        if (questionId.equals("")) {
+        if ("".equals(questionId)) {
             Intent intent = new Intent(QuestionActivity.this, NoQuestionActivity.class);
             startActivity(intent);
             QuestionActivity.this.finish();
@@ -128,7 +124,6 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
                 answer.setText(question.getAnswer().get(0));
         }
         else {
-//                answer.setText("No Answers. Be the first to answer!!");
                 answer.setText("");
         }
         View.OnClickListener answerOnClickListener = new View.OnClickListener() {

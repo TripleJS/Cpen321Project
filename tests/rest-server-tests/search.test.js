@@ -28,7 +28,9 @@ describe("Search Test Suite", () => {
 
   const mockSearchRequest = (search) => {
     return {
-      query : search
+      query : {
+        question : search
+      }
     }
   };
 

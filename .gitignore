@@ -1,6 +1,6 @@
 /node_modules
 /.vscode
-
+/coverage
 test1.js
 combined.log
 error.log

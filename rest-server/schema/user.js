@@ -13,7 +13,6 @@ const userSchema = new Schema({
         local : {
             password: {
                 type: String,
-                select: false
             }, 
             resetToken : String,
             resetExpirationDate: Date,

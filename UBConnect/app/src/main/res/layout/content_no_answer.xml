@@ -20,6 +20,6 @@
             android:id="@+id/noAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You are currently not working on any answer." />
+            android:text="There are currently no answers." />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

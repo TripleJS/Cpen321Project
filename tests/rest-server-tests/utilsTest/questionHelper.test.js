@@ -3,6 +3,7 @@ const questionHelper = require("../../../rest-server/utils/suggestions/questionH
 const mockData = require("../../mongoose-mock-data");
 const Question = require("../../../rest-server/schema/questions");
 const User = require("../../../rest-server/schema/user");
+const mockQuestionHandler = require("../../../rest-server/utils/suggestions/questionHelper");
 
 describe("Question Helper Test Suite", () => {
 
@@ -169,6 +170,7 @@ describe("Question Helper Test Suite", () => {
         });
 
         test("3 questions, only returns 1", () => {
+
             const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
             const question1KeywordFreqArray = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
             const question2KeywordFreqArray = [{keyword : "big", freq : 17}, {keyword : "last", freq : 19}, {keyword : "question", freq : 1}]; 
@@ -178,6 +180,7 @@ describe("Question Helper Test Suite", () => {
                                             {question : "testq2", keywordsWithFreq : question2KeywordFreqArray},
                                             {question : "testq3", keywordsWithFreq : question3KeywordFreqArray}];
 
+            
             let result = questionHelper.getBagOfQuestions(questionsWithKeywords, keywords);
             expect(result.length).toEqual(1);
         });
