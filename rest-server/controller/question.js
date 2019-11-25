@@ -41,7 +41,7 @@ const postQuestion = async (req, res, next) => {
     const creator = req.body.owner; 
     const course = req.body.course;
     course.toLowerCase().replace(" ", "");
-    console.log(course);
+    logger.info(course);
 
     try {
         const curUser = await User.findById(creator);
@@ -80,36 +80,35 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 
         let userQuestionKeywords = [];
 
-        for (var i = 0; i < userQuestions.length; i++) {
-            console.log(userQuestions[i].keywords);
+        let i;
+        
+        for (i = 0; i < userQuestions.length; i++) {
             userQuestionKeywords.push.apply(userQuestionKeywords, userQuestions[parseInt(i)].keywords);
         }
-
-        console.log("User Question Keywords: " + userQuestionKeywords);
 
         // Keywords and their frequency 
         const userKeywordFrequency = getKeywordFrequency(userQuestionKeywords, MAX_KEYWORDS);
         logger.info("User Keyword Frequency:");
-        console.log(userKeywordFrequency);
+        logger.info(userKeywordFrequency);
     
         // Question Objects for the User 
         let questionsForUser = await Question.find({}).bySwipedUser(userId);
-        console.log(questionsForUser);
+        logger.info(questionsForUser);
         /**
          * Question Objects for the User with the updated keywords including
          * their frequency 
          */
         let questionsWithUpdatedFreq = [];
 
-        for (var i = 0; i < questionsForUser.length; i++) {
+        for (i = 0; i < questionsForUser.length; i++) {
             const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
             const updatedKeywordsWithFreq = getKeywordFrequency(updatedKeywords, updatedKeywords.length);
-            console.log(updatedKeywords);
+            logger.info(updatedKeywords);
             questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywordsWithFreq});
         }
         
         const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
-        console.log("questions to return: " + questionsToReturn);
+        logger.info("questions to return: " + questionsToReturn);
         res.status(200).json(questionsToReturn);
  
     } catch (error) {

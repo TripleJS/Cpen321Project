@@ -1,5 +1,4 @@
 const Question = require("../../schema/questions");
-const User = require("../../schema/user");
 const {logger} = require("../../../logger");
 const getCosineSimilarity = require("../suggestions/cosineSimilarity");
 const MAX_RETRIEVED_QUESTIONS = 100;
@@ -42,7 +41,9 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
     let freqArray = [], wordsArray = [];
     let keywordFreqArray = [];
 
-    for (var i = 0; i < questionKeywords.length; i++) {
+    let i;
+
+    for (i = 0; i < questionKeywords.length; i++) {
         if (questionKeywords[parseInt(i)] !== prev) {
             wordsArray.push(questionKeywords[parseInt(i)]);
             freqArray.push(1);
@@ -52,7 +53,7 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
         prev = questionKeywords[i];
     }
 
-    for (var i = 0; i < wordsArray.length; i++) {
+    for (i = 0; i < wordsArray.length; i++) {
         keywordFreqArray.push(
             {keyword: wordsArray[parseInt(i)], 
                 freq: freqArray[parseInt(i)]});
@@ -81,7 +82,8 @@ const matchKeywords = (question, keywordList) => {
     let updatedKeywords = [];
     keywords.sort(); 
 
-    for (var i = 0; i < keywords.length; i++) {
+    let i;
+    for (i = 0; i < keywords.length; i++) {
         const found = keywordList.some(el => el.keyword === keywords[i]);
 
         if (found) {
@@ -101,12 +103,13 @@ const matchKeywords = (question, keywordList) => {
  const getBagOfQuestions = (questions, questionKeywords) => {
     const bagOfQuestions = [];
     const keywordsFreqOnly = questionKeywords.map(({freq}) => freq);
-    console.log(keywordsFreqOnly);
-    for (let i = 0; i < questions.length; i++) {
+    logger.info(keywordsFreqOnly);
+    let i;
+    for (i = 0; i < questions.length; i++) {
 
         // Take only the frequency 
         const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
-        console.log("frequency array: " + freqArray);
+        logger.info("frequency array: " + freqArray);
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Cosine Similarity Value: " + cosineSimilarity);
 

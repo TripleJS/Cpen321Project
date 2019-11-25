@@ -2,7 +2,8 @@
 
 const normalizeVector = (vector, length) => {
     const newVector = vector;
-    for (let i = 0; i < length; i++) {
+    let i;
+    for (i = 0; i < length; i++) {
         newVector.push(0);
     }
 
@@ -11,8 +12,8 @@ const normalizeVector = (vector, length) => {
 
 const computeCosineSimilarity = (v1, v2) => {
     let sumxx = 0; let sumyy = 0; let sumxy = 0;
-
-    for (let i = 0; i < v1.length; i++) {
+    let i;
+    for (i = 0; i < v1.length; i++) {
         let x = v1[i]; 
         let y = v2[i];
         sumxx += x*x;

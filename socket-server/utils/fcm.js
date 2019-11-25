@@ -25,7 +25,7 @@ const sendNotification = (topic, notification, inputData) => {
           resolve("Successfully sent message: " + response);
         })
         .catch((err) => {
-          logger.error("Error sending message:" + error);
+          logger.error("Error sending message:" + err);
           reject("Error: " + err);
         });
     })
@@ -45,7 +45,7 @@ const subscribeToTopic = (topic, token) => {
             })
             .catch((err) => {
                 logger.error("error subscribing " + err);
-                reject("Error: " + error);
+                reject("Error: " + err);
             });
     })
 };

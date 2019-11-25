@@ -67,14 +67,15 @@ const answerHandler = (io, socket, redisClient) => {
             const answerers = curQuestion.answerers;
             let users = [];
 
-            for (var i = 0; i < answerers.length; i++) {
+            let i;
+            for (i = 0; i < answerers.length; i++) {
                 let user = await User.findById(answerers[parseInt(i)]);
                 if (user !== null) {
                     users.push({userName : user.userName, userAnswerId : user._id});
                 }
             }
 
-            console.log(users);
+            logger.info(users);
 
             io.to(room).emit("getUserAnswering", {userAnswering : users});
         } catch (error) {

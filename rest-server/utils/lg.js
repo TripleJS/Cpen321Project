@@ -24,8 +24,8 @@ const keywords = (string) => {
         new RegExp("[, ]+","gi")
     ];
 
-
-    for (var i = 0; i < regexes.length; i++) {
+    let i; 
+    for (i = 0; i < regexes.length; i++) {
         if (i > 16 || i < 20){
             string = string.replace(regexes[parseInt(i)]," ");
         } else {

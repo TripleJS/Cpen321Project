@@ -136,12 +136,13 @@ const testUserArray = [testUser, testUser2, testUser3, testFacebookUser];
 const testAnswerArray= [testAnswer, testAnswer2, testAnswer3, testAnswer4];
 
 const initializeDatabase =  async () => {
-    for (var i = 0; i < testUserArray.length; i++) {
+    let i;
+    for (i = 0; i < testUserArray.length; i++) {
         let user = new User(testUserArray[parseInt(i)]);
         await user.save();
     }
 
-    for (var i = 0; i < testQuestionArray.length; i++) {
+    for (i = 0; i < testQuestionArray.length; i++) {
         let question = new Question(testQuestionArray[parseInt(i)]);
         await question.save();
     }
