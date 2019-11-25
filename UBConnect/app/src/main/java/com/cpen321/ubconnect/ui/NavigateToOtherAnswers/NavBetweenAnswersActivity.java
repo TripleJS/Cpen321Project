@@ -283,6 +283,8 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                 Intent t= new Intent(NavBetweenAnswersActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
+            default:
+                break;
 
         }
 

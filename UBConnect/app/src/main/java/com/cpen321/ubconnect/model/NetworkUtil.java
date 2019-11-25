@@ -10,10 +10,8 @@ public class NetworkUtil {
     }
 
     public static String onServerResponseError(Response response, String route) {
-        if(route.equals("signup")){
-            if(response.code() == 403){
-                return "username already exists";
-            }
+        if(route.equals("signup") & response.code() == 403){
+            return "username already exists";
         }
         return response.message();
     }

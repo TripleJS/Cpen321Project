@@ -339,6 +339,8 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                 Intent t= new Intent(OtherAnswersActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
+            default:
+                break;
 
         }
 

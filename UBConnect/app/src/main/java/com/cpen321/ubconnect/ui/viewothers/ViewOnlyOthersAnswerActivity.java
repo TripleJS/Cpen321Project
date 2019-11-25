@@ -290,6 +290,8 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
                 Intent t= new Intent(ViewOnlyOthersAnswerActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
                 break;
+            default:
+                break;
 
         }
 
