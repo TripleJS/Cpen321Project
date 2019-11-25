@@ -1,8 +1,7 @@
-package com.cpen321.ubconnect.ui.NavigateToOtherAnswers;
+package com.cpen321.ubconnect.ui.navigatetootheranswers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +20,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.model.data.User;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.NoAnswerActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersViewModel;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
-import com.cpen321.ubconnect.ui.question.NoQuestionActivity;
+
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.question.QuestionViewModel;
+
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.cpen321.ubconnect.ui.viewothers.ViewOnlyOthersAnswerActivity;
 import com.github.nkzawa.emitter.Emitter;
@@ -49,45 +47,33 @@ import java.util.Map;
 public class NavBetweenAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private String questionId;
-    //josh
-//    private JSONArray answersId;
-    private JSONArray userAnswering;
-    private Map<String, String> map = new HashMap<>();
     private String userId;
-    private LinearLayout linearLayout;
-    private JSONObject tempHolder;
 
-
+    private Map<String, String> map = new HashMap<>();
 
     private TextView question;
-    private String userAnsweringId;
     private OtherAnswersViewModel otherAnswersViewModel;
-    private String token;
-    private QuestionViewModel questionViewModel;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
+
+
 
     private JSONObject joinNavAnswerJSONObject = new JSONObject();
 
-    //josh how am i gunna get question id from drawer????
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_between_answers);
-//josh
-        toolbar = findViewById(R.id.toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -97,16 +83,29 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
-        token = ((GlobalVariables) this.getApplication()).getJwt();
-        //connect you socket client to the server
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
+
         question = findViewById(R.id.question);
         observeOtherAnswersViewModel();
 
+        mainSocketMethod();
+
+        otherAnswersViewModel.getQuestionById(questionId, token);
 
 
+    }
+    private void observeOtherAnswersViewModel(){
+        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
+
+    }
 
 
-        //josh
+    private void onChangedQuestion(Question question){
+        this.question.setText(question.getQuestion());
+    }
+
+    private void mainSocketMethod() {
+        //connect your socket client to the server
         try {
             joinNavAnswerJSONObject.put("userId", userId);
             joinNavAnswerJSONObject.put("questionId", questionId);
@@ -158,7 +157,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 //                            String user = data.getString("senderNickname");
 //                            answersId = data.getJSONArray("answersId");
 
-                            userAnswering = data.getJSONArray("userAnswering");
+                            JSONArray userAnswering = data.getJSONArray("userAnswering");
 
                             //josh
                             if (userAnswering.length() ==  0) {
@@ -167,10 +166,11 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                                 NavBetweenAnswersActivity.this.finish();
 
                             }
-                            linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
+                            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
                             linearLayout.setVerticalScrollBarEnabled(true);
 
                             Button[] btnArray = new Button[userAnswering.length()];
+                            JSONObject tempHolder = new JSONObject();
                             for (int i = 0; i < userAnswering.length(); i++) {
                                 tempHolder = userAnswering.getJSONObject(i);
                                 btnArray[i] = new Button(getApplicationContext());
@@ -194,22 +194,9 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                 });
             }
         });
-        otherAnswersViewModel.getQuestionById(questionId, token);
-
-
-    }
-    private void observeOtherAnswersViewModel(){
-        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
-
     }
 
-
-    private void onChangedQuestion(Question question){
-        this.question.setText(question.getQuestion());
-    }
-
-
-    View.OnClickListener handleOnClick(final Button button) {
+    private View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
@@ -288,6 +275,8 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
             case R.id.nav_continue_answering:
                 Intent t= new Intent(NavBetweenAnswersActivity.this, OtherAnswersActivity.class);
                 startActivity(t);
+                break;
+            default:
                 break;
 
         }

@@ -3,7 +3,7 @@ package com.cpen321.ubconnect.ui.main;
 
 import android.os.Environment;
 
-import androidx.recyclerview.widget.RecyclerView;
+
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.filters.LargeTest;
