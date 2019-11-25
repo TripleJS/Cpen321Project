@@ -27,12 +27,12 @@ const keywords = (string) => {
     let i; 
     for (i = 0; i < regexes.length; i++) {
         if (i > 16 || i < 20){
-            string = string.replace(regexes[parseInt(i)]," ");
+            string = string.replace(regexes[parseInt(i, 10)]," ");
         } else {
-            string = string.replace(regexes[parseInt(i)],",");
+            string = string.replace(regexes[parseInt(i, 10)],",");
         }
 
-        string = string.replace(regexes[parseInt(i)]," ");
+        string = string.replace(regexes[parseInt(i, 10)]," ");
     }
 
     string = string.replace(new RegExp(" ","gi"),",");

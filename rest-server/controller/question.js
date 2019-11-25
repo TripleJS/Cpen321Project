@@ -8,7 +8,7 @@ const { getQuestionsByUser,
         matchKeywords,
         MAX_RETRIEVED_QUESTIONS,
         getBagOfQuestions,
-        MAX_KEYWORDS } = require('../utils/suggestions/questionHelper');
+        MAX_KEYWORDS } = require("../utils/suggestions/questionHelper");
 
 
 const getQuestion = async (req, res, next) => {
@@ -33,13 +33,13 @@ const getQuestion = async (req, res, next) => {
 const postQuestion = async (req, res, next) => {
 
     const curDate = new Date();
-    const title = req.body.title;
+    const newTitle = req.body.title;
     const questionString = req.body.question;
     const lowerCaseString = questionString.toLowerCase();
 
     logger.info(lowerCaseString);
     const creator = req.body.owner; 
-    const course = req.body.course;
+    const newCourse = req.body.course;
     course.toLowerCase().replace(" ", "");
     logger.info(course);
 
@@ -51,11 +51,11 @@ const postQuestion = async (req, res, next) => {
         }
 
         const question = new Question({
-            title : title,
+            title : newTitle,
             question: questionString,
             date : curDate,
             owner : creator,
-            course : course
+            course : newCourse
         });
 
         res.status(203).json(question);
@@ -81,9 +81,9 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         let userQuestionKeywords = [];
 
         let i;
-        
+
         for (i = 0; i < userQuestions.length; i++) {
-            userQuestionKeywords.push.apply(userQuestionKeywords, userQuestions[parseInt(i)].keywords);
+            userQuestionKeywords.push.apply(userQuestionKeywords, userQuestions[parseInt(i, 10)].keywords);
         }
 
         // Keywords and their frequency 
@@ -101,10 +101,10 @@ const suggestedQuestionsV2 = async (req, res, next) => {
         let questionsWithUpdatedFreq = [];
 
         for (i = 0; i < questionsForUser.length; i++) {
-            const updatedKeywords = matchKeywords(questionsForUser[parseInt(i)], userKeywordFrequency);
+            const updatedKeywords = matchKeywords(questionsForUser[parseInt(i, 10)], userKeywordFrequency);
             const updatedKeywordsWithFreq = getKeywordFrequency(updatedKeywords, updatedKeywords.length);
             logger.info(updatedKeywords);
-            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i)], keywordsWithFreq : updatedKeywordsWithFreq});
+            questionsWithUpdatedFreq.push({question: questionsForUser[parseInt(i, 10)], keywordsWithFreq : updatedKeywordsWithFreq});
         }
         
         const questionsToReturn = getBagOfQuestions(questionsWithUpdatedFreq, userKeywordFrequency);
@@ -119,11 +119,11 @@ const suggestedQuestionsV2 = async (req, res, next) => {
 const swipedQuestion = async (req, res, next) => {
     const questionId = req.body.questionId;
     const userId = req.body._id;
-    const direction = req.body.direction; 
+    const userDirection = req.body.direction; 
 
     logger.info(questionId);
     logger.info(userId);
-    logger.info(direction);
+    logger.info(userDirection);
 
     try {
         let result = await Question.findById(questionId);
@@ -141,7 +141,7 @@ const swipedQuestion = async (req, res, next) => {
 
         res.status(200).json({
             user: userId,
-            direction : direction
+            direction : userDirection
         });
 
     } catch (error) {

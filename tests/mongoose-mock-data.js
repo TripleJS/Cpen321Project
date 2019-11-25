@@ -112,7 +112,7 @@ const testQuestion7 = {
     owner : testUser._id,
     date : Date.now(),
     keywords : ["last", "question", "big", "xd"]
-}
+};
 
 const testAnswer = {
 
@@ -138,12 +138,12 @@ const testAnswerArray= [testAnswer, testAnswer2, testAnswer3, testAnswer4];
 const initializeDatabase =  async () => {
     let i;
     for (i = 0; i < testUserArray.length; i++) {
-        let user = new User(testUserArray[parseInt(i)]);
+        let user = new User(testUserArray[parseInt(i, 10)]);
         await user.save();
     }
 
     for (i = 0; i < testQuestionArray.length; i++) {
-        let question = new Question(testQuestionArray[parseInt(i)]);
+        let question = new Question(testQuestionArray[parseInt(i, 10)]);
         await question.save();
     }
 };

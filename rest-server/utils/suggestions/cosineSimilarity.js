@@ -14,8 +14,8 @@ const computeCosineSimilarity = (v1, v2) => {
     let sumxx = 0; let sumyy = 0; let sumxy = 0;
     let i;
     for (i = 0; i < v1.length; i++) {
-        let x = v1[i]; 
-        let y = v2[i];
+        let x = v1[parseInt(i, 10)]; 
+        let y = v2[parseInt(i, 10)];
         sumxx += x*x;
         sumyy += y*y;
         sumxy += x*y;

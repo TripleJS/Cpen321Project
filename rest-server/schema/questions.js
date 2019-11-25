@@ -54,7 +54,7 @@ const questionSchema = new Schema({
  */
 questionSchema.query.byUserId = function(userId) {
     return this.find({owner : userId});
-}
+};
 
 /** 
  * Finds the Questions that a user has swiped on
@@ -62,13 +62,13 @@ questionSchema.query.byUserId = function(userId) {
 questionSchema.query.bySwipedUser = function(userId) {
     let result = this.find({swipedUsers : {$ne: userId}});
     return result;
-}
+};
 
 /** 
  * Finds the Questions that a user has most recently posted
  */
 questionSchema.query.mostRecentUserQuestion = function(userId) {
     return this.findOne({owner: userId}, {sort: {date : -1}});
-}
+};
 
 module.exports = mongoose.model("Question", questionSchema);

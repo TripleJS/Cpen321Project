@@ -44,19 +44,19 @@ const getKeywordFrequency = (questionKeywords, numKeywords) => {
     let i;
 
     for (i = 0; i < questionKeywords.length; i++) {
-        if (questionKeywords[parseInt(i)] !== prev) {
-            wordsArray.push(questionKeywords[parseInt(i)]);
+        if (questionKeywords[parseInt(i, 10)] !== prev) {
+            wordsArray.push(questionKeywords[parseInt(i, 10)]);
             freqArray.push(1);
         } else {
-            freqArray[parseInt(freqArray.length - 1)]++;
+            freqArray[parseInt(freqArray.length - 1, 10)]++;
         }
-        prev = questionKeywords[i];
+        prev = questionKeywords[parseInt(i, 10)];
     }
 
     for (i = 0; i < wordsArray.length; i++) {
         keywordFreqArray.push(
-            {keyword: wordsArray[parseInt(i)], 
-                freq: freqArray[parseInt(i)]});
+            {keyword: wordsArray[parseInt(i, 10)], 
+                freq: freqArray[parseInt(i, 10)]});
     }
 
     if (keywordFreqArray.length == 0) {
@@ -84,10 +84,10 @@ const matchKeywords = (question, keywordList) => {
 
     let i;
     for (i = 0; i < keywords.length; i++) {
-        const found = keywordList.some(el => el.keyword === keywords[i]);
+        const found = keywordList.some(el => el.keyword === keywords[parseInt(i, 10)]);
 
         if (found) {
-            updatedKeywords.push(keywords[i]);
+            updatedKeywords.push(keywords[parseInt(i, 10)]);
         }
     }
 
@@ -108,7 +108,7 @@ const matchKeywords = (question, keywordList) => {
     for (i = 0; i < questions.length; i++) {
 
         // Take only the frequency 
-        const freqArray = questions[parseInt(i)].keywordsWithFreq.map(({ freq }) => freq);
+        const freqArray = questions[parseInt(i, 10)].keywordsWithFreq.map(({ freq }) => freq);
         logger.info("frequency array: " + freqArray);
         const cosineSimilarity = getCosineSimilarity(freqArray, keywordsFreqOnly);
         logger.info("Cosine Similarity Value: " + cosineSimilarity);
@@ -116,7 +116,7 @@ const matchKeywords = (question, keywordList) => {
         if (cosineSimilarity > SIMILARITY_THRESHOLD()) {
 
             // Push ONLY THE QUESTION OBJECT
-            bagOfQuestions.push(questions[parseInt(i)].question);
+            bagOfQuestions.push(questions[parseInt(i, 10)].question);
         }
 
         if (bagOfQuestions > MAXIMUM_RETURNED_QUESTIONS) {
@@ -135,30 +135,8 @@ module.exports = {
     MAX_RETRIEVED_QUESTIONS,
     MAX_KEYWORDS,
     SIMILARITY_THRESHOLD
-}
+};
 
-// const testArray = ["test", "hello", "myname", "test", "nibba", "xdddd", "xdddd", "cmon", "cuh", "yo", "yodawh", "yoyo", "hey", "there", "their", "there", "there", "xddd"];
-
-// console.log(getKeywordFrequency(testArray));
-
-// const test = async() => {
-//     try {
-//         await startServer(mongodburl, port);
-//         let userQuestions = await getQuestionsByUser("5db007f55452070057d550ab", 0);
-
-//         console.log(userQuestions);
-//     } catch (err) {
-
-//         console.error(err);
-//     }
-// };
-
-// test();
-
-const keywords = [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}];
-const questionsWithKeywords = [{question : {}, keywordsWithFreq : [{keyword : "big", freq : 1}, {keyword : "last", freq : 1}, {keyword : "question", freq : 1}, {keyword : "xd", freq : 1}]}];
-
-let result = getBagOfQuestions(questionsWithKeywords, keywords);
-console.log(result);
+   
 
 

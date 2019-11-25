@@ -1,8 +1,8 @@
-const io = require('socket.io');
-const {onJoin} = require('./socketListenerFunctions');
-const Question = require('../rest-server/schema/questions');
+const io = require("socket.io");
+const {onJoin} = require("./socketListenerFunctions");
+const Question = require("../rest-server/schema/questions");
 const Answer = require("../rest-server/schema/answers");
-const User = require('../rest-server/schema/user');
+const User = require("../rest-server/schema/user");
 const {logger} = require("../logger");
 const answerHandler = (io, socket, redisClient) => {
 
@@ -69,7 +69,7 @@ const answerHandler = (io, socket, redisClient) => {
 
             let i;
             for (i = 0; i < answerers.length; i++) {
-                let user = await User.findById(answerers[parseInt(i)]);
+                let user = await User.findById(answerers[parseInt(i, 10)]);
                 if (user !== null) {
                     users.push({userName : user.userName, userAnswerId : user._id});
                 }

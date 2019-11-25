@@ -19,22 +19,20 @@ const search = async (req, res, next) => {
 
     const searchString = req.query.question;
     searchString.toLowerCase();
-    console.log(searchString);
 
     const searchStringKeywords = keywords(searchString);
-    console.log(searchStringKeywords);
 
     try {
         const allQuestions = await Question.find({keywords : { $all : searchStringKeywords}});
 
         let i;
         let allUsers = [];
-        
+
         if (searchStringKeywords.length === 1) {
             allUsers = await User.find({userName : searchString});
         } else {
             for (i = 0; i < allQuestions.length; i++) {
-                const curUser = await User.findById(allQuestions[parseInt(i)].owner);
+                const curUser = await User.findById(allQuestions[parseInt(i, 10)].owner);
                 const curUserObject = curUser.toObject();
                 curUserObject.userId = curUser._id;
 

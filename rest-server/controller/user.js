@@ -31,22 +31,22 @@ const addUser = async (req, res, next) => {
     const newUserData = req.body;
 
     const userEmail = newUserData.email;
-    const password = newUserData.password;    
+    const newPassword = newUserData.password;    
     const newUserName = newUserData.userName;
     
     try {
 
         let curUser = await User.findOne({email : userEmail});
         let checkUserName = await User.findOne({userName : newUserName});
-        console.log(curUser);
-        console.log(checkUserName);
+        logger.info(curUser);
+        logger.info(checkUserName);
 
         if (curUser === null && checkUserName === null) {
             curUser = new User({
                 method: "local",
                 local: { 
                     email: userEmail, 
-                    password: password
+                    password: newPassword
                 },
                 userName: newUserName,
                 email : userEmail
@@ -67,8 +67,8 @@ const loginUser = async (req, res, next) => {
     const userEmail = req.body.email;
     const userPassword = req.body.password; 
     
-    console.log(userEmail);
-    console.log(userPassword);
+    logger.info(userEmail);
+    logger.info(userPassword);
     try {
         let curUser = await User.findOne({email : userEmail});
 
@@ -87,7 +87,7 @@ const loginUser = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-}
+};
 
 const getUser = async (req, res, next) => {
     try {
@@ -149,7 +149,7 @@ const updateUser = async (req, res, next) => {
     } catch (error) {
         errorCatch(error, next);
     }
-}
+};
 
 const oAuthLogin = async (req, res, next) => {
     logger.info(req.user);
@@ -175,10 +175,8 @@ const oAuthLogin = async (req, res, next) => {
 const rate = async (req, res, next) => {
     const ratingUserId = req.params.ratingUserId;
     const userId = req.body._id;
-    const rating = req.body.rating; 
+    const userRating = req.body.rating; 
 
-    console.log(ratingUserId);
-    console.log(userId);
 
     try {
         const ratingUser = await User.findById(ratingUserId)
@@ -190,15 +188,14 @@ const rate = async (req, res, next) => {
 
         let result = await User.findOneAndUpdate(
             {_id : userId, "usersWhoRated.id" : ratingUserId}, 
-            {$set: {"usersWhoRated.$.rating" : rating}
+            {$set: {"usersWhoRated.$.rating" : userRating}
         }, {new : true});
 
         
         if (!result) {
-            console.log("pushing new value into database");
             // Push new value onto array if not yet rated
             result = await User.findByIdAndUpdate(userId, {$push : 
-                {usersWhoRated : {id : ratingUserId, rating : rating}}}, 
+                {usersWhoRated : {id : ratingUserId, rating : userRating}}}, 
                 {new : true});
         }
 

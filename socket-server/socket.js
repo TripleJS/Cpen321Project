@@ -1,6 +1,6 @@
 const socketio = require("socket.io");
 const {logger} = require("../logger");
-const questionHandler = require('./questionSocket');
+const questionHandler = require("./questionSocket");
 const answerHandler = require("./answerSocket");
 class SocketServer {
     

@@ -28,7 +28,7 @@ const sendNotification = (topic, notification, inputData) => {
           logger.error("Error sending message:" + err);
           reject("Error: " + err);
         });
-    })
+    });
 };
 
 
@@ -47,7 +47,7 @@ const subscribeToTopic = (topic, token) => {
                 logger.error("error subscribing " + err);
                 reject("Error: " + err);
             });
-    })
+    });
 };
 
 const createNotificationMessage = (notificationBody, notificationTitle) => {
@@ -55,7 +55,7 @@ const createNotificationMessage = (notificationBody, notificationTitle) => {
         title: notificationTitle,
         body: notificationBody
     }
-}
+};
 
 module.exports = {
     sendNotification,
