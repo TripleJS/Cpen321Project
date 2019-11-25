@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (! checkPassword(password.getText().toString())) {
+            if (! checkPassword(password.getText().toString()) && !loginSignup.getText().equals("Login")) {
                 Toast.makeText(getApplicationContext(),"Password must contain at least:\n8 characters, a digit, no spaces and both lower and upper case letters", Toast.LENGTH_LONG).show();
                 return;
             }

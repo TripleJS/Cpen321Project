@@ -142,7 +142,7 @@ public class AccountActivity extends AppCompatActivity implements NavigationView
         questions = new ArrayList<>();
         recyclerView = findViewById(R.id.accountRecycle);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
 
         observeViewModel();
 
