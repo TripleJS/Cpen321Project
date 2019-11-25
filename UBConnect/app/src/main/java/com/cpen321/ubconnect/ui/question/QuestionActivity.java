@@ -81,6 +81,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             questionId = bundle.getString("arg");
+            questionViewModel.getQuestion(questionId, token);
         }
         else {
             questionViewModel.getRecentQuestion(userId, token);
