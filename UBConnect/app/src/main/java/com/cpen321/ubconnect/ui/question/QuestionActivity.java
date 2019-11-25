@@ -122,9 +122,9 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
         dateAuthor.setText(question.getDate() + " by " + question.getOwner());
         if(question.getAnswer() != null){
                 answer.setText(question.getAnswer().get(0));
-            }
-            else {
-                answer.setText("No Answers. Be the first to answer!!");
+        }
+        else {
+                answer.setText("");
         }
         View.OnClickListener answerOnClickListener = new View.OnClickListener() {
             @Override
