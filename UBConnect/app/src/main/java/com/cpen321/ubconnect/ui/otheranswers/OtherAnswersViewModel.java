@@ -92,7 +92,7 @@ public class OtherAnswersViewModel extends ViewModel {
         return question;
     }
 
-    void setupRetrofit(String token){
+    private void setupRetrofit(String token){
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(token))
                 .build();

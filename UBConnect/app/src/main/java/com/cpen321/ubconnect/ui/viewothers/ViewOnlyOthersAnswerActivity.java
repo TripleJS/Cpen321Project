@@ -31,7 +31,6 @@ import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
 import com.cpen321.ubconnect.ui.publicaccount.PublicUserViewModel;
 
 import com.cpen321.ubconnect.ui.question.QuestionActivity;
-import com.cpen321.ubconnect.ui.question.QuestionViewModel;
 import com.cpen321.ubconnect.ui.search.SearchActivity;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -58,8 +57,6 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
     private Socket socket;
     private PublicUserViewModel publicUserViewModel;
 
-    private String token;
-
     private JSONObject joinViewAnswerJSONObject = new JSONObject();
 
     //josh
@@ -74,7 +71,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -106,7 +103,7 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 
 
 
-        token = ((GlobalVariables) this.getApplication()).getJwt();
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
         //josh
 
         publicUserViewModel = ViewModelProviders.of(this).get(PublicUserViewModel.class);

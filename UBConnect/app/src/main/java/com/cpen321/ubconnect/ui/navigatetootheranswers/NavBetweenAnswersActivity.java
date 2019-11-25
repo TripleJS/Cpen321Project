@@ -49,13 +49,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
     private String questionId;
     private String userId;
 
-    private JSONArray userAnswering;
     private Map<String, String> map = new HashMap<>();
-
-    private LinearLayout linearLayout;
-    private JSONObject tempHolder;
-
-
 
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
@@ -76,7 +70,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(mDrawerToggle);
+        drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -176,6 +170,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                             linearLayout.setVerticalScrollBarEnabled(true);
 
                             Button[] btnArray = new Button[userAnswering.length()];
+                            JSONObject tempHolder = new JSONObject();
                             for (int i = 0; i < userAnswering.length(); i++) {
                                 tempHolder = userAnswering.getJSONObject(i);
                                 btnArray[i] = new Button(getApplicationContext());
@@ -201,7 +196,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         });
     }
 
-    View.OnClickListener handleOnClick(final Button button) {
+    private View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(NavBetweenAnswersActivity.this, ViewOnlyOthersAnswerActivity.class);
