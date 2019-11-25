@@ -40,8 +40,8 @@ const postQuestion = async (req, res, next) => {
     logger.info(lowerCaseString);
     const creator = req.body.owner; 
     const newCourse = req.body.course;
-    course.toLowerCase().replace(" ", "");
-    logger.info(course);
+    newCourse.toLowerCase().replace(" ", "");
+    logger.info(newCourse);
 
     try {
         const curUser = await User.findById(creator);
