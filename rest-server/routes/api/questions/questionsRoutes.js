@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const questionController = require("../../../controller/question");
 const searchQuestion = require("../../../controller/search");
-const {userValidator} = require("../../../utils/validator");
 const passport = require("passport");
 const passportConfig = require("../../../middleware/passport");
 

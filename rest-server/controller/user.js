@@ -1,8 +1,5 @@
 const User = require("../schema/user");
-const bcrypt = require("bcryptjs");
-const aesjs = require("aes-js");
 const {errorCatch, errorThrow} = require("../utils/errorHandler");
-const { validationResult } = require("express-validator");
 const {secretKey} = require("../../config");
 const jwt = require("jsonwebtoken");
 const {logger} = require("../../logger");
