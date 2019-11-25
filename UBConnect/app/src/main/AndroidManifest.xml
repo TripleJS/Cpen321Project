@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".ui.NavigateToOtherAnswers.NavBetweenAnswersActivity"
+            android:name=".ui.navigatetootheranswers.NavBetweenAnswersActivity"
             android:label="Choose An Answer To View"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

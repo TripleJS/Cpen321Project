@@ -1,4 +1,4 @@
-package com.cpen321.ubconnect.ui.NavigateToOtherAnswers;
+package com.cpen321.ubconnect.ui.navigatetootheranswers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,10 +47,11 @@ import java.util.Map;
 public class NavBetweenAnswersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private String questionId;
+    private String userId;
 
     private JSONArray userAnswering;
     private Map<String, String> map = new HashMap<>();
-    private String userId;
+
     private LinearLayout linearLayout;
     private JSONObject tempHolder;
 
@@ -58,12 +59,9 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
-    private String token;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
+
+
 
     private JSONObject joinNavAnswerJSONObject = new JSONObject();
 
@@ -73,15 +71,15 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_between_answers);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -91,15 +89,28 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
-        token = ((GlobalVariables) this.getApplication()).getJwt();
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
 
         question = findViewById(R.id.question);
         observeOtherAnswersViewModel();
 
+        mainSocketMethod();
+
+        otherAnswersViewModel.getQuestionById(questionId, token);
 
 
+    }
+    private void observeOtherAnswersViewModel(){
+        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
+
+    }
 
 
+    private void onChangedQuestion(Question question){
+        this.question.setText(question.getQuestion());
+    }
+
+    private void mainSocketMethod() {
         //connect your socket client to the server
         try {
             joinNavAnswerJSONObject.put("userId", userId);
@@ -152,7 +163,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
 //                            String user = data.getString("senderNickname");
 //                            answersId = data.getJSONArray("answersId");
 
-                            userAnswering = data.getJSONArray("userAnswering");
+                            JSONArray userAnswering = data.getJSONArray("userAnswering");
 
                             //josh
                             if (userAnswering.length() ==  0) {
@@ -161,7 +172,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                                 NavBetweenAnswersActivity.this.finish();
 
                             }
-                            linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
+                            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
                             linearLayout.setVerticalScrollBarEnabled(true);
 
                             Button[] btnArray = new Button[userAnswering.length()];
@@ -188,20 +199,7 @@ public class NavBetweenAnswersActivity extends AppCompatActivity implements Navi
                 });
             }
         });
-        otherAnswersViewModel.getQuestionById(questionId, token);
-
-
     }
-    private void observeOtherAnswersViewModel(){
-        otherAnswersViewModel.getQuestionData().observe(this, this::onChangedQuestion);
-
-    }
-
-
-    private void onChangedQuestion(Question question){
-        this.question.setText(question.getQuestion());
-    }
-
 
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {

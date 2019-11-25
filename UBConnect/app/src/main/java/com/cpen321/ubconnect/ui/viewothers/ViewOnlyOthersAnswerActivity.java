@@ -60,11 +60,6 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
 
     private String token;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
-
     private JSONObject joinViewAnswerJSONObject = new JSONObject();
 
     //josh
@@ -74,15 +69,15 @@ public class ViewOnlyOthersAnswerActivity extends AppCompatActivity implements N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_only_other_answer);
 //josh
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 

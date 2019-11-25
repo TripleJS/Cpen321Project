@@ -25,7 +25,7 @@ import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.HelperUtils;
 
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
+import com.cpen321.ubconnect.ui.navigatetootheranswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.postquestion.PostQuestionActivity;
@@ -48,7 +48,6 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     private Socket socket;
     private String questionId;
     private String userId;
-    private String answer;
 
 
 
@@ -57,12 +56,8 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     private TextView question;
     private OtherAnswersViewModel otherAnswersViewModel;
 
-    private String token;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
+
 
     private JSONObject textWatcherJSONObject = new JSONObject();
     private JSONObject joinQuestionJSONObject = new JSONObject();
@@ -76,17 +71,17 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
         questionId = "dummyString";
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDrawerToggle);
         drawer.addDrawerListener(drawerListener);
 
         mDrawerToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -101,7 +96,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
 
         otherAnswersViewModel = ViewModelProviders.of(this).get(OtherAnswersViewModel.class);
 
-        token = ((GlobalVariables) this.getApplication()).getJwt();
+        String token = ((GlobalVariables) this.getApplication()).getJwt();
         userId = ((GlobalVariables) this.getApplication()).getUserID();
         //connect you socket client to the server
         question = findViewById(R.id.QuestioToAnswer);
@@ -127,10 +122,10 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
     }
     private void onChangedQuestion(Question question){
         this.question.setText(question.getQuestion());
-        if (questionId.equals("dummyString")) {
+        if ("dummyString".equals(questionId)) {
             questionId = question.getId();
         }
-        if (questionId.equals("")) {
+        if ("".equals(questionId)) {
             Intent intent = new Intent(OtherAnswersActivity.this, NoQuestionActivity.class);
             startActivity(intent);
             OtherAnswersActivity.this.finish();
@@ -185,7 +180,7 @@ public class OtherAnswersActivity extends AppCompatActivity implements Navigatio
                             //extract data from fired event
 
 //
-                            answer = data.getString("answer");
+                            String answer = data.getString("answer");
                             messagetxt.setText(answer);
 //
 

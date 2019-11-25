@@ -20,7 +20,7 @@ import com.cpen321.ubconnect.R;
 import com.cpen321.ubconnect.model.ErrorHandlingUtils;
 import com.cpen321.ubconnect.model.GlobalVariables;
 import com.cpen321.ubconnect.model.data.Question;
-import com.cpen321.ubconnect.ui.NavigateToOtherAnswers.NavBetweenAnswersActivity;
+import com.cpen321.ubconnect.ui.navigatetootheranswers.NavBetweenAnswersActivity;
 import com.cpen321.ubconnect.ui.account.AccountActivity;
 import com.cpen321.ubconnect.ui.home.HomeActivity;
 import com.cpen321.ubconnect.ui.otheranswers.OtherAnswersActivity;
@@ -111,7 +111,7 @@ public class QuestionActivity extends AppCompatActivity implements NavigationVie
 
     public void onChangedQuestion(Question question){
         questionId = question.getId();
-        if (questionId.equals("")) {
+        if ("".equals(questionId)) {
             Intent intent = new Intent(QuestionActivity.this, NoQuestionActivity.class);
             startActivity(intent);
             QuestionActivity.this.finish();
